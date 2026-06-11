@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Cup Run Challenge | Kurtosys</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #001a3d;
+      --navy-mid: #002855;
+      --royal: #0047ff;
+      --royal-dark: #0035c4;
+      --surface: #e6ecf5;
+      --green: #00ff80;
+      --green-hover: #00e673;
+      --white: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.72);
+      --text-muted-dark: #5a6b82;
+      --radius-card: 1rem;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .accent {
+      color: var(--green);
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      line-height: 0;
+    }
+
+    .logo-svg {
+      height: 20px;
+      width: auto;
+      display: block;
+    }
+
+    .topbar-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-pill);
+      padding: 0.4rem 0.9rem;
+    }
+
+    /* ── Hero band ── */
+    .hero-band {
+      background: var(--navy);
+      padding: 2.5rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .hero-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-band h1 {
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-band .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── Stats band (royal blue) ── */
+    .stats-band {
+      background: var(--royal);
+      padding: 3rem 2rem;
+    }
+
+    .stats-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .stats-band .label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-band .date {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .goal-count {
+      font-size: clamp(5rem, 22vw, 8.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--green);
+    }
+
+    .goal-count .unit {
+      display: block;
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 0.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .run-distance {
+      margin-top: 2rem;
+      display: inline-block;
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 1.1rem 2rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .run-distance #distance-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1.75rem;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 0.7rem 1.5rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: background 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary,
+    a.btn-primary {
+      background: var(--green);
+      color: var(--navy);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--green-hover);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    .btn-ghost,
+    a.btn-ghost {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .toggle-group {
+      display: inline-flex;
+      background: rgba(0, 26, 61, 0.35);
+      border-radius: var(--radius-pill);
+      padding: 0.25rem;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .toggle-group button {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+      padding: 0.55rem 1.1rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .toggle-group button.active {
+      background: var(--green);
+      color: var(--navy);
+    }
+
+    /* ── Matches band (light surface) ── */
+    .matches-band {
+      background: var(--surface);
+      padding: 3rem 2rem;
+      color: var(--navy);
+    }
+
+    .matches-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .matches-band h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .match-list {
+      list-style: none;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .match {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius-card);
+      font-size: 0.95rem;
+    }
+
+    .match .team {
+      font-weight: 600;
+    }
+
+    .match .team.home {
+      text-align: right;
+    }
+
+    .match .score {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--green);
+      min-width: 3.75rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 0.5rem;
+      padding: 0.3rem 0.6rem;
+    }
+
+    .match .goals-badge {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted-dark);
+      padding: 2rem 1rem;
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    /* ── Rules band (navy) ── */
+    .rules-band {
+      background: var(--navy);
+      padding: 3rem 2rem;
+    }
+
+    .rules-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .rules-band h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .rules-list {
+      list-style: none;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .rules-list li {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .rules-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-top: 0.55rem;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--navy-mid);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .error {
+      max-width: 720px;
+      margin: 0 auto 0;
+      background: rgba(255, 60, 60, 0.15);
+      border: 1px solid rgba(255, 100, 100, 0.4);
+      color: #ffb3b3;
+      border-radius: var(--radius-card);
+      padding: 0.85rem 1.25rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .error.visible {
+      display: block;
+    }
+
+    .error-wrap {
+      padding: 0 2rem 1rem;
+      background: var(--royal);
+    }
+
+    /* ── Share capture card (off-screen) ── */
+    .share-capture-wrap {
+      position: fixed;
+      left: -10000px;
+      top: 0;
+      pointer-events: none;
+    }
+
+    .share-card {
+      width: 600px;
+      background: var(--navy);
+      color: var(--white);
+      font-family: "Inter", system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    .share-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2rem;
+      background: var(--navy);
+    }
+
+    .share-card-header .logo-svg {
+      height: 20px;
+      width: auto;
+    }
+
+    .share-card-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-pill);
+      padding: 0.35rem 0.75rem;
+    }
+
+    .share-card-hero {
+      padding: 1.5rem 2rem 0.5rem;
+      text-align: center;
+    }
+
+    .share-card-hero h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .share-card-stats {
+      background: var(--royal);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .share-card-stats .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 0.4rem;
+    }
+
+    .share-card-stats .date {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .share-card-goals {
+      font-size: 6rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--green);
+      letter-spacing: -0.04em;
+    }
+
+    .share-card-goals .unit {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 0.4rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .share-card-run {
+      margin-top: 1.25rem;
+      display: inline-block;
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .share-card-run .distance {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .share-card-matches {
+      background: var(--surface);
+      color: var(--navy);
+      padding: 1.75rem 2rem;
+    }
+
+    .share-card-matches h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .share-card-matches .match-list {
+      gap: 0.6rem;
+    }
+
+    .share-card-matches .match {
+      font-size: 0.88rem;
+      padding: 0.85rem 1rem;
+    }
+
+    .share-card-matches .empty-state {
+      padding: 1rem 0;
+      font-size: 0.88rem;
+    }
+
+    .share-card-footer {
+      padding: 1rem 2rem 1.5rem;
+      background: var(--navy-mid);
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Share preview modal ── */
+    .share-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(0, 10, 30, 0.75);
+      backdrop-filter: blur(4px);
+    }
+
+    .share-modal.open {
+      display: flex;
+    }
+
+    .share-modal-content {
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 1.5rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .share-modal-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .share-modal-content p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .share-modal-content img {
+      width: 100%;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .share-modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .share-toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      background: var(--navy-mid);
+      color: var(--white);
+      border: 1px solid rgba(0, 255, 128, 0.35);
+      border-radius: var(--radius-pill);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      z-index: 1001;
+      transition: transform 0.25s ease;
+      pointer-events: none;
+    }
+
+    .share-toast.visible {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 1rem 1.25rem;
+      }
+
+      .hero-band,
+      .stats-band,
+      .matches-band,
+      .rules-band {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+
+      .match {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .match .team.home {
+        text-align: center;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <a class="logo" href="#" aria-label="Kurtosys home" data-logo></a>
+    <span class="topbar-badge">FIFA World Cup 2026</span>
+  </nav>
+
+  <section class="hero-band">
+    <div class="inner">
+      <h1>World Cup <span class="accent">Run</span> Challenge</h1>
+      <p class="subtitle">Every day, run the total number of goals scored across all World Cup matches from the previous day. One goal, one kilometer — or mile, if you're feeling brave.</p>
+    </div>
+  </section>
+
+  <section class="stats-band" aria-live="polite">
+    <div class="inner">
+      <div class="label">Goals scored yesterday</div>
+      <div id="yesterday-date" class="date">Loading…</div>
+      <div id="goal-count" class="goal-count">
+        —
+        <span class="unit">goals</span>
+      </div>
+      <div id="run-distance" class="run-distance">
+        Today's run: <span id="distance-value">—</span> <span id="distance-unit">km</span>
+      </div>
+      <div class="controls">
+        <button id="refresh-btn" class="btn-primary" type="button">Refresh scores</button>
+        <button id="share-btn" class="btn-ghost" type="button">Share screenshot</button>
+        <div class="toggle-group" role="group" aria-label="Distance unit">
+          <button type="button" data-unit="km" class="active">Kilometers</button>
+          <button type="button" data-unit="mi">Miles</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="error-wrap">
+    <div id="error" class="error" role="alert"></div>
+  </div>
+
+  <section class="matches-band">
+    <div class="inner">
+      <h2>Yesterday's <span class="accent">matches</span></h2>
+      <ul id="match-list" class="match-list">
+        <li class="empty-state">Loading match data…</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="rules-band">
+    <div class="inner">
+      <h2>Challenge <span class="accent">rules</span></h2>
+      <ul class="rules-list">
+        <li>Each day, run the total goals scored across all World Cup matches from the previous day.</li>
+        <li>Run, jog, or walk — any tracker works. Share a screenshot when you're done.</li>
+        <li>Miss a day? Carry the distance over to the next day.</li>
+        <li>Keep it consistent and compete for the leaderboard crown.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p id="status-bar">Scores powered by ESPN</p>
+  </footer>
+
+  <div class="share-capture-wrap" aria-hidden="true">
+    <div id="share-card" class="share-card">
+      <div class="share-card-header">
+        <span data-logo></span>
+        <span class="share-card-badge">FIFA World Cup 2026</span>
+      </div>
+      <div class="share-card-hero">
+        <h2>World Cup <span class="accent">Run</span> Challenge</h2>
+      </div>
+      <div class="share-card-stats">
+        <div class="label">Goals scored yesterday</div>
+        <div id="share-date" class="date"></div>
+        <div id="share-goals" class="share-card-goals"></div>
+        <div class="share-card-run">
+          Today's run: <span id="share-distance" class="distance"></span>
+        </div>
+      </div>
+      <div class="share-card-matches">
+        <h3>Yesterday's <span class="accent">matches</span></h3>
+        <ul id="share-match-list" class="match-list"></ul>
+      </div>
+      <div class="share-card-footer" id="share-footer"></div>
+    </div>
+  </div>
+
+  <div id="share-modal" class="share-modal" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+    <div class="share-modal-content">
+      <h3 id="share-modal-title">Screenshot ready</h3>
+      <p>Right-click to save, or use the button below to download and share in your group chat.</p>
+      <img id="share-preview-img" src="" alt="World Cup Run Challenge screenshot preview">
+      <div class="share-modal-actions">
+        <a id="share-download-link" class="btn-primary" href="#" download="world-cup-run-challenge.png">Download image</a>
+        <button id="share-modal-close" class="btn-ghost" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="share-toast" class="share-toast" role="status"></div>
+
+  <template id="kurtosys-logo">
+    <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 20" aria-hidden="true">
+      <path fill="#FFFFFF" d="M50.9,7.2c0-3.9-2.9-6.5-7.6-6.5h-7v18.9h4.5v-6.2h2.3l3.5,6.2v0.1h5.1l-4.2-7C49.7,11.7,51,9.5,50.9,7.2L50.9,7.2z M44,9.4h-3.1V4.9H44c1.2,0,2.2,1,2.2,2.2S45.2,9.4,44,9.4z"/>
+      <path fill="#FFFFFF" d="M73.3,7.9c0.7-1.7,2.4-3,4.3-3.1V0c-4,0.2-7.4,2.6-8.8,6.4l2.7,0.9L73.3,7.9z"/>
+      <path fill="#FFFFFF" d="M51.9,4.9h5.7v14.7H62V4.9h5.7V0.7H51.9V4.9z"/>
+      <path fill="#FFFFFF" d="M29.7,11.1c0,3.2-1.3,4.7-3.8,4.7s-3.8-1.4-3.8-4.7V0.7h-4.5v10.5c0,5.7,3.3,8.8,8.3,8.8s8.3-3.1,8.3-8.8V0.7h-4.5V11.1z"/>
+      <path fill="#FFFFFF" d="M17.1,0.7h-5.5L7,5.3C5.6,6.6,5,7.3,4.7,7.6C4.5,7.8,4.5,7.8,4.5,7.8h0c0,0,0-0.1,0-0.4c0-0.5,0.1-1.6,0.1-3.7V0.7H0v18.9h4.5v-6.3l1.6-1.6l5.7,7.9v0h5.3L9.1,8.8L17.1,0.7z"/>
+      <path fill="#FFFFFF" d="M130.3,7.9c-0.3-0.1-0.7-0.2-1-0.4c-1.8-0.7-3.2-1.1-3.2-2.2c0-0.8,0.8-1.4,2.1-1.4c1.3,0,2.8,0.8,3.3,2.5l4.4-1.2c-0.9-3-3.7-5.2-7.3-5.2c-4.1,0-7.1,2.7-7.1,5.6c0,3.3,2.6,4.6,4.9,5.4c0.6,0.2,1.1,0.4,1.6,0.6c1.9,0.7,3.3,1.2,3.3,2.4c0,0.9-0.8,1.7-2.4,1.7c-2,0-3.3-1.4-3.8-2.9l-4.3,1.1c1.3,3.6,4.1,5.8,8,5.8c4.4,0,7.3-2.4,7.3-5.9C136,10.5,133,8.9,130.3,7.9L130.3,7.9z"/>
+      <path fill="#FFFFFF" d="M117,0.7l-3.4,5.1c-0.5,0.8-0.9,1.4-1,1.4h0c0,0-0.4-0.6-1-1.4l-3.4-5.1h-5.1l7.2,10.5v8.4h4.5v-8.4L122,0.7H117z"/>
+      <path fill="#FFFFFF" d="M98.3,7.9c-0.3-0.1-0.7-0.2-1-0.4c-1.8-0.7-3.2-1.1-3.2-2.2c0-0.8,0.8-1.4,2.1-1.4c1.3,0,2.8,0.8,3.3,2.5l4.4-1.2c-0.9-3-3.7-5.2-7.3-5.2c-4.1,0-7.1,2.7-7.1,5.6c0,3.3,2.6,4.6,4.9,5.4c0.6,0.2,1.1,0.4,1.6,0.6c1.9,0.7,3.3,1.2,3.3,2.4c0,0.9-0.8,1.7-2.4,1.7c-2,0-3.3-1.4-3.8-2.9l-4.3,1.1c1.3,3.6,4.1,5.8,8,5.8c4.4,0,7.3-2.4,7.3-5.9C104.1,10.5,101.1,8.9,98.3,7.9L98.3,7.9z"/>
+      <path fill="#FFFFFF" d="M72.8,9.9c0-0.4,0.1-0.8,0.1-1.2l-4.4-1.4c-1.1,3.9,0.2,7.9,3.3,10.4l2.7-3.8C73.6,12.9,72.8,11.5,72.8,9.9L72.8,9.9z"/>
+      <path fill="#FFFFFF" d="M78.5,0v4.8c2.6,0.3,4.6,2.5,4.6,5.1c0,2.9-2.3,5.2-5.1,5.2c-0.9,0-1.8-0.3-2.6-0.7l-2.7,3.8c1.7,1.1,3.4,1.6,5.4,1.6c5.4,0,9.9-4.4,9.9-9.9C87.9,4.6,83.7,0.2,78.5,0L78.5,0z"/>
+    </svg>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+
+    const FINAL_STATUSES = new Set([
+      'STATUS_FINAL',
+      'STATUS_FULL_TIME',
+      'STATUS_FINAL_AET',
+      'STATUS_FINAL_PEN',
+    ]);
+
+    let unit = 'km';
+    let lastGoalTotal = 0;
+    let lastMatches = [];
+    let lastYesterdayLabel = '';
+
+    function mountLogos() {
+      const template = document.getElementById('kurtosys-logo');
+      document.querySelectorAll('[data-logo]').forEach((slot) => {
+        slot.appendChild(template.content.cloneNode(true));
+      });
+    }
+
+    function getYesterday() {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      yesterday.setHours(0, 0, 0, 0);
+      return yesterday;
+    }
+
+    function formatDisplayDate(date) {
+      return date.toLocaleDateString(undefined, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    }
+
+    function formatEspnDate(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}${m}${d}`;
+    }
+
+    function parseScore(value) {
+      const score = Number.parseInt(value, 10);
+      return Number.isFinite(score) ? score : 0;
+    }
+
+    function isFinished(competition) {
+      const statusName = competition.status?.type?.name || '';
+      return FINAL_STATUSES.has(statusName);
+    }
+
+    function normalizeMatches(events) {
+      return (events || []).map((event) => {
+        const competition = event.competitions?.[0] || {};
+        const competitors = competition.competitors || [];
+        const home = competitors.find((c) => c.homeAway === 'home');
+        const away = competitors.find((c) => c.homeAway === 'away');
+        const homeGoals = parseScore(home?.score);
+        const awayGoals = parseScore(away?.score);
+
+        return {
+          name: event.name,
+          homeTeam: home?.team?.displayName || home?.team?.name || 'Home',
+          awayTeam: away?.team?.displayName || away?.team?.name || 'Away',
+          homeGoals,
+          awayGoals,
+          totalGoals: homeGoals + awayGoals,
+          finished: isFinished(competition),
+          status: competition.status?.type?.description || competition.status?.type?.name || 'Scheduled',
+        };
+      });
+    }
+
+    function buildMatchListHtml(matches) {
+      if (!matches.length) {
+        return `
+          <li class="empty-state">
+            No World Cup matches were played yesterday.<br>
+            Rest day or save those legs for tomorrow!
+          </li>
+        `;
+      }
+
+      return matches.map((match) => `
+        <li class="match">
+          <span class="team home">${escapeHtml(match.homeTeam)}</span>
+          <span class="score">${match.homeGoals} – ${match.awayGoals}</span>
+          <span class="team away">${escapeHtml(match.awayTeam)}</span>
+          <span class="goals-badge">
+            ${match.totalGoals} goal${match.totalGoals === 1 ? '' : 's'}
+            ${match.finished ? '' : ` · ${escapeHtml(match.status)}`}
+          </span>
+        </li>
+      `).join('');
+    }
+
+    function renderMatches(matches) {
+      lastMatches = matches;
+      document.getElementById('match-list').innerHTML = buildMatchListHtml(matches);
+      syncShareCard();
+    }
+
+    function renderGoalTotal(total) {
+      lastGoalTotal = total;
+      document.getElementById('goal-count').innerHTML = `
+        ${total}
+        <span class="unit">goal${total === 1 ? '' : 's'}</span>
+      `;
+      updateDistance();
+      syncShareCard();
+    }
+
+    function updateDistance() {
+      document.getElementById('distance-value').textContent = lastGoalTotal;
+      document.getElementById('distance-unit').textContent = unit;
+      syncShareCard();
+    }
+
+    function syncShareCard() {
+      document.getElementById('share-date').textContent = lastYesterdayLabel;
+      document.getElementById('share-goals').innerHTML = `
+        ${lastGoalTotal}
+        <span class="unit">goal${lastGoalTotal === 1 ? '' : 's'}</span>
+      `;
+      document.getElementById('share-distance').textContent = `${lastGoalTotal} ${unit}`;
+      document.getElementById('share-match-list').innerHTML = buildMatchListHtml(lastMatches);
+      document.getElementById('share-footer').textContent = `Generated ${new Date().toLocaleString()} · Scores powered by ESPN`;
+    }
+
+    function showShareToast(message) {
+      const toast = document.getElementById('share-toast');
+      toast.textContent = message;
+      toast.classList.add('visible');
+      window.setTimeout(() => toast.classList.remove('visible'), 3500);
+    }
+
+    function showSharePreview(blob) {
+      const url = URL.createObjectURL(blob);
+      const modal = document.getElementById('share-modal');
+      const img = document.getElementById('share-preview-img');
+      const link = document.getElementById('share-download-link');
+
+      img.src = url;
+      link.href = url;
+      modal.classList.add('open');
+
+      const closeModal = () => {
+        modal.classList.remove('open');
+        URL.revokeObjectURL(url);
+        img.src = '';
+        link.href = '#';
+      };
+
+      document.getElementById('share-modal-close').onclick = closeModal;
+      modal.onclick = (event) => {
+        if (event.target === modal) closeModal();
+      };
+    }
+
+    async function createShareImage() {
+      await document.fonts.ready;
+      syncShareCard();
+
+      const card = document.getElementById('share-card');
+      const canvas = await html2canvas(card, {
+        scale: 2,
+        backgroundColor: '#001a3d',
+        useCORS: true,
+        logging: false,
+      });
+
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => resolve(blob), 'image/png');
+      });
+    }
+
+    async function shareScreenshot() {
+      const shareBtn = document.getElementById('share-btn');
+      shareBtn.disabled = true;
+      shareBtn.textContent = 'Creating image…';
+      clearError();
+
+      try {
+        const blob = await createShareImage();
+        if (!blob) {
+          throw new Error('Could not create image.');
+        }
+
+        const file = new File([blob], 'world-cup-run-challenge.png', { type: 'image/png' });
+        const shareData = {
+          files: [file],
+          title: 'World Cup Run Challenge',
+          text: `Today's run: ${lastGoalTotal} ${unit} 🏃⚽`,
+        };
+
+        if (navigator.canShare?.(shareData)) {
+          await navigator.share(shareData);
+          showShareToast('Shared! Post it in the group chat.');
+        } else {
+          showSharePreview(blob);
+        }
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          showError(error.message || 'Could not create screenshot. Please try again.');
+        }
+      } finally {
+        shareBtn.disabled = false;
+        shareBtn.textContent = 'Share screenshot';
+      }
+    }
+
+    function showError(message) {
+      const errorEl = document.getElementById('error');
+      errorEl.textContent = message;
+      errorEl.classList.add('visible');
+    }
+
+    function clearError() {
+      const errorEl = document.getElementById('error');
+      errorEl.textContent = '';
+      errorEl.classList.remove('visible');
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    async function loadYesterdayGoals() {
+      const refreshBtn = document.getElementById('refresh-btn');
+      const statusBar = document.getElementById('status-bar');
+      const yesterday = getYesterday();
+
+      lastYesterdayLabel = formatDisplayDate(yesterday);
+      document.getElementById('yesterday-date').textContent = lastYesterdayLabel;
+      refreshBtn.disabled = true;
+      clearError();
+
+      try {
+        const url = `${ESPN_SCOREBOARD}?dates=${formatEspnDate(yesterday)}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`Could not load scores (HTTP ${response.status}).`);
+        }
+
+        const data = await response.json();
+        const matches = normalizeMatches(data.events);
+        const finishedMatches = matches.filter((match) => match.finished);
+        const matchesForTotal = finishedMatches.length ? finishedMatches : matches;
+        const totalGoals = matchesForTotal.reduce((sum, match) => sum + match.totalGoals, 0);
+
+        renderGoalTotal(totalGoals);
+        renderMatches(matches);
+
+        const updatedAt = new Date().toLocaleTimeString(undefined, {
+          hour: 'numeric',
+          minute: '2-digit',
+        });
+
+        if (matches.length && !finishedMatches.length) {
+          statusBar.textContent = `Showing in-progress scores · Last updated ${updatedAt} · Scores powered by ESPN`;
+        } else {
+          statusBar.textContent = `Last updated ${updatedAt} · Scores powered by ESPN`;
+        }
+      } catch (error) {
+        showError(error.message || 'Something went wrong while loading scores.');
+        document.getElementById('match-list').innerHTML = `
+          <li class="empty-state">Unable to load matches. Try refreshing in a moment.</li>
+        `;
+        statusBar.textContent = 'Scores powered by ESPN';
+      } finally {
+        refreshBtn.disabled = false;
+      }
+    }
+
+    document.getElementById('refresh-btn').addEventListener('click', loadYesterdayGoals);
+    document.getElementById('share-btn').addEventListener('click', shareScreenshot);
+
+    document.querySelectorAll('.toggle-group button').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.toggle-group button').forEach((btn) => btn.classList.remove('active'));
+        button.classList.add('active');
+        unit = button.dataset.unit;
+        updateDistance();
+      });
+    });
+
+    mountLogos();
+    loadYesterdayGoals();
+  </script>
+</body>
+</html>
