@@ -9,7 +9,7 @@ A simple dashboard for the Kurtosys team running challenge during FIFA World Cup
 Every day, run the total number of goals scored across all World Cup matches from the **previous day**.
 
 - 7 goals yesterday → run 7 km (or miles)
-- Run, jog, or walk — any tracker works
+- Run, jog, or walk. Any tracker works
 - Share a screenshot in the group chat when you're done
 
 Matches are counted by **local kickoff date**, so early-morning games are grouped with the correct calendar day.
@@ -20,8 +20,8 @@ Matches are counted by **local kickoff date**, so early-morning games are groupe
 - Shows total goals and today's run distance
 - Lists each match from the previous day with scores
 - Toggle between kilometers and miles
-- **Share screenshot** — generates a branded image for group chat
-- **Team leaderboard** — loaded from `leaderboard.json`
+- **Share screenshot**: generates a branded image for group chat
+- **Team leaderboard**: loaded from `leaderboard.json`
 
 ## Leaderboard
 
@@ -50,17 +50,17 @@ Runner data is stored in [`leaderboard.json`](leaderboard.json). Each morning, s
 }
 ```
 
-- `date` — the day the run was completed (YYYY-MM-DD)
-- `matchDayGoals` — goals from the previous day's matches
-- `distance` — distance run that day
-- `completed` — `true` when the run counts toward the leaderboard
+- `date`: the day the run was completed (YYYY-MM-DD)
+- `matchDayGoals`: goals from the previous day's matches
+- `distance`: distance run that day
+- `completed`: `true` when the run counts toward the leaderboard
 
 The site ranks runners by total distance, then streak.
 
 ## Challenge rules
 
 1. Each day, run the total goals scored across all World Cup matches from the previous day.
-2. Run, jog, or walk — any tracker works. Share a screenshot when you're done.
+2. Run, jog, or walk. Any tracker works. Share a screenshot when you're done.
 3. Miss a day? Carry the distance over to the next day.
 4. Keep it consistent and compete for the leaderboard crown.
 

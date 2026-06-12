@@ -725,7 +725,7 @@
   <section class="hero-band">
     <div class="inner">
       <h1>World Cup <span class="accent">Run</span> Challenge</h1>
-      <p class="subtitle">Every day, run the total number of goals scored across all World Cup matches from the previous day. One goal, one kilometer — or mile, if you're feeling brave.</p>
+      <p class="subtitle">Every day, run the total number of goals scored across all World Cup matches from the previous day. One goal, one kilometer, or mile if you're feeling brave.</p>
     </div>
   </section>
 
@@ -734,11 +734,11 @@
       <div class="label">Goals scored yesterday</div>
       <div id="yesterday-date" class="date">Loading…</div>
       <div id="goal-count" class="goal-count">
-        —
+        -
         <span class="unit">goals</span>
       </div>
       <div id="run-distance" class="run-distance">
-        Today's run: <span id="distance-value">—</span> <span id="distance-unit">km</span>
+        Today's run: <span id="distance-value">-</span> <span id="distance-unit">km</span>
       </div>
       <div class="controls">
         <button id="refresh-btn" class="btn-primary" type="button">Refresh scores</button>
@@ -794,7 +794,7 @@
       <h2>Challenge <span class="accent">rules</span></h2>
       <ul class="rules-list">
         <li>Each day, run the total goals scored across all World Cup matches from the previous day.</li>
-        <li>Run, jog, or walk — any tracker works. Share a screenshot when you're done.</li>
+        <li>Run, jog, or walk. Any tracker works. Share a screenshot when you're done.</li>
         <li>Miss a day? Carry the distance over to the next day.</li>
         <li>Keep it consistent and compete for the leaderboard crown.</li>
       </ul>
@@ -993,7 +993,7 @@
       return matches.map((match) => `
         <li class="match">
           <span class="team home">${escapeHtml(match.homeTeam)}</span>
-          <span class="score">${match.homeGoals} – ${match.awayGoals}</span>
+          <span class="score">${match.homeGoals} - ${match.awayGoals}</span>
           <span class="team away">${escapeHtml(match.awayTeam)}</span>
           <span class="goals-badge">
             ${match.totalGoals} goal${match.totalGoals === 1 ? '' : 's'}
