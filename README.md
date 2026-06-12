@@ -12,6 +12,8 @@ Every day, run the total number of goals scored across all World Cup matches fro
 - Run, jog, or walk — any tracker works
 - Share a screenshot in the group chat when you're done
 
+Matches are counted by **local kickoff date**, so early-morning games are grouped with the correct calendar day.
+
 ## Features
 
 - Fetches yesterday's World Cup scores from ESPN (no API key required)
@@ -19,6 +21,41 @@ Every day, run the total number of goals scored across all World Cup matches fro
 - Lists each match from the previous day with scores
 - Toggle between kilometers and miles
 - **Share screenshot** — generates a branded image for group chat
+- **Team leaderboard** — loaded from `leaderboard.json`
+
+## Leaderboard
+
+Runner data is stored in [`leaderboard.json`](leaderboard.json). Each morning, share tracker screenshots in the group chat and the leaderboard can be updated from those.
+
+### Data format
+
+```json
+{
+  "updated": "2026-06-12",
+  "defaultUnit": "km",
+  "runners": [
+    {
+      "name": "Alex Runner",
+      "runs": [
+        {
+          "date": "2026-06-12",
+          "matchDayGoals": 2,
+          "distance": 2,
+          "unit": "km",
+          "completed": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `date` — the day the run was completed (YYYY-MM-DD)
+- `matchDayGoals` — goals from the previous day's matches
+- `distance` — distance run that day
+- `completed` — `true` when the run counts toward the leaderboard
+
+The site ranks runners by total distance, then streak.
 
 ## Challenge rules
 

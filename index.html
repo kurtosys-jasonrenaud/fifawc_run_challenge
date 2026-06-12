@@ -314,6 +314,86 @@
       font-size: 0.95rem;
     }
 
+    /* ── Leaderboard band (royal blue) ── */
+    .leaderboard-band {
+      background: var(--royal);
+      padding: 3rem 2rem;
+      color: var(--white);
+    }
+
+    .leaderboard-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .leaderboard-band h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .leaderboard-updated {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 1.25rem;
+    }
+
+    .leaderboard-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-card);
+      background: var(--navy);
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    .leaderboard-table th,
+    .leaderboard-table td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+    }
+
+    .leaderboard-table th {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .leaderboard-table tbody tr + tr td {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .leaderboard-table .rank {
+      font-weight: 800;
+      color: var(--green);
+      width: 2.5rem;
+    }
+
+    .leaderboard-table .name {
+      font-weight: 700;
+    }
+
+    .leaderboard-table .total {
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .leaderboard-empty {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 2rem 1rem;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
     /* ── Rules band (navy) ── */
     .rules-band {
       background: var(--navy);
@@ -684,6 +764,31 @@
     </div>
   </section>
 
+  <section class="leaderboard-band">
+    <div class="inner">
+      <h2>Team <span class="accent">leaderboard</span></h2>
+      <p id="leaderboard-updated" class="leaderboard-updated">Loading…</p>
+      <div class="leaderboard-table-wrap">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Runner</th>
+              <th scope="col">Total</th>
+              <th scope="col">Days</th>
+              <th scope="col">Streak</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body">
+            <tr>
+              <td colspan="5" class="leaderboard-empty">Loading leaderboard…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <section class="rules-band">
     <div class="inner">
       <h2>Challenge <span class="accent">rules</span></h2>
@@ -757,6 +862,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
     const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+    const LEADERBOARD_URL = 'leaderboard.json';
 
     const FINAL_STATUSES = new Set([
       'STATUS_FINAL',
@@ -800,6 +906,43 @@
       return `${y}${m}${d}`;
     }
 
+    function getLocalDateKey(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function getYesterdayKey() {
+      return getLocalDateKey(getYesterday());
+    }
+
+    async function fetchEspnEventsForDates(dates) {
+      const uniqueDates = [...new Set(dates)];
+      const responses = await Promise.all(
+        uniqueDates.map((date) => fetch(`${ESPN_SCOREBOARD}?dates=${formatEspnDate(date)}`)),
+      );
+
+      const events = [];
+      const seenIds = new Set();
+
+      for (const response of responses) {
+        if (!response.ok) {
+          throw new Error(`Could not load scores (HTTP ${response.status}).`);
+        }
+
+        const data = await response.json();
+        for (const event of data.events || []) {
+          if (!seenIds.has(event.id)) {
+            seenIds.add(event.id);
+            events.push(event);
+          }
+        }
+      }
+
+      return events;
+    }
+
     function parseScore(value) {
       const score = Number.parseInt(value, 10);
       return Number.isFinite(score) ? score : 0;
@@ -810,26 +953,31 @@
       return FINAL_STATUSES.has(statusName);
     }
 
-    function normalizeMatches(events) {
-      return (events || []).map((event) => {
-        const competition = event.competitions?.[0] || {};
-        const competitors = competition.competitors || [];
-        const home = competitors.find((c) => c.homeAway === 'home');
-        const away = competitors.find((c) => c.homeAway === 'away');
-        const homeGoals = parseScore(home?.score);
-        const awayGoals = parseScore(away?.score);
+    function normalizeMatches(events, targetDateKey) {
+      return (events || [])
+        .filter((event) => event.date && getLocalDateKey(new Date(event.date)) === targetDateKey)
+        .map((event) => {
+          const competition = event.competitions?.[0] || {};
+          const competitors = competition.competitors || [];
+          const home = competitors.find((c) => c.homeAway === 'home');
+          const away = competitors.find((c) => c.homeAway === 'away');
+          const homeGoals = parseScore(home?.score);
+          const awayGoals = parseScore(away?.score);
 
-        return {
-          name: event.name,
-          homeTeam: home?.team?.displayName || home?.team?.name || 'Home',
-          awayTeam: away?.team?.displayName || away?.team?.name || 'Away',
-          homeGoals,
-          awayGoals,
-          totalGoals: homeGoals + awayGoals,
-          finished: isFinished(competition),
-          status: competition.status?.type?.description || competition.status?.type?.name || 'Scheduled',
-        };
-      });
+          return {
+            id: event.id,
+            kickoff: event.date,
+            name: event.name,
+            homeTeam: home?.team?.displayName || home?.team?.name || 'Home',
+            awayTeam: away?.team?.displayName || away?.team?.name || 'Away',
+            homeGoals,
+            awayGoals,
+            totalGoals: homeGoals + awayGoals,
+            finished: isFinished(competition),
+            status: competition.status?.type?.description || competition.status?.type?.name || 'Scheduled',
+          };
+        })
+        .sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
     }
 
     function buildMatchListHtml(matches) {
@@ -991,10 +1139,123 @@
         .replaceAll("'", '&#39;');
     }
 
+    function computeStreak(runs) {
+      const completedDates = [...new Set(
+        runs
+          .filter((run) => run.completed)
+          .map((run) => run.date),
+      )].sort().reverse();
+
+      if (!completedDates.length) {
+        return 0;
+      }
+
+      let streak = 1;
+      for (let i = 1; i < completedDates.length; i += 1) {
+        const current = new Date(`${completedDates[i - 1]}T12:00:00`);
+        const previous = new Date(`${completedDates[i]}T12:00:00`);
+        const dayDiff = Math.round((current - previous) / 86400000);
+
+        if (dayDiff === 1) {
+          streak += 1;
+        } else {
+          break;
+        }
+      }
+
+      return streak;
+    }
+
+    function buildLeaderboardRows(data) {
+      const defaultUnit = data.defaultUnit || 'km';
+
+      return (data.runners || [])
+        .map((runner) => {
+          const completedRuns = (runner.runs || []).filter((run) => run.completed);
+          const totalDistance = completedRuns.reduce((sum, run) => sum + run.distance, 0);
+          const unitLabel = completedRuns.at(-1)?.unit || defaultUnit;
+
+          return {
+            name: runner.name,
+            totalDistance,
+            unitLabel,
+            daysCompleted: completedRuns.length,
+            streak: computeStreak(runner.runs || []),
+          };
+        })
+        .sort((a, b) => {
+          if (b.totalDistance !== a.totalDistance) {
+            return b.totalDistance - a.totalDistance;
+          }
+          if (b.streak !== a.streak) {
+            return b.streak - a.streak;
+          }
+          return a.name.localeCompare(b.name);
+        });
+    }
+
+    function renderLeaderboard(data) {
+      const rows = buildLeaderboardRows(data);
+      const body = document.getElementById('leaderboard-body');
+      const updatedEl = document.getElementById('leaderboard-updated');
+
+      if (data.updated) {
+        const updatedDate = new Date(`${data.updated}T12:00:00`);
+        updatedEl.textContent = `Updated ${updatedDate.toLocaleDateString(undefined, {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+        })}`;
+      } else {
+        updatedEl.textContent = 'Waiting for the first runs';
+      }
+
+      if (!rows.length) {
+        body.innerHTML = `
+          <tr>
+            <td colspan="5" class="leaderboard-empty">
+              No runs logged yet. Share your tracker screenshots in the group chat to get on the board.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      body.innerHTML = rows.map((row, index) => `
+        <tr>
+          <td class="rank">${index + 1}</td>
+          <td class="name">${escapeHtml(row.name)}</td>
+          <td class="total">${row.totalDistance} ${escapeHtml(row.unitLabel)}</td>
+          <td>${row.daysCompleted}</td>
+          <td>${row.streak} day${row.streak === 1 ? '' : 's'}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadLeaderboard() {
+      try {
+        const response = await fetch(`${LEADERBOARD_URL}?t=${Date.now()}`);
+        if (!response.ok) {
+          throw new Error('Could not load leaderboard.');
+        }
+
+        const data = await response.json();
+        renderLeaderboard(data);
+      } catch (error) {
+        document.getElementById('leaderboard-updated').textContent = 'Leaderboard unavailable';
+        document.getElementById('leaderboard-body').innerHTML = `
+          <tr>
+            <td colspan="5" class="leaderboard-empty">Unable to load leaderboard right now.</td>
+          </tr>
+        `;
+      }
+    }
+
     async function loadYesterdayGoals() {
       const refreshBtn = document.getElementById('refresh-btn');
       const statusBar = document.getElementById('status-bar');
       const yesterday = getYesterday();
+      const yesterdayKey = getYesterdayKey();
 
       lastYesterdayLabel = formatDisplayDate(yesterday);
       document.getElementById('yesterday-date').textContent = lastYesterdayLabel;
@@ -1002,15 +1263,8 @@
       clearError();
 
       try {
-        const url = `${ESPN_SCOREBOARD}?dates=${formatEspnDate(yesterday)}`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`Could not load scores (HTTP ${response.status}).`);
-        }
-
-        const data = await response.json();
-        const matches = normalizeMatches(data.events);
+        const events = await fetchEspnEventsForDates([yesterday, new Date()]);
+        const matches = normalizeMatches(events, yesterdayKey);
         const finishedMatches = matches.filter((match) => match.finished);
         const matchesForTotal = finishedMatches.length ? finishedMatches : matches;
         const totalGoals = matchesForTotal.reduce((sum, match) => sum + match.totalGoals, 0);
@@ -1024,9 +1278,9 @@
         });
 
         if (matches.length && !finishedMatches.length) {
-          statusBar.textContent = `Showing in-progress scores · Last updated ${updatedAt} · Scores powered by ESPN`;
+          statusBar.textContent = `Showing in-progress scores · Matches by local kickoff date · Last updated ${updatedAt} · Scores powered by ESPN`;
         } else {
-          statusBar.textContent = `Last updated ${updatedAt} · Scores powered by ESPN`;
+          statusBar.textContent = `Matches by local kickoff date · Last updated ${updatedAt} · Scores powered by ESPN`;
         }
       } catch (error) {
         showError(error.message || 'Something went wrong while loading scores.');
@@ -1053,6 +1307,7 @@
 
     mountLogos();
     loadYesterdayGoals();
+    loadLeaderboard();
   </script>
 </body>
 </html>
