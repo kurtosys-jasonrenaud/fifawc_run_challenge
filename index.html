@@ -687,6 +687,168 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    .carryover-box {
+      margin-top: 1.5rem;
+      padding: 1.1rem 1.25rem;
+      background: rgba(0, 26, 61, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-card);
+      text-align: left;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .carryover-box label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 0.5rem;
+    }
+
+    .carryover-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .carryover-row input {
+      flex: 1;
+      font: inherit;
+      font-weight: 700;
+      padding: 0.55rem 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: var(--navy);
+      color: var(--white);
+      min-width: 0;
+    }
+
+    .carryover-row input:focus {
+      outline: 2px solid var(--green);
+      outline-offset: 1px;
+    }
+
+    .carryover-save {
+      padding: 0.55rem 1rem;
+      font-size: 0.85rem;
+    }
+
+    .carryover-total {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .carryover-total strong {
+      color: var(--green);
+      font-size: 1.15rem;
+    }
+
+    .today-band {
+      background: var(--navy);
+      padding: 3rem 2rem;
+      color: var(--white);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .today-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .today-band h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+      line-height: 1.2;
+    }
+
+    .today-band .section-note {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .today-band .empty-state {
+      color: var(--text-muted);
+    }
+
+    .match-upcoming .score {
+      color: var(--white);
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(0, 255, 128, 0.15);
+    }
+
+    .team-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .team-stat {
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 0.9rem 0.75rem;
+      text-align: center;
+    }
+
+    .team-stat .value {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1.2;
+    }
+
+    .team-stat .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .runner-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.45rem;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 255, 128, 0.2);
+      color: var(--green);
+      border: 1px solid rgba(0, 255, 128, 0.35);
+    }
+
+    .badge-leader {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--white);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .badge-fire {
+      background: rgba(255, 140, 0, 0.2);
+      color: #ffb347;
+      border-color: rgba(255, 140, 0, 0.4);
+    }
+
     @media (max-width: 600px) {
       .topbar {
         padding: 1rem 1.25rem;
@@ -695,9 +857,15 @@
       .hero-band,
       .stats-band,
       .matches-band,
+      .today-band,
+      .leaderboard-band,
       .rules-band {
         padding-left: 1.25rem;
         padding-right: 1.25rem;
+      }
+
+      .team-stats {
+        grid-template-columns: 1fr;
       }
 
       .match {
@@ -740,9 +908,18 @@
       <div id="run-distance" class="run-distance">
         Today's run: <span id="distance-value">-</span> <span id="distance-unit">km</span>
       </div>
+      <div class="carryover-box">
+        <label for="carryover-input">Carry-over from missed days</label>
+        <div class="carryover-row">
+          <input id="carryover-input" type="number" min="0" step="0.1" value="0" inputmode="decimal">
+          <button id="carryover-save" class="btn-primary carryover-save" type="button">Save</button>
+        </div>
+        <p id="carryover-total" class="carryover-total"></p>
+      </div>
       <div class="controls">
         <button id="refresh-btn" class="btn-primary" type="button">Refresh scores</button>
         <button id="share-btn" class="btn-ghost" type="button">Share screenshot</button>
+        <button id="copy-btn" class="btn-ghost" type="button">Copy for chat</button>
         <div class="toggle-group" role="group" aria-label="Distance unit">
           <button type="button" data-unit="km" class="active">Kilometers</button>
           <button type="button" data-unit="mi">Miles</button>
@@ -764,10 +941,21 @@
     </div>
   </section>
 
+  <section class="today-band">
+    <div class="inner">
+      <h2>Today's <span class="accent">matches</span></h2>
+      <p id="today-date" class="section-note">Loading…</p>
+      <ul id="today-match-list" class="match-list">
+        <li class="empty-state">Loading today's fixtures…</li>
+      </ul>
+    </div>
+  </section>
+
   <section class="leaderboard-band">
     <div class="inner">
       <h2>Team <span class="accent">leaderboard</span></h2>
       <p id="leaderboard-updated" class="leaderboard-updated">Loading…</p>
+      <div id="team-stats" class="team-stats"></div>
       <div class="leaderboard-table-wrap">
         <table class="leaderboard-table">
           <thead>
@@ -863,6 +1051,7 @@
   <script>
     const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
     const LEADERBOARD_URL = 'leaderboard.json';
+    const CARRYOVER_KEY = 'wcrc-carryover';
 
     const FINAL_STATUSES = new Set([
       'STATUS_FINAL',
@@ -875,6 +1064,7 @@
     let lastGoalTotal = 0;
     let lastMatches = [];
     let lastYesterdayLabel = '';
+    let goalAnimationFrame = null;
 
     function mountLogos() {
       const template = document.getElementById('kurtosys-logo');
@@ -915,6 +1105,38 @@
 
     function getYesterdayKey() {
       return getLocalDateKey(getYesterday());
+    }
+
+    function getTodayKey() {
+      return getLocalDateKey(new Date());
+    }
+
+    function getTomorrow() {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow;
+    }
+
+    function getCarryover() {
+      const value = Number.parseFloat(localStorage.getItem(CARRYOVER_KEY) || '0');
+      return Number.isFinite(value) && value > 0 ? value : 0;
+    }
+
+    function setCarryover(value) {
+      const safeValue = Math.max(0, Number.parseFloat(value) || 0);
+      localStorage.setItem(CARRYOVER_KEY, String(safeValue));
+      return safeValue;
+    }
+
+    function getEffectiveTarget() {
+      return lastGoalTotal + getCarryover();
+    }
+
+    function formatKickoffTime(isoDate) {
+      return new Date(isoDate).toLocaleTimeString(undefined, {
+        hour: 'numeric',
+        minute: '2-digit',
+      });
     }
 
     async function fetchEspnEventsForDates(dates) {
@@ -980,12 +1202,11 @@
         .sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
     }
 
-    function buildMatchListHtml(matches) {
+    function buildMatchListHtml(matches, emptyMessage) {
       if (!matches.length) {
         return `
           <li class="empty-state">
-            No World Cup matches were played yesterday.<br>
-            Rest day or save those legs for tomorrow!
+            ${emptyMessage}
           </li>
         `;
       }
@@ -1003,26 +1224,132 @@
       `).join('');
     }
 
+    function buildTodayMatchListHtml(matches) {
+      if (!matches.length) {
+        return `
+          <li class="empty-state">
+            No World Cup matches scheduled for today.<br>
+            Recovery day, or get ahead on carry-over!
+          </li>
+        `;
+      }
+
+      return matches.map((match) => {
+        const scoreLabel = match.finished
+          ? `${match.homeGoals} - ${match.awayGoals}`
+          : formatKickoffTime(match.kickoff);
+
+        return `
+          <li class="match ${match.finished ? '' : 'match-upcoming'}">
+            <span class="team home">${escapeHtml(match.homeTeam)}</span>
+            <span class="score">${scoreLabel}</span>
+            <span class="team away">${escapeHtml(match.awayTeam)}</span>
+            <span class="goals-badge">
+              ${match.finished
+                ? `${match.totalGoals} goal${match.totalGoals === 1 ? '' : 's'}`
+                : escapeHtml(match.status)}
+            </span>
+          </li>
+        `;
+      }).join('');
+    }
+
     function renderMatches(matches) {
       lastMatches = matches;
-      document.getElementById('match-list').innerHTML = buildMatchListHtml(matches);
+      document.getElementById('match-list').innerHTML = buildMatchListHtml(
+        matches,
+        'No World Cup matches were played yesterday.<br>Rest day or save those legs for tomorrow!',
+      );
       syncShareCard();
     }
 
-    function renderGoalTotal(total) {
-      lastGoalTotal = total;
+    function renderTodayMatches(matches) {
+      document.getElementById('today-match-list').innerHTML = buildTodayMatchListHtml(matches);
+    }
+
+    function renderGoalCountDisplay(total) {
       document.getElementById('goal-count').innerHTML = `
         ${total}
         <span class="unit">goal${total === 1 ? '' : 's'}</span>
       `;
+    }
+
+    function animateGoalTotal(total) {
+      if (goalAnimationFrame) {
+        cancelAnimationFrame(goalAnimationFrame);
+      }
+
+      const start = performance.now();
+      const duration = 700;
+      const from = 0;
+
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - (1 - progress) ** 3;
+        const current = Math.round(from + (total - from) * eased);
+        renderGoalCountDisplay(current);
+
+        if (progress < 1) {
+          goalAnimationFrame = requestAnimationFrame(step);
+        } else {
+          goalAnimationFrame = null;
+        }
+      };
+
+      goalAnimationFrame = requestAnimationFrame(step);
+    }
+
+    function renderGoalTotal(total) {
+      lastGoalTotal = total;
+      animateGoalTotal(total);
       updateDistance();
       syncShareCard();
     }
 
+    function updateCarryoverDisplay() {
+      const carryover = getCarryover();
+      const input = document.getElementById('carryover-input');
+      const totalEl = document.getElementById('carryover-total');
+
+      input.value = carryover || '';
+
+      if (carryover > 0) {
+        totalEl.innerHTML = `Total target today: <strong>${getEffectiveTarget()} ${unit}</strong> (${carryover} carry-over + ${lastGoalTotal} from yesterday)`;
+      } else {
+        totalEl.innerHTML = `Total target today: <strong>${getEffectiveTarget()} ${unit}</strong>`;
+      }
+    }
+
     function updateDistance() {
-      document.getElementById('distance-value').textContent = lastGoalTotal;
+      document.getElementById('distance-value').textContent = getEffectiveTarget();
       document.getElementById('distance-unit').textContent = unit;
+      updateCarryoverDisplay();
       syncShareCard();
+    }
+
+    function buildChatMessage() {
+      const carryover = getCarryover();
+      const target = getEffectiveTarget();
+      const unitLabel = unit === 'mi' ? 'miles' : 'km';
+      let message = `World Cup Run Challenge\nToday's target: ${target} ${unitLabel}`;
+
+      if (carryover > 0) {
+        message += ` (${carryover} carry-over + ${lastGoalTotal} from yesterday's goals)`;
+      } else if (lastGoalTotal > 0) {
+        message += ` (${lastGoalTotal} goal${lastGoalTotal === 1 ? '' : 's'} yesterday)`;
+      }
+
+      message += "\nWho's in?";
+      return message;
+    }
+
+    async function copyChatMessage() {
+      try {
+        await navigator.clipboard.writeText(buildChatMessage());
+        showShareToast('Copied! Paste into your group chat.');
+      } catch (error) {
+        showShareToast('Could not copy. Try selecting the text manually.');
+      }
     }
 
     function syncShareCard() {
@@ -1032,7 +1359,10 @@
         <span class="unit">goal${lastGoalTotal === 1 ? '' : 's'}</span>
       `;
       document.getElementById('share-distance').textContent = `${lastGoalTotal} ${unit}`;
-      document.getElementById('share-match-list').innerHTML = buildMatchListHtml(lastMatches);
+      document.getElementById('share-match-list').innerHTML = buildMatchListHtml(
+        lastMatches,
+        'No World Cup matches were played yesterday.',
+      );
       document.getElementById('share-footer').textContent = `Generated ${new Date().toLocaleString()} · Scores powered by ESPN`;
     }
 
@@ -1166,6 +1496,30 @@
       return streak;
     }
 
+    function getRunnerBadges(runner, rank) {
+      const badges = [];
+      const completedRuns = (runner.runs || []).filter((run) => run.completed);
+      const streak = computeStreak(runner.runs || []);
+
+      if (rank === 0 && completedRuns.length) {
+        badges.push({ label: 'Leader', className: 'badge-leader' });
+      }
+
+      if (completedRuns.some((run) => run.distance > run.matchDayGoals)) {
+        badges.push({ label: 'Overachiever', className: '' });
+      }
+
+      if (streak >= 3) {
+        badges.push({ label: 'On fire', className: 'badge-fire' });
+      }
+
+      if (completedRuns.length === 1 && rank === 0) {
+        badges.push({ label: 'First finisher', className: '' });
+      }
+
+      return badges;
+    }
+
     function buildLeaderboardRows(data) {
       const defaultUnit = data.defaultUnit || 'km';
 
@@ -1174,6 +1528,7 @@
           const completedRuns = (runner.runs || []).filter((run) => run.completed);
           const totalDistance = completedRuns.reduce((sum, run) => sum + run.distance, 0);
           const unitLabel = completedRuns.at(-1)?.unit || defaultUnit;
+          const biggestRun = completedRuns.reduce((max, run) => Math.max(max, run.distance), 0);
 
           return {
             name: runner.name,
@@ -1181,6 +1536,9 @@
             unitLabel,
             daysCompleted: completedRuns.length,
             streak: computeStreak(runner.runs || []),
+            biggestRun,
+            badges: [],
+            runner,
           };
         })
         .sort((a, b) => {
@@ -1191,13 +1549,60 @@
             return b.streak - a.streak;
           }
           return a.name.localeCompare(b.name);
-        });
+        })
+        .map((row, index) => ({
+          ...row,
+          badges: getRunnerBadges(row.runner, index),
+        }));
+    }
+
+    function computeTeamStats(rows) {
+      if (!rows.length) {
+        return null;
+      }
+
+      const totalDistance = rows.reduce((sum, row) => sum + row.totalDistance, 0);
+      const biggestDay = rows.reduce((max, row) => Math.max(max, row.biggestRun), 0);
+      const unitLabel = rows[0]?.unitLabel || 'km';
+
+      return {
+        totalDistance,
+        activeRunners: rows.length,
+        biggestDay,
+        unitLabel,
+      };
+    }
+
+    function renderTeamStats(stats) {
+      const container = document.getElementById('team-stats');
+
+      if (!stats) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="team-stat">
+          <span class="value">${stats.totalDistance}</span>
+          <span class="label">Team ${stats.unitLabel} run</span>
+        </div>
+        <div class="team-stat">
+          <span class="value">${stats.activeRunners}</span>
+          <span class="label">Active runners</span>
+        </div>
+        <div class="team-stat">
+          <span class="value">${stats.biggestDay}</span>
+          <span class="label">Best single day</span>
+        </div>
+      `;
     }
 
     function renderLeaderboard(data) {
       const rows = buildLeaderboardRows(data);
       const body = document.getElementById('leaderboard-body');
       const updatedEl = document.getElementById('leaderboard-updated');
+
+      renderTeamStats(computeTeamStats(rows));
 
       if (data.updated) {
         const updatedDate = new Date(`${data.updated}T12:00:00`);
@@ -1224,7 +1629,16 @@
       body.innerHTML = rows.map((row, index) => `
         <tr>
           <td class="rank">${index + 1}</td>
-          <td class="name">${escapeHtml(row.name)}</td>
+          <td class="name">
+            ${escapeHtml(row.name)}
+            ${row.badges.length ? `
+              <div class="runner-badges">
+                ${row.badges.map((badge) => `
+                  <span class="badge ${badge.className}">${escapeHtml(badge.label)}</span>
+                `).join('')}
+              </div>
+            ` : ''}
+          </td>
           <td class="total">${row.totalDistance} ${escapeHtml(row.unitLabel)}</td>
           <td>${row.daysCompleted}</td>
           <td>${row.streak} day${row.streak === 1 ? '' : 's'}</td>
@@ -1251,6 +1665,23 @@
       }
     }
 
+    async function loadTodayMatches() {
+      const today = new Date();
+      const todayKey = getTodayKey();
+
+      document.getElementById('today-date').textContent = formatDisplayDate(today);
+
+      try {
+        const events = await fetchEspnEventsForDates([today, getTomorrow()]);
+        const matches = normalizeMatches(events, todayKey);
+        renderTodayMatches(matches);
+      } catch (error) {
+        document.getElementById('today-match-list').innerHTML = `
+          <li class="empty-state">Unable to load today's fixtures.</li>
+        `;
+      }
+    }
+
     async function loadYesterdayGoals() {
       const refreshBtn = document.getElementById('refresh-btn');
       const statusBar = document.getElementById('status-bar');
@@ -1263,7 +1694,10 @@
       clearError();
 
       try {
-        const events = await fetchEspnEventsForDates([yesterday, new Date()]);
+        const [events] = await Promise.all([
+          fetchEspnEventsForDates([yesterday, new Date()]),
+          loadTodayMatches(),
+        ]);
         const matches = normalizeMatches(events, yesterdayKey);
         const finishedMatches = matches.filter((match) => match.finished);
         const matchesForTotal = finishedMatches.length ? finishedMatches : matches;
@@ -1295,6 +1729,17 @@
 
     document.getElementById('refresh-btn').addEventListener('click', loadYesterdayGoals);
     document.getElementById('share-btn').addEventListener('click', shareScreenshot);
+    document.getElementById('copy-btn').addEventListener('click', copyChatMessage);
+    document.getElementById('carryover-save').addEventListener('click', () => {
+      setCarryover(document.getElementById('carryover-input').value);
+      updateDistance();
+      showShareToast('Carry-over saved.');
+    });
+    document.getElementById('carryover-input').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        document.getElementById('carryover-save').click();
+      }
+    });
 
     document.querySelectorAll('.toggle-group button').forEach((button) => {
       button.addEventListener('click', () => {
@@ -1306,6 +1751,7 @@
     });
 
     mountLogos();
+    updateCarryoverDisplay();
     loadYesterdayGoals();
     loadLeaderboard();
   </script>
