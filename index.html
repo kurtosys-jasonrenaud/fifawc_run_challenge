@@ -778,6 +778,26 @@
       margin-top: 0.25rem;
     }
 
+    .runner-name-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .goal-complete-icon {
+      display: inline-flex;
+      flex-shrink: 0;
+      width: 1.15rem;
+      height: 1.15rem;
+      color: var(--green);
+    }
+
+    .goal-complete-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
     .runner-badges {
       display: flex;
       flex-wrap: wrap;
@@ -1441,6 +1461,28 @@
       }
 
       return streak;
+    }
+
+    const GOAL_COMPLETE_ICON = `
+      <span class="goal-complete-icon" title="Daily goal completed" aria-label="Daily goal completed">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2"></circle>
+          <path d="M8 12.5l2.5 2.5L16 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+    `;
+
+    function hasCompletedDailyGoal(runner) {
+      const todayKey = getTodayKey();
+      const todayRun = (runner.runs || []).find(
+        (run) => run.completed && run.date === todayKey,
+      );
+
+      if (!todayRun) {
+        return false;
+      }
+
+      return todayRun.distance >= todayRun.matchDayGoals;
     }
 
     function getRunnerBadges(runner, rank) {
