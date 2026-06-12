@@ -687,68 +687,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .carryover-box {
-      margin-top: 1.5rem;
-      padding: 1.1rem 1.25rem;
-      background: rgba(0, 26, 61, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: var(--radius-card);
-      text-align: left;
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .carryover-box label {
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.75);
-      margin-bottom: 0.5rem;
-    }
-
-    .carryover-row {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .carryover-row input {
-      flex: 1;
-      font: inherit;
-      font-weight: 700;
-      padding: 0.55rem 0.75rem;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: var(--navy);
-      color: var(--white);
-      min-width: 0;
-    }
-
-    .carryover-row input:focus {
-      outline: 2px solid var(--green);
-      outline-offset: 1px;
-    }
-
-    .carryover-save {
-      padding: 0.55rem 1rem;
-      font-size: 0.85rem;
-    }
-
-    .carryover-total {
-      margin-top: 0.75rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .carryover-total strong {
-      color: var(--green);
-      font-size: 1.15rem;
-    }
-
     .today-band {
       background: var(--navy);
       padding: 3rem 2rem;
@@ -772,7 +710,30 @@
     .today-band .section-note {
       font-size: 0.88rem;
       color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .today-summary {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--green);
       margin-bottom: 1.25rem;
+    }
+
+    .today-group-label {
+      grid-column: 1 / -1;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 1rem 0 0.25rem;
+      padding: 0;
+      background: none;
+    }
+
+    .today-group-label:first-child {
+      margin-top: 0;
     }
 
     .today-band .empty-state {
@@ -908,14 +869,6 @@
       <div id="run-distance" class="run-distance">
         Today's run: <span id="distance-value">-</span> <span id="distance-unit">km</span>
       </div>
-      <div class="carryover-box">
-        <label for="carryover-input">Carry-over from missed days</label>
-        <div class="carryover-row">
-          <input id="carryover-input" type="number" min="0" step="0.1" value="0" inputmode="decimal">
-          <button id="carryover-save" class="btn-primary carryover-save" type="button">Save</button>
-        </div>
-        <p id="carryover-total" class="carryover-total"></p>
-      </div>
       <div class="controls">
         <button id="refresh-btn" class="btn-primary" type="button">Refresh scores</button>
         <button id="share-btn" class="btn-ghost" type="button">Share screenshot</button>
@@ -945,6 +898,7 @@
     <div class="inner">
       <h2>Today's <span class="accent">matches</span></h2>
       <p id="today-date" class="section-note">Loading…</p>
+      <p id="today-summary" class="today-summary"></p>
       <ul id="today-match-list" class="match-list">
         <li class="empty-state">Loading today's fixtures…</li>
       </ul>
@@ -1051,7 +1005,6 @@
   <script>
     const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
     const LEADERBOARD_URL = 'leaderboard.json';
-    const CARRYOVER_KEY = 'wcrc-carryover';
 
     const FINAL_STATUSES = new Set([
       'STATUS_FINAL',
@@ -1115,21 +1068,6 @@
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       return tomorrow;
-    }
-
-    function getCarryover() {
-      const value = Number.parseFloat(localStorage.getItem(CARRYOVER_KEY) || '0');
-      return Number.isFinite(value) && value > 0 ? value : 0;
-    }
-
-    function setCarryover(value) {
-      const safeValue = Math.max(0, Number.parseFloat(value) || 0);
-      localStorage.setItem(CARRYOVER_KEY, String(safeValue));
-      return safeValue;
-    }
-
-    function getEffectiveTarget() {
-      return lastGoalTotal + getCarryover();
     }
 
     function formatKickoffTime(isoDate) {
@@ -1224,34 +1162,50 @@
       `).join('');
     }
 
+    function buildTodayMatchItemHtml(match) {
+      const scoreLabel = match.finished
+        ? `${match.homeGoals} - ${match.awayGoals}`
+        : formatKickoffTime(match.kickoff);
+
+      return `
+        <li class="match ${match.finished ? '' : 'match-upcoming'}">
+          <span class="team home">${escapeHtml(match.homeTeam)}</span>
+          <span class="score">${scoreLabel}</span>
+          <span class="team away">${escapeHtml(match.awayTeam)}</span>
+          <span class="goals-badge">
+            ${match.finished
+              ? `${match.totalGoals} goal${match.totalGoals === 1 ? '' : 's'}`
+              : escapeHtml(match.status)}
+          </span>
+        </li>
+      `;
+    }
+
     function buildTodayMatchListHtml(matches) {
       if (!matches.length) {
         return `
           <li class="empty-state">
             No World Cup matches scheduled for today.<br>
-            Recovery day, or get ahead on carry-over!
+            Enjoy the rest day!
           </li>
         `;
       }
 
-      return matches.map((match) => {
-        const scoreLabel = match.finished
-          ? `${match.homeGoals} - ${match.awayGoals}`
-          : formatKickoffTime(match.kickoff);
+      const completed = matches.filter((match) => match.finished);
+      const upcoming = matches.filter((match) => !match.finished);
+      let html = '';
 
-        return `
-          <li class="match ${match.finished ? '' : 'match-upcoming'}">
-            <span class="team home">${escapeHtml(match.homeTeam)}</span>
-            <span class="score">${scoreLabel}</span>
-            <span class="team away">${escapeHtml(match.awayTeam)}</span>
-            <span class="goals-badge">
-              ${match.finished
-                ? `${match.totalGoals} goal${match.totalGoals === 1 ? '' : 's'}`
-                : escapeHtml(match.status)}
-            </span>
-          </li>
-        `;
-      }).join('');
+      if (completed.length) {
+        html += `<li class="today-group-label">Completed today</li>`;
+        html += completed.map((match) => buildTodayMatchItemHtml(match)).join('');
+      }
+
+      if (upcoming.length) {
+        html += `<li class="today-group-label">Upcoming today</li>`;
+        html += upcoming.map((match) => buildTodayMatchItemHtml(match)).join('');
+      }
+
+      return html;
     }
 
     function renderMatches(matches) {
@@ -1264,6 +1218,18 @@
     }
 
     function renderTodayMatches(matches) {
+      const completed = matches.filter((match) => match.finished);
+      const goalsToday = completed.reduce((sum, match) => sum + match.totalGoals, 0);
+      const summaryEl = document.getElementById('today-summary');
+
+      if (completed.length) {
+        summaryEl.textContent = `${completed.length} completed · ${goalsToday} goal${goalsToday === 1 ? '' : 's'} scored today`;
+      } else if (matches.length) {
+        summaryEl.textContent = 'No completed matches yet today';
+      } else {
+        summaryEl.textContent = '';
+      }
+
       document.getElementById('today-match-list').innerHTML = buildTodayMatchListHtml(matches);
     }
 
@@ -1306,36 +1272,17 @@
       syncShareCard();
     }
 
-    function updateCarryoverDisplay() {
-      const carryover = getCarryover();
-      const input = document.getElementById('carryover-input');
-      const totalEl = document.getElementById('carryover-total');
-
-      input.value = carryover || '';
-
-      if (carryover > 0) {
-        totalEl.innerHTML = `Total target today: <strong>${getEffectiveTarget()} ${unit}</strong> (${carryover} carry-over + ${lastGoalTotal} from yesterday)`;
-      } else {
-        totalEl.innerHTML = `Total target today: <strong>${getEffectiveTarget()} ${unit}</strong>`;
-      }
-    }
-
     function updateDistance() {
-      document.getElementById('distance-value').textContent = getEffectiveTarget();
+      document.getElementById('distance-value').textContent = lastGoalTotal;
       document.getElementById('distance-unit').textContent = unit;
-      updateCarryoverDisplay();
       syncShareCard();
     }
 
     function buildChatMessage() {
-      const carryover = getCarryover();
-      const target = getEffectiveTarget();
       const unitLabel = unit === 'mi' ? 'miles' : 'km';
-      let message = `World Cup Run Challenge\nToday's target: ${target} ${unitLabel}`;
+      let message = `World Cup Run Challenge\nToday's target: ${lastGoalTotal} ${unitLabel}`;
 
-      if (carryover > 0) {
-        message += ` (${carryover} carry-over + ${lastGoalTotal} from yesterday's goals)`;
-      } else if (lastGoalTotal > 0) {
+      if (lastGoalTotal > 0) {
         message += ` (${lastGoalTotal} goal${lastGoalTotal === 1 ? '' : 's'} yesterday)`;
       }
 
@@ -1672,7 +1619,7 @@
       document.getElementById('today-date').textContent = formatDisplayDate(today);
 
       try {
-        const events = await fetchEspnEventsForDates([today, getTomorrow()]);
+        const events = await fetchEspnEventsForDates([getYesterday(), today, getTomorrow()]);
         const matches = normalizeMatches(events, todayKey);
         renderTodayMatches(matches);
       } catch (error) {
@@ -1730,16 +1677,6 @@
     document.getElementById('refresh-btn').addEventListener('click', loadYesterdayGoals);
     document.getElementById('share-btn').addEventListener('click', shareScreenshot);
     document.getElementById('copy-btn').addEventListener('click', copyChatMessage);
-    document.getElementById('carryover-save').addEventListener('click', () => {
-      setCarryover(document.getElementById('carryover-input').value);
-      updateDistance();
-      showShareToast('Carry-over saved.');
-    });
-    document.getElementById('carryover-input').addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        document.getElementById('carryover-save').click();
-      }
-    });
 
     document.querySelectorAll('.toggle-group button').forEach((button) => {
       button.addEventListener('click', () => {
@@ -1751,7 +1688,6 @@
     });
 
     mountLogos();
-    updateCarryoverDisplay();
     loadYesterdayGoals();
     loadLeaderboard();
   </script>

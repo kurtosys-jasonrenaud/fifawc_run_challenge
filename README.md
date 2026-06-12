@@ -17,8 +17,7 @@ Matches are counted by **local kickoff date**, so early-morning games are groupe
 ## Features
 
 - Fetches yesterday's World Cup scores from ESPN (no API key required)
-- Animated daily goal reveal and today's fixture preview
-- Carry-over calculator for missed days (saved in your browser)
+- Animated daily goal reveal and today's matches (completed and upcoming)
 - Shows total goals and today's run distance
 - Lists each match from the previous day with scores
 - Toggle between kilometers and miles
