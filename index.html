@@ -689,60 +689,108 @@
 
     .today-band {
       background: var(--navy);
-      padding: 3rem 2rem;
+      padding: 1.75rem 2rem;
       color: var(--white);
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .today-band .inner {
-      max-width: 720px;
+      max-width: 560px;
       margin: 0 auto;
     }
 
     .today-band h2 {
-      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.15rem;
       line-height: 1.2;
     }
 
     .today-band .section-note {
-      font-size: 0.88rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.15rem;
     }
 
     .today-summary {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--green);
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .today-band .match-list {
+      gap: 0.4rem;
     }
 
     .today-group-label {
-      grid-column: 1 / -1;
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin: 1rem 0 0.25rem;
+      margin: 0.55rem 0 0.15rem;
       padding: 0;
-      background: none;
+      list-style: none;
     }
 
     .today-group-label:first-child {
       margin-top: 0;
     }
 
-    .today-band .empty-state {
-      color: var(--text-muted);
+    .today-band .match {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.86rem;
     }
 
-    .match-upcoming .score {
+    .today-band .match .team {
+      flex: 1;
+      min-width: 0;
+      line-height: 1.25;
+    }
+
+    .today-band .match .team.home {
+      text-align: right;
+    }
+
+    .today-band .match .team.away {
+      text-align: left;
+    }
+
+    .today-band .match-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1rem;
+      flex-shrink: 0;
+    }
+
+    .today-band .match .score {
+      font-size: 0.9rem;
+      min-width: auto;
+      padding: 0.2rem 0.5rem;
+      line-height: 1.2;
+    }
+
+    .today-band .match-meta {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      line-height: 1;
+    }
+
+    .today-band .empty-state {
+      color: var(--text-muted);
+      padding: 1rem 0.5rem;
+    }
+
+    .today-band .match-upcoming .score {
       color: var(--white);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       background: rgba(0, 255, 128, 0.15);
     }
@@ -1186,17 +1234,18 @@
       const scoreLabel = match.finished
         ? `${match.homeGoals} - ${match.awayGoals}`
         : formatKickoffTime(match.kickoff);
+      const metaLabel = match.finished
+        ? `${match.totalGoals} goal${match.totalGoals === 1 ? '' : 's'}`
+        : escapeHtml(match.status);
 
       return `
         <li class="match ${match.finished ? '' : 'match-upcoming'}">
           <span class="team home">${escapeHtml(match.homeTeam)}</span>
-          <span class="score">${scoreLabel}</span>
+          <div class="match-center">
+            <span class="score">${scoreLabel}</span>
+            <span class="match-meta">${metaLabel}</span>
+          </div>
           <span class="team away">${escapeHtml(match.awayTeam)}</span>
-          <span class="goals-badge">
-            ${match.finished
-              ? `${match.totalGoals} goal${match.totalGoals === 1 ? '' : 's'}`
-              : escapeHtml(match.status)}
-          </span>
         </li>
       `;
     }
@@ -1216,12 +1265,12 @@
       let html = '';
 
       if (completed.length) {
-        html += `<li class="today-group-label">Completed today</li>`;
+        html += `<li class="today-group-label" aria-hidden="true">Completed today</li>`;
         html += completed.map((match) => buildTodayMatchItemHtml(match)).join('');
       }
 
       if (upcoming.length) {
-        html += `<li class="today-group-label">Upcoming today</li>`;
+        html += `<li class="today-group-label" aria-hidden="true">Upcoming today</li>`;
         html += upcoming.map((match) => buildTodayMatchItemHtml(match)).join('');
       }
 
@@ -1542,6 +1591,7 @@
         .map((row, index) => ({
           ...row,
           badges: getRunnerBadges(row.runner, index),
+          dailyGoalComplete: hasCompletedDailyGoal(row.runner),
         }));
     }
 
@@ -1619,7 +1669,10 @@
         <tr>
           <td class="rank">${index + 1}</td>
           <td class="name">
-            ${escapeHtml(row.name)}
+            <div class="runner-name-row">
+              ${row.dailyGoalComplete ? GOAL_COMPLETE_ICON : ''}
+              <span>${escapeHtml(row.name)}</span>
+            </div>
             ${row.badges.length ? `
               <div class="runner-badges">
                 ${row.badges.map((badge) => `
