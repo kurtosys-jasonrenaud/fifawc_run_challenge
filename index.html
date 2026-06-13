@@ -846,38 +846,6 @@
       display: block;
     }
 
-    .runner-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-top: 0.35rem;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.45rem;
-      border-radius: var(--radius-pill);
-      background: rgba(0, 255, 128, 0.2);
-      color: var(--green);
-      border: 1px solid rgba(0, 255, 128, 0.35);
-    }
-
-    .badge-leader {
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--white);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    .badge-fire {
-      background: rgba(255, 140, 0, 0.2);
-      color: #ffb347;
-      border-color: rgba(255, 140, 0, 0.4);
-    }
-
     @media (max-width: 600px) {
       .topbar {
         padding: 1rem 1.25rem;
@@ -1541,30 +1509,6 @@
       return todayRun.distance >= todayRun.matchDayGoals;
     }
 
-    function getRunnerBadges(runner, rank) {
-      const badges = [];
-      const completedRuns = (runner.runs || []).filter((run) => run.completed);
-      const streak = computeStreak(runner.runs || []);
-
-      if (rank === 0 && completedRuns.length) {
-        badges.push({ label: 'Leader', className: 'badge-leader' });
-      }
-
-      if (completedRuns.some((run) => run.distance > run.matchDayGoals)) {
-        badges.push({ label: 'Overachiever', className: '' });
-      }
-
-      if (streak >= 3) {
-        badges.push({ label: 'On fire', className: 'badge-fire' });
-      }
-
-      if (completedRuns.length === 1 && rank === 0) {
-        badges.push({ label: 'First finisher', className: '' });
-      }
-
-      return badges;
-    }
-
     function buildLeaderboardRows(data) {
       const defaultUnit = data.defaultUnit || 'km';
 
@@ -1582,7 +1526,6 @@
             daysCompleted: completedRuns.length,
             streak: computeStreak(runner.runs || []),
             biggestRun,
-            badges: [],
             runner,
           };
         })
@@ -1595,9 +1538,8 @@
           }
           return a.name.localeCompare(b.name);
         })
-        .map((row, index) => ({
+        .map((row) => ({
           ...row,
-          badges: getRunnerBadges(row.runner, index),
           dailyGoalComplete: hasCompletedDailyGoal(row.runner),
         }));
     }
@@ -1680,13 +1622,6 @@
               ${row.dailyGoalComplete ? GOAL_COMPLETE_ICON : ''}
               <span>${escapeHtml(row.name)}</span>
             </div>
-            ${row.badges.length ? `
-              <div class="runner-badges">
-                ${row.badges.map((badge) => `
-                  <span class="badge ${badge.className}">${escapeHtml(badge.label)}</span>
-                `).join('')}
-              </div>
-            ` : ''}
           </td>
           <td class="total">${row.totalDistance} ${escapeHtml(row.unitLabel)}</td>
           <td>${row.daysCompleted}</td>
