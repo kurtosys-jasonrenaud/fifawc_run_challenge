@@ -11,6 +11,13 @@
           "distance": 5,
           "unit": "km",
           "completed": true
+        },
+        {
+          "date": "2026-06-13",
+          "matchDayGoals": 5,
+          "distance": 19.21,
+          "unit": "km",
+          "completed": true
         }
       ]
     },
@@ -21,6 +28,13 @@
           "date": "2026-06-12",
           "matchDayGoals": 2,
           "distance": 5.04,
+          "unit": "km",
+          "completed": true
+        },
+        {
+          "date": "2026-06-13",
+          "matchDayGoals": 5,
+          "distance": 11.13,
           "unit": "km",
           "completed": true
         }
