@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-12",
+  "updated": "2026-06-13",
   "defaultUnit": "km",
   "runners": [
     {
@@ -9,6 +9,18 @@
           "date": "2026-06-12",
           "matchDayGoals": 2,
           "distance": 5,
+          "unit": "km",
+          "completed": true
+        }
+      ]
+    },
+    {
+      "name": "Jason Renaud",
+      "runs": [
+        {
+          "date": "2026-06-12",
+          "matchDayGoals": 2,
+          "distance": 5.04,
           "unit": "km",
           "completed": true
         }
