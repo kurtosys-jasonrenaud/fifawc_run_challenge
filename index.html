@@ -1101,6 +1101,13 @@
       return yesterday;
     }
 
+    function getDayBefore(date) {
+      const day = new Date(date);
+      day.setDate(day.getDate() - 1);
+      day.setHours(0, 0, 0, 0);
+      return day;
+    }
+
     function formatDisplayDate(date) {
       return date.toLocaleDateString(undefined, {
         weekday: 'long',
@@ -1737,7 +1744,7 @@
 
       try {
         const [events] = await Promise.all([
-          fetchEspnEventsForDates([yesterday, new Date()]),
+          fetchEspnEventsForDates([getDayBefore(yesterday), yesterday, new Date()]),
           loadTodayMatches(),
         ]);
         const matches = normalizeMatches(events, yesterdayKey);
