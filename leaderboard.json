@@ -10,21 +10,24 @@
           "matchDayGoals": 2,
           "distance": 5,
           "unit": "km",
-          "completed": true
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-06-12.png"
         },
         {
           "date": "2026-06-13",
           "matchDayGoals": 5,
           "distance": 19.21,
           "unit": "km",
-          "completed": true
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-06-13.png"
         },
         {
           "date": "2026-06-14",
           "matchDayGoals": 9,
           "distance": 9.15,
           "unit": "km",
-          "completed": true
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-06-14.png"
         }
       ]
     },
@@ -36,21 +39,24 @@
           "matchDayGoals": 2,
           "distance": 5.04,
           "unit": "km",
-          "completed": true
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-06-12.png"
         },
         {
           "date": "2026-06-13",
           "matchDayGoals": 5,
           "distance": 11.13,
           "unit": "km",
-          "completed": true
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-06-13.png"
         },
         {
           "date": "2026-06-14",
           "matchDayGoals": 9,
           "distance": 7.19,
           "unit": "km",
-          "completed": true
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-06-14.png"
         }
       ]
     },
@@ -62,7 +68,8 @@
           "matchDayGoals": 9,
           "distance": 21,
           "unit": "km",
-          "completed": true
+          "completed": true,
+          "screenshot": "screenshots/rowena-childes-2026-06-14.png"
         }
       ]
     }
