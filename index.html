@@ -6,7 +6,7 @@
   <title>World Cup Run Challenge | Kurtosys</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --navy: #001a3d;
@@ -30,7 +30,7 @@
     }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
       background: var(--navy);
       color: var(--white);
       min-height: 100vh;
@@ -40,6 +40,13 @@
 
     .accent {
       color: var(--green);
+    }
+
+    /* Kurtosys brand: green accent only on dark backgrounds */
+    .benchmark-band .accent,
+    .matches-band .accent,
+    .share-card-matches .accent {
+      color: var(--royal);
     }
 
     /* ── Top bar ── */
@@ -554,7 +561,7 @@
       width: 600px;
       background: var(--navy);
       color: var(--white);
-      font-family: "Inter", system-ui, sans-serif;
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
       overflow: hidden;
     }
 
@@ -1713,7 +1720,7 @@
         dayText = `Yesterday's <strong>${lastGoalTotal} ${unitLabel}</strong> was <strong>${formatDistance(Math.abs(diff))} ${unitLabel}</strong> below the 2022 daily average (${formatDistance(avg)} ${unitLabel}).`;
       }
 
-      compareEl.innerHTML = `${dayText} Full tournament estimate for 2026: <strong>${projected} ${unitLabel}</strong>.`;
+      compareEl.innerHTML = `${dayText} <br> Full tournament estimate for 2026: <strong>${projected} ${unitLabel}</strong>.`;
     }
 
     async function loadBenchmark() {
