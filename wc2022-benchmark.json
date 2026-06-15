@@ -1,0 +1,16 @@
+{
+  "tournament": "FIFA World Cup 2022",
+  "totalGoals": 172,
+  "totalMatches": 64,
+  "matchDays": 23,
+  "avgGoalsPerMatchDay": 7.5,
+  "avgGoalsPerMatch": 2.69,
+  "minGoalsInDay": 2,
+  "maxGoalsInDay": 14,
+  "estimate2026": {
+    "totalMatches": 104,
+    "projectedTotalGoals": 280,
+    "projectedTotalKm": 280,
+    "note": "Based on 2022 goals-per-match rate applied to 104 matches in 2026"
+  }
+}
