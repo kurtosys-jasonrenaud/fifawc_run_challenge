@@ -1460,6 +1460,14 @@
         .replaceAll("'", '&#39;');
     }
 
+    function formatDistance(value) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) {
+        return '0.0';
+      }
+      return number.toFixed(1);
+    }
+
     function computeStreak(runs) {
       const completedDates = [...new Set(
         runs
@@ -1571,7 +1579,7 @@
 
       container.innerHTML = `
         <div class="team-stat">
-          <span class="value">${stats.totalDistance}</span>
+          <span class="value">${formatDistance(stats.totalDistance)}</span>
           <span class="label">Team ${stats.unitLabel} run</span>
         </div>
         <div class="team-stat">
@@ -1579,7 +1587,7 @@
           <span class="label">Active runners</span>
         </div>
         <div class="team-stat">
-          <span class="value">${stats.biggestDay}</span>
+          <span class="value">${formatDistance(stats.biggestDay)}</span>
           <span class="label">Best single day</span>
         </div>
       `;
@@ -1623,7 +1631,7 @@
               <span>${escapeHtml(row.name)}</span>
             </div>
           </td>
-          <td class="total">${row.totalDistance} ${escapeHtml(row.unitLabel)}</td>
+          <td class="total">${formatDistance(row.totalDistance)} ${escapeHtml(row.unitLabel)}</td>
           <td>${row.daysCompleted}</td>
           <td>${row.streak} day${row.streak === 1 ? '' : 's'}</td>
         </tr>
