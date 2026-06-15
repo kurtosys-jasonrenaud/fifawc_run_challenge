@@ -916,6 +916,93 @@
       display: block;
     }
 
+    .gallery-link {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 1.15rem;
+      height: 1.15rem;
+      color: var(--green);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .gallery-link svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .gallery-link:hover {
+      color: #33ff99;
+    }
+
+    .gallery-link:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    .gallery-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      background: rgba(8, 18, 38, 0.88);
+      backdrop-filter: blur(4px);
+    }
+
+    .gallery-modal.open {
+      display: flex;
+    }
+
+    .gallery-modal-content {
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 1.5rem;
+      width: min(720px, 100%);
+      max-height: min(90vh, 900px);
+      overflow: auto;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gallery-modal-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      border-radius: 0.5rem;
+      display: block;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gallery-item figcaption {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      line-height: 1.35;
+    }
+
+    .gallery-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.25rem;
+    }
+
     @media (max-width: 600px) {
       .topbar {
         padding: 1rem 1.25rem;
@@ -1109,6 +1196,16 @@
   </div>
 
   <div id="share-toast" class="share-toast" role="status"></div>
+
+  <div id="gallery-modal" class="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="gallery-modal-title">
+    <div class="gallery-modal-content">
+      <h3 id="gallery-modal-title">Run gallery</h3>
+      <div id="gallery-grid" class="gallery-grid"></div>
+      <div class="gallery-modal-actions">
+        <button id="gallery-modal-close" class="btn-ghost" type="button">Close</button>
+      </div>
+    </div>
+  </div>
 
   <template id="kurtosys-logo">
     <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 20" aria-hidden="true">
@@ -1668,6 +1765,14 @@
       </span>
     `;
 
+    const GALLERY_ICON = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"></rect>
+        <circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"></circle>
+        <path d="M21 16l-5.5-5.5a1 1 0 00-1.4 0L9 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    `;
+
     function hasCompletedDailyGoal(runner) {
       const todayKey = getTodayKey();
       const todayRun = (runner.runs || []).find(
@@ -1757,6 +1862,59 @@
       `;
     }
 
+    function getRunnerScreenshots(runner) {
+      return (runner.runs || [])
+        .filter((run) => run.screenshot)
+        .map((run) => ({
+          src: run.screenshot,
+          caption: `${formatRunDate(run.date)} · ${formatDistance(run.distance)} ${run.unit || 'km'}`,
+        }));
+    }
+
+    function formatRunDate(dateStr) {
+      return new Date(`${dateStr}T12:00:00`).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+      });
+    }
+
+    function openGallery(runner) {
+      const shots = getRunnerScreenshots(runner);
+      if (!shots.length) {
+        return;
+      }
+
+      const modal = document.getElementById('gallery-modal');
+      const title = document.getElementById('gallery-modal-title');
+      const grid = document.getElementById('gallery-grid');
+
+      title.textContent = `${runner.name} runs`;
+      grid.innerHTML = shots.map((shot) => `
+        <figure class="gallery-item">
+          <a href="${escapeHtml(shot.src)}" target="_blank" rel="noopener noreferrer">
+            <img src="${escapeHtml(shot.src)}" alt="${escapeHtml(shot.caption)}" loading="lazy">
+          </a>
+          <figcaption>${escapeHtml(shot.caption)}</figcaption>
+        </figure>
+      `).join('');
+
+      modal.classList.add('open');
+    }
+
+    function closeGallery() {
+      document.getElementById('gallery-modal').classList.remove('open');
+    }
+
+    function setupGalleryModal() {
+      const modal = document.getElementById('gallery-modal');
+      document.getElementById('gallery-modal-close').onclick = closeGallery;
+      modal.onclick = (event) => {
+        if (event.target === modal) {
+          closeGallery();
+        }
+      };
+    }
+
     function renderLeaderboard(data) {
       const rows = buildLeaderboardRows(data);
       const body = document.getElementById('leaderboard-body');
@@ -1786,20 +1944,33 @@
         return;
       }
 
-      body.innerHTML = rows.map((row, index) => `
+      body.innerHTML = rows.map((row, index) => {
+        const screenshots = getRunnerScreenshots(row.runner);
+        const galleryLink = screenshots.length
+          ? `<button type="button" class="gallery-link" data-runner-index="${index}" aria-label="View run gallery" title="View run gallery">${GALLERY_ICON}</button>`
+          : '';
+
+        return `
         <tr>
           <td class="rank">${index + 1}</td>
           <td class="name">
             <div class="runner-name-row">
               ${row.dailyGoalComplete ? GOAL_COMPLETE_ICON : ''}
               <span>${escapeHtml(row.name)}</span>
+              ${galleryLink}
             </div>
           </td>
           <td class="total">${formatDistance(row.totalDistance)} ${escapeHtml(row.unitLabel)}</td>
           <td>${row.daysCompleted}</td>
           <td>${row.streak} day${row.streak === 1 ? '' : 's'}</td>
         </tr>
-      `).join('');
+      `;
+      }).join('');
+
+      body.querySelectorAll('.gallery-link').forEach((button) => {
+        const runnerIndex = Number(button.dataset.runnerIndex);
+        button.addEventListener('click', () => openGallery(rows[runnerIndex].runner));
+      });
     }
 
     async function loadLeaderboard() {
@@ -1900,6 +2071,7 @@
     });
 
     mountLogos();
+    setupGalleryModal();
     loadBenchmark();
     loadYesterdayGoals();
     loadLeaderboard();
