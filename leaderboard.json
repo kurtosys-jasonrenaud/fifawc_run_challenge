@@ -73,6 +73,14 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-15.png"
+        },
+        {
+          "date": "2026-06-16",
+          "matchDayGoals": 9,
+          "distance": 10,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-06-16.png"
         }
       ]
     },
