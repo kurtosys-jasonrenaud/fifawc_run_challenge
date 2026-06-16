@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-15",
+  "updated": "2026-06-16",
   "defaultUnit": "km",
   "runners": [
     {
@@ -65,6 +65,14 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-14.png"
+        },
+        {
+          "date": "2026-06-15",
+          "matchDayGoals": 17,
+          "distance": 10.03,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-06-15.png"
         }
       ]
     },
