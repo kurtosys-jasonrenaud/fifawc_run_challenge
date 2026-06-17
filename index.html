@@ -290,6 +290,31 @@
       line-height: 1.5;
     }
 
+    .rest-day-banner {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 255, 128, 0.15);
+      border: 1px solid rgba(0, 255, 128, 0.35);
+      color: var(--green);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .rest-day-banner[hidden] {
+      display: none;
+    }
+
+    .run-distance .rest-tag {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-left: 0.35rem;
+    }
+
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -1293,7 +1318,7 @@
   <section class="hero-band">
     <div class="inner">
       <h1>World Cup <span class="accent">Run</span> Challenge</h1>
-      <p class="subtitle">Every day, run the total number of goals scored across all World Cup matches from the previous day. One goal, one kilometer, or mile if you're feeling brave.</p>
+      <p class="subtitle">Every day, run the total number of goals scored across all World Cup matches from the previous day. One goal, one kilometer, or mile if you're feeling brave. Every 7th day is a rest and catch-up day.</p>
     </div>
   </section>
 
@@ -1314,7 +1339,8 @@
       <div id="run-distance" class="run-distance">
         Today's target: <span id="distance-value">-</span> <span id="distance-unit">km</span>
       </div>
-      <p class="run-distance-note">Based on yesterday's goals (1 goal = 1 km). Missed km rolls forward.</p>
+      <p id="run-distance-note" class="run-distance-note">Based on yesterday's goals (1 goal = 1 km). Missed km rolls forward.</p>
+      <p id="rest-day-banner" class="rest-day-banner" hidden>Rest and catch-up day</p>
       <div class="controls">
         <button id="refresh-btn" class="btn-primary" type="button">Refresh scores</button>
         <button id="share-btn" class="btn-ghost" type="button">Share screenshot</button>
@@ -1398,6 +1424,7 @@
         <li>Each day, run the total goals scored across all World Cup matches from the previous day.</li>
         <li>Run, jog, or walk. Any tracker works. Share a screenshot when you're done.</li>
         <li>Miss a day? Carry the distance over to the next day.</li>
+        <li>Every 7th day of the challenge is a rest and catch-up day. No new goals apply. Use it to clear anything brought forward.</li>
         <li>Keep it consistent and compete for the leaderboard crown.</li>
       </ul>
     </div>
@@ -1406,7 +1433,7 @@
   <section class="catchup-band" aria-live="polite">
     <div class="inner">
       <h2>Catch-up <span class="accent">calculator</span></h2>
-      <p class="section-note">Totals use the same goal counts as the scoreboard. Extra km on a day pays down earlier shortfalls first.</p>
+      <p class="section-note">Totals use the same goal counts as the scoreboard. Every 7th day has no new target. Extra km on a day pays down earlier shortfalls first.</p>
       <div class="catchup-controls">
         <label for="catchup-runner">Runner</label>
         <select id="catchup-runner" class="catchup-runner-select">
@@ -1876,6 +1903,17 @@
       return unit === 'mi' ? 'miles' : 'km';
     }
 
+    function getChallengeDayNumber(dateKey) {
+      const start = new Date(`${CHALLENGE_START_KEY}T12:00:00`);
+      const date = new Date(`${dateKey}T12:00:00`);
+      return Math.floor((date - start) / 86400000) + 1;
+    }
+
+    function isRestCatchUpDay(dateKey = getTodayKey()) {
+      const dayNumber = getChallengeDayNumber(dateKey);
+      return dayNumber > 0 && dayNumber % 7 === 0;
+    }
+
     function getChallengeFetchDates() {
       const dates = [];
       const challengeStart = new Date(`${CHALLENGE_START_KEY}T12:00:00`);
@@ -1912,12 +1950,40 @@
           0,
         );
 
+        if (isRestCatchUpDay(runDayKey)) {
+          dailyGoalTargets[runDayKey] = 0;
+        }
+
         cursor.setDate(cursor.getDate() + 1);
       }
     }
 
     function getTodayTargetKm() {
+      if (isRestCatchUpDay()) {
+        return 0;
+      }
+
       return dailyGoalTargets[getTodayKey()] ?? lastGoalTotal;
+    }
+
+    function updateRunDistanceUi() {
+      const noteEl = document.getElementById('run-distance-note');
+      const restBanner = document.getElementById('rest-day-banner');
+      const runDistanceEl = document.getElementById('run-distance');
+      const isRestDay = isRestCatchUpDay();
+      const targetLabel = toDisplayDistance(getTodayTargetKm());
+      const unitLabel = unit;
+
+      if (isRestDay) {
+        noteEl.textContent = 'No new goals today. Use the catch-up calculator to see what is still owed.';
+        restBanner.hidden = false;
+        restBanner.textContent = `Day ${getChallengeDayNumber(getTodayKey())}: rest and catch-up`;
+        runDistanceEl.innerHTML = `Today's target: <span id="distance-value">${targetLabel}</span> <span id="distance-unit">${unitLabel}</span> <span class="rest-tag">(rest day)</span>`;
+      } else {
+        noteEl.textContent = "Based on yesterday's goals (1 goal = 1 km). Missed km rolls forward.";
+        restBanner.hidden = true;
+        runDistanceEl.innerHTML = `Today's target: <span id="distance-value">${targetLabel}</span> <span id="distance-unit">${unitLabel}</span>`;
+      }
     }
 
     function computeRunningBalance(runner, beforeDateKey = getTodayKey()) {
@@ -2017,14 +2083,17 @@
 
       if (stats.totalNeeded === 0 && stats.carryOver === 0) {
         highlightValue = `0 ${unitLabel}`;
-        highlightLabel = 'Nothing owed today';
+        highlightLabel = isRestCatchUpDay() ? 'Rest day. Nothing owed' : 'Nothing owed today';
       } else if (stats.remaining === 0) {
         highlightValue = 'Done';
-        highlightLabel = "Today's target cleared";
+        highlightLabel = isRestCatchUpDay() ? 'Catch-up cleared' : "Today's target cleared";
       } else {
         highlightValue = `${toDisplayDistance(stats.remaining)} ${unitLabel}`;
-        highlightLabel = 'Still to run';
+        highlightLabel = isRestCatchUpDay() ? 'Catch-up still to run' : 'Still to run';
       }
+
+      const todayTargetLabel = isRestCatchUpDay() ? "Today's target (rest day)" : "Today's target";
+      const totalNeededLabel = isRestCatchUpDay() ? 'Catch-up needed today' : 'Total needed today';
 
       results.innerHTML = `
         <div class="catchup-stat">
@@ -2033,7 +2102,7 @@
         </div>
         <div class="catchup-stat">
           <span class="value">${toDisplayDistance(stats.todayTarget)} ${unitLabel}</span>
-          <span class="label">Today's target</span>
+          <span class="label">${todayTargetLabel}</span>
         </div>
         <div class="catchup-stat">
           <span class="value">${toDisplayDistance(stats.todayRun)} ${unitLabel}</span>
@@ -2041,7 +2110,7 @@
         </div>
         <div class="catchup-stat">
           <span class="value">${toDisplayDistance(stats.totalNeeded)} ${unitLabel}</span>
-          <span class="label">Total needed today</span>
+          <span class="label">${totalNeededLabel}</span>
         </div>
         <div class="catchup-stat highlight">
           <span class="value">${highlightValue}</span>
@@ -2051,8 +2120,7 @@
     }
 
     function updateDistance() {
-      document.getElementById('distance-value').textContent = getTodayTargetKm();
-      document.getElementById('distance-unit').textContent = unit;
+      updateRunDistanceUi();
       syncShareCard();
     }
 
@@ -2321,7 +2389,16 @@
 
     function hasCompletedDailyGoal(runner) {
       const stats = computeCatchUp(runner);
-      return stats.totalNeeded > 0 && stats.remaining === 0;
+
+      if (stats.remaining > 0) {
+        return false;
+      }
+
+      if (isRestCatchUpDay()) {
+        return stats.carryOver === 0 || stats.todayRun > 0;
+      }
+
+      return stats.totalNeeded > 0;
     }
 
     function buildLeaderboardRows(data) {
