@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-16",
+  "updated": "2026-06-17",
   "defaultUnit": "km",
   "runners": [
     {
@@ -85,10 +85,22 @@
         {
           "date": "2026-06-16",
           "matchDayGoals": 9,
-          "distance": 10,
+          "distance": 14.14,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-16.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-16.png",
+          "screenshots": [
+            "screenshots/jason-renaud-2026-06-16.png",
+            "screenshots/jason-renaud-2026-06-16-evening.png"
+          ]
+        },
+        {
+          "date": "2026-06-17",
+          "matchDayGoals": 12,
+          "distance": 2.03,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-06-17.png"
         }
       ]
     },
@@ -102,6 +114,40 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/rowena-childes-2026-06-14.png"
+        }
+      ]
+    },
+    {
+      "name": "Grant Swart",
+      "runs": [
+        {
+          "date": "2026-06-12",
+          "matchDayGoals": 2,
+          "distance": 9.94,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/grant-swart-2026-06-12.png"
+        },
+        {
+          "date": "2026-06-16",
+          "matchDayGoals": 9,
+          "distance": 7.79,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/grant-swart-2026-06-16.png"
+        }
+      ]
+    },
+    {
+      "name": "Kurt Hartzenberg",
+      "runs": [
+        {
+          "date": "2026-06-16",
+          "matchDayGoals": 9,
+          "distance": 4.53,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/kurt-hartzenberg-2026-06-16.png"
         }
       ]
     }
