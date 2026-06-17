@@ -1870,12 +1870,14 @@
     }
 
     function getRunnerScreenshots(runner) {
-      return (runner.runs || [])
-        .filter((run) => run.screenshot)
-        .map((run) => ({
-          src: run.screenshot,
-          caption: `${formatRunDate(run.date)} · ${formatDistance(run.distance)} ${run.unit || 'km'}`,
-        }));
+      return (runner.runs || []).flatMap((run) => {
+        const sources = run.screenshots?.length
+          ? run.screenshots
+          : (run.screenshot ? [run.screenshot] : []);
+        const caption = `${formatRunDate(run.date)} · ${formatDistance(run.distance)} ${run.unit || 'km'}`;
+
+        return sources.map((src) => ({ src, caption }));
+      });
     }
 
     function formatRunDate(dateStr) {
