@@ -147,6 +147,112 @@
       color: var(--green);
     }
 
+    .goal-explosion-stage {
+      position: relative;
+      margin-bottom: 0.25rem;
+    }
+
+    .goal-explosion-wrap {
+      position: relative;
+      display: inline-block;
+      transform-origin: center center;
+    }
+
+    .goal-particles {
+      position: absolute;
+      inset: -2rem;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .goal-particle {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      opacity: 0;
+      animation: particle-burst 1.15s ease-out forwards;
+    }
+
+    .goal-particle.football {
+      width: auto;
+      height: auto;
+      font-size: 1.1rem;
+      line-height: 1;
+      background: none;
+      border-radius: 0;
+    }
+
+    @keyframes particle-burst {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.4);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) rotate(var(--rot));
+      }
+    }
+
+    @keyframes goal-pulse-calm {
+      0%, 100% { transform: scale(1); }
+      45% { transform: scale(1.05); }
+    }
+
+    @keyframes goal-pulse-warm {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      40% { transform: scale(1.08); filter: brightness(1.15); }
+    }
+
+    @keyframes goal-shake-hot {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      20% { transform: scale(1.1) rotate(-2deg); }
+      40% { transform: scale(1.12) rotate(2deg); }
+      60% { transform: scale(1.08) rotate(-1deg); }
+    }
+
+    @keyframes goal-shake-mega {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      15% { transform: scale(1.14) rotate(-3deg); }
+      30% { transform: scale(1.16) rotate(3deg); }
+      45% { transform: scale(1.12) rotate(-2deg); }
+      60% { transform: scale(1.14) rotate(2deg); }
+      75% { transform: scale(1.08) rotate(-1deg); }
+    }
+
+    .goal-explosion-wrap.tier-calm {
+      animation: goal-pulse-calm 0.85s ease-out;
+    }
+
+    .goal-explosion-wrap.tier-warm {
+      animation: goal-pulse-warm 1s ease-out;
+    }
+
+    .goal-explosion-wrap.tier-hot {
+      animation: goal-shake-hot 1.15s ease-out;
+    }
+
+    .goal-explosion-wrap.tier-mega {
+      animation: goal-shake-mega 1.35s ease-out;
+    }
+
+    .goal-explosion-label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 0.65rem;
+      min-height: 1.35em;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .goal-explosion-label.visible {
+      opacity: 1;
+    }
+
     .goal-count .unit {
       display: block;
       font-size: clamp(1rem, 3vw, 1.35rem);
@@ -172,6 +278,16 @@
       font-size: 1.75rem;
       font-weight: 800;
       color: var(--green);
+    }
+
+    .run-distance-note {
+      margin-top: 0.85rem;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.72);
+      max-width: 28rem;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
     }
 
     .controls {
@@ -389,6 +505,120 @@
 
     .benchmark-compare strong {
       color: var(--navy);
+    }
+
+    /* ── Catch-up calculator ── */
+    .catchup-band {
+      background: var(--navy-mid);
+      padding: 2.25rem 2rem;
+      color: var(--white);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .catchup-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .catchup-band h2 {
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+
+    .catchup-band .section-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .catchup-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.1rem;
+    }
+
+    .catchup-controls label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .catchup-runner-select {
+      flex: 1;
+      min-width: 12rem;
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--white);
+      background: var(--navy);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-pill);
+      padding: 0.65rem 1.1rem;
+      cursor: pointer;
+    }
+
+    .catchup-runner-select:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    .catchup-results {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+    }
+
+    .catchup-stat {
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 0.85rem 0.75rem;
+      text-align: center;
+    }
+
+    .catchup-stat.highlight {
+      grid-column: 1 / -1;
+      background: var(--royal);
+    }
+
+    .catchup-stat .value {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1.2;
+    }
+
+    .catchup-stat.highlight .value {
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+    }
+
+    .catchup-stat .label {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      line-height: 1.35;
+    }
+
+    .catchup-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 1rem;
+      line-height: 1.55;
     }
 
     /* ── Leaderboard band (royal blue) ── */
@@ -1017,6 +1247,7 @@
 
       .hero-band,
       .stats-band,
+      .catchup-band,
       .matches-band,
       .today-band,
       .leaderboard-band,
@@ -1026,6 +1257,10 @@
       }
 
       .team-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .catchup-results {
         grid-template-columns: 1fr;
       }
 
@@ -1066,13 +1301,20 @@
     <div class="inner">
       <div class="label">Goals scored yesterday</div>
       <div id="yesterday-date" class="date">Loading…</div>
-      <div id="goal-count" class="goal-count">
-        -
-        <span class="unit">goals</span>
+      <div class="goal-explosion-stage">
+        <div id="goal-explosion-wrap" class="goal-explosion-wrap">
+          <div id="goal-count" class="goal-count">
+            -
+            <span class="unit">goals</span>
+          </div>
+          <div id="goal-particles" class="goal-particles" aria-hidden="true"></div>
+        </div>
+        <p id="goal-explosion-label" class="goal-explosion-label" aria-live="polite"></p>
       </div>
       <div id="run-distance" class="run-distance">
-        Today's run: <span id="distance-value">-</span> <span id="distance-unit">km</span>
+        Today's target: <span id="distance-value">-</span> <span id="distance-unit">km</span>
       </div>
+      <p class="run-distance-note">Based on yesterday's goals (1 goal = 1 km). Missed km rolls forward.</p>
       <div class="controls">
         <button id="refresh-btn" class="btn-primary" type="button">Refresh scores</button>
         <button id="share-btn" class="btn-ghost" type="button">Share screenshot</button>
@@ -1161,6 +1403,22 @@
     </div>
   </section>
 
+  <section class="catchup-band" aria-live="polite">
+    <div class="inner">
+      <h2>Catch-up <span class="accent">calculator</span></h2>
+      <p class="section-note">Totals use the same goal counts as the scoreboard. Extra km on a day pays down earlier shortfalls first.</p>
+      <div class="catchup-controls">
+        <label for="catchup-runner">Runner</label>
+        <select id="catchup-runner" class="catchup-runner-select">
+          <option value="">Loading runners…</option>
+        </select>
+      </div>
+      <div id="catchup-results" class="catchup-results">
+        <p class="catchup-empty">Loading leaderboard…</p>
+      </div>
+    </div>
+  </section>
+
   <footer class="footer">
     <p id="status-bar">Scores powered by ESPN</p>
   </footer>
@@ -1179,7 +1437,7 @@
         <div id="share-date" class="date"></div>
         <div id="share-goals" class="share-card-goals"></div>
         <div class="share-card-run">
-          Today's run: <span id="share-distance" class="distance"></span>
+          Today's target: <span id="share-distance" class="distance"></span>
         </div>
       </div>
       <div class="share-card-matches">
@@ -1242,12 +1500,16 @@
       'STATUS_FINAL_PEN',
     ]);
 
+    const CHALLENGE_START_KEY = '2026-06-12';
+
     let unit = 'km';
     let lastGoalTotal = 0;
     let lastMatches = [];
     let lastYesterdayLabel = '';
     let goalAnimationFrame = null;
     let benchmarkData = null;
+    let leaderboardData = null;
+    let dailyGoalTargets = {};
 
     function mountLogos() {
       const template = document.getElementById('kurtosys-logo');
@@ -1478,13 +1740,105 @@
       `;
     }
 
+    function getGoalExplosionTier(total) {
+      if (total <= 0) {
+        return 'rest';
+      }
+      if (total <= 5) {
+        return 'calm';
+      }
+      if (total <= 9) {
+        return 'warm';
+      }
+      if (total <= 16) {
+        return 'hot';
+      }
+      return 'mega';
+    }
+
+    function getGoalExplosionMessage(total) {
+      if (total <= 0) {
+        return 'Rest day. Recharge those legs.';
+      }
+      if (total <= 5) {
+        return 'Manageable. Lace up and go.';
+      }
+      if (total <= 9) {
+        return 'Solid challenge ahead.';
+      }
+      if (total <= 16) {
+        return 'That is a proper workout.';
+      }
+      return 'Mega goal day. You have got this.';
+    }
+
+    function spawnGoalParticles(total) {
+      const container = document.getElementById('goal-particles');
+      container.innerHTML = '';
+
+      const tier = getGoalExplosionTier(total);
+      if (tier === 'rest' || tier === 'calm') {
+        return;
+      }
+
+      const particleCount = tier === 'warm' ? 14 : tier === 'hot' ? 24 : 40;
+      const colors = ['#00ff80', '#ffffff', '#0047ff', '#ffb86b'];
+
+      for (let i = 0; i < particleCount; i += 1) {
+        const particle = document.createElement('span');
+        const angle = (Math.PI * 2 * i) / particleCount + (Math.random() * 0.4);
+        const distance = 70 + Math.random() * (tier === 'mega' ? 150 : 110);
+        const tx = `${Math.cos(angle) * distance}px`;
+        const ty = `${Math.sin(angle) * distance}px`;
+        const rot = `${Math.floor(Math.random() * 540 - 270)}deg`;
+
+        particle.className = 'goal-particle';
+        particle.style.setProperty('--tx', tx);
+        particle.style.setProperty('--ty', ty);
+        particle.style.setProperty('--rot', rot);
+        particle.style.background = colors[i % colors.length];
+        particle.style.animationDelay = `${Math.random() * 0.15}s`;
+
+        if (tier === 'mega' && i % 7 === 0) {
+          particle.classList.add('football');
+          particle.textContent = '⚽';
+          particle.style.background = 'none';
+        }
+
+        container.appendChild(particle);
+      }
+    }
+
+    function triggerGoalExplosion(total) {
+      const wrap = document.getElementById('goal-explosion-wrap');
+      const label = document.getElementById('goal-explosion-label');
+      const tier = getGoalExplosionTier(total);
+
+      wrap.classList.remove('tier-calm', 'tier-warm', 'tier-hot', 'tier-mega');
+      label.classList.remove('visible');
+      label.textContent = getGoalExplosionMessage(total);
+
+      if (tier !== 'rest') {
+        void wrap.offsetWidth;
+        wrap.classList.add(`tier-${tier}`);
+        spawnGoalParticles(total);
+      } else {
+        document.getElementById('goal-particles').innerHTML = '';
+      }
+
+      requestAnimationFrame(() => {
+        label.classList.add('visible');
+      });
+    }
+
     function animateGoalTotal(total) {
       if (goalAnimationFrame) {
         cancelAnimationFrame(goalAnimationFrame);
       }
 
       const start = performance.now();
-      const duration = 700;
+      const tier = getGoalExplosionTier(total);
+      const duration = tier === 'mega' ? 1200 : tier === 'hot' ? 1000 : tier === 'warm' ? 850 : 700;
       const from = 0;
 
       const step = (now) => {
@@ -1497,6 +1851,7 @@
           goalAnimationFrame = requestAnimationFrame(step);
         } else {
           goalAnimationFrame = null;
+          triggerGoalExplosion(total);
         }
       };
 
@@ -1509,17 +1864,201 @@
       updateDistance();
       updateBenchmarkCompare();
       syncShareCard();
+      renderCatchUpCalculator();
+    }
+
+    function toDisplayDistance(km) {
+      const value = unit === 'mi' ? km * 0.621371 : km;
+      return formatDistance(value);
+    }
+
+    function getUnitLabel() {
+      return unit === 'mi' ? 'miles' : 'km';
+    }
+
+    function getChallengeFetchDates() {
+      const dates = [];
+      const challengeStart = new Date(`${CHALLENGE_START_KEY}T12:00:00`);
+      dates.push(getDayBefore(challengeStart));
+
+      const cursor = new Date(challengeStart);
+      const tomorrow = getTomorrow();
+
+      while (cursor <= tomorrow) {
+        dates.push(new Date(cursor));
+        cursor.setDate(cursor.getDate() + 1);
+      }
+
+      return dates;
+    }
+
+    function buildDailyGoalTargets(events) {
+      dailyGoalTargets = {};
+      const challengeStart = new Date(`${CHALLENGE_START_KEY}T12:00:00`);
+      const todayKey = getTodayKey();
+      const cursor = new Date(challengeStart);
+
+      while (getLocalDateKey(cursor) <= todayKey) {
+        const runDayKey = getLocalDateKey(cursor);
+        const previousDay = new Date(cursor);
+        previousDay.setDate(previousDay.getDate() - 1);
+        const previousKey = getLocalDateKey(previousDay);
+        const matches = normalizeMatches(events, previousKey);
+        const finishedMatches = matches.filter((match) => match.finished);
+        const matchesForTotal = finishedMatches.length ? finishedMatches : matches;
+
+        dailyGoalTargets[runDayKey] = matchesForTotal.reduce(
+          (sum, match) => sum + match.totalGoals,
+          0,
+        );
+
+        cursor.setDate(cursor.getDate() + 1);
+      }
+    }
+
+    function getTodayTargetKm() {
+      return dailyGoalTargets[getTodayKey()] ?? lastGoalTotal;
+    }
+
+    function computeRunningBalance(runner, beforeDateKey = getTodayKey()) {
+      const runsByDate = new Map(
+        (runner.runs || [])
+          .filter((run) => run.completed)
+          .map((run) => [run.date, run.distance]),
+      );
+
+      let balance = 0;
+      const start = new Date(`${CHALLENGE_START_KEY}T12:00:00`);
+      const end = new Date(`${beforeDateKey}T12:00:00`);
+
+      for (let cursor = new Date(start); cursor < end; cursor.setDate(cursor.getDate() + 1)) {
+        const dayKey = getLocalDateKey(cursor);
+        const target = dailyGoalTargets[dayKey] ?? 0;
+        const distance = runsByDate.get(dayKey) ?? 0;
+
+        balance += target;
+        balance -= distance;
+        balance = Math.max(0, balance);
+      }
+
+      return balance;
+    }
+
+    function getTodayRunDistance(runner) {
+      const todayRun = (runner.runs || []).find(
+        (run) => run.completed && run.date === getTodayKey(),
+      );
+      return todayRun?.distance ?? 0;
+    }
+
+    function computeCatchUp(runner) {
+      const carryOver = computeRunningBalance(runner);
+      const todayTarget = getTodayTargetKm();
+      const todayRun = getTodayRunDistance(runner);
+      const totalNeeded = carryOver + todayTarget;
+      const remaining = Math.max(0, totalNeeded - todayRun);
+
+      return {
+        carryOver,
+        todayTarget,
+        todayRun,
+        totalNeeded,
+        remaining,
+      };
+    }
+
+    function populateCatchUpRunners() {
+      const select = document.getElementById('catchup-runner');
+      const runners = leaderboardData?.runners || [];
+
+      if (!runners.length) {
+        select.innerHTML = '<option value="">No runners yet</option>';
+        return;
+      }
+
+      const previous = select.value;
+      select.innerHTML = runners
+        .map((runner) => {
+          const safeValue = runner.name.replace(/"/g, '&quot;');
+          return `<option value="${safeValue}">${escapeHtml(runner.name)}</option>`;
+        })
+        .join('');
+
+      if (previous && runners.some((runner) => runner.name === previous)) {
+        select.value = previous;
+      }
+    }
+
+    function renderCatchUpCalculator() {
+      const results = document.getElementById('catchup-results');
+      const select = document.getElementById('catchup-runner');
+      const runners = leaderboardData?.runners || [];
+
+      if (!runners.length) {
+        results.innerHTML = '<p class="catchup-empty">No runners on the board yet.</p>';
+        return;
+      }
+
+      const selectedName = select.value || runners[0]?.name;
+      if (!select.value && selectedName) {
+        select.value = selectedName;
+      }
+
+      const runner = runners.find((entry) => entry.name === selectedName);
+      if (!runner) {
+        results.innerHTML = '<p class="catchup-empty">Pick a runner to calculate catch-up.</p>';
+        return;
+      }
+
+      const stats = computeCatchUp(runner);
+      const unitLabel = getUnitLabel();
+      let highlightValue;
+      let highlightLabel;
+
+      if (stats.totalNeeded === 0 && stats.carryOver === 0) {
+        highlightValue = `0 ${unitLabel}`;
+        highlightLabel = 'Nothing owed today';
+      } else if (stats.remaining === 0) {
+        highlightValue = 'Done';
+        highlightLabel = "Today's target cleared";
+      } else {
+        highlightValue = `${toDisplayDistance(stats.remaining)} ${unitLabel}`;
+        highlightLabel = 'Still to run';
+      }
+
+      results.innerHTML = `
+        <div class="catchup-stat">
+          <span class="value">${toDisplayDistance(stats.carryOver)} ${unitLabel}</span>
+          <span class="label">Brought forward</span>
+        </div>
+        <div class="catchup-stat">
+          <span class="value">${toDisplayDistance(stats.todayTarget)} ${unitLabel}</span>
+          <span class="label">Today's target</span>
+        </div>
+        <div class="catchup-stat">
+          <span class="value">${toDisplayDistance(stats.todayRun)} ${unitLabel}</span>
+          <span class="label">Run so far today</span>
+        </div>
+        <div class="catchup-stat">
+          <span class="value">${toDisplayDistance(stats.totalNeeded)} ${unitLabel}</span>
+          <span class="label">Total needed today</span>
+        </div>
+        <div class="catchup-stat highlight">
+          <span class="value">${highlightValue}</span>
+          <span class="label">${highlightLabel}</span>
+        </div>
+      `;
     }
 
     function updateDistance() {
-      document.getElementById('distance-value').textContent = lastGoalTotal;
+      document.getElementById('distance-value').textContent = getTodayTargetKm();
       document.getElementById('distance-unit').textContent = unit;
       syncShareCard();
     }
 
     function buildChatMessage() {
       const unitLabel = unit === 'mi' ? 'miles' : 'km';
-      let message = `World Cup Run Challenge\nToday's target: ${lastGoalTotal} ${unitLabel}`;
+      let message = `World Cup Run Challenge\nToday's target: ${getTodayTargetKm()} ${unitLabel}`;
 
       if (lastGoalTotal > 0) {
         message += ` (${lastGoalTotal} goal${lastGoalTotal === 1 ? '' : 's'} yesterday)`;
@@ -1544,7 +2083,7 @@
         ${lastGoalTotal}
         <span class="unit">goal${lastGoalTotal === 1 ? '' : 's'}</span>
       `;
-      document.getElementById('share-distance').textContent = `${lastGoalTotal} ${unit}`;
+      document.getElementById('share-distance').textContent = `${getTodayTargetKm()} ${unit}`;
       document.getElementById('share-match-list').innerHTML = buildMatchListHtml(
         lastMatches,
         'No World Cup matches were played yesterday.',
@@ -1615,7 +2154,7 @@
         const shareData = {
           files: [file],
           title: 'World Cup Run Challenge',
-          text: `Today's run: ${lastGoalTotal} ${unit} 🏃⚽`,
+          text: `Today's target: ${getTodayTargetKm()} ${unit} 🏃⚽`,
         };
 
         if (navigator.canShare?.(shareData)) {
@@ -1781,16 +2320,8 @@
     `;
 
     function hasCompletedDailyGoal(runner) {
-      const todayKey = getTodayKey();
-      const todayRun = (runner.runs || []).find(
-        (run) => run.completed && run.date === todayKey,
-      );
-
-      if (!todayRun) {
-        return false;
-      }
-
-      return todayRun.distance >= todayRun.matchDayGoals;
+      const stats = computeCatchUp(runner);
+      return stats.totalNeeded > 0 && stats.remaining === 0;
     }
 
     function buildLeaderboardRows(data) {
@@ -1990,13 +2521,19 @@
         }
 
         const data = await response.json();
+        leaderboardData = data;
         renderLeaderboard(data);
+        populateCatchUpRunners();
+        renderCatchUpCalculator();
       } catch (error) {
         document.getElementById('leaderboard-updated').textContent = 'Leaderboard unavailable';
         document.getElementById('leaderboard-body').innerHTML = `
           <tr>
             <td colspan="5" class="leaderboard-empty">Unable to load leaderboard right now.</td>
           </tr>
+        `;
+        document.getElementById('catchup-results').innerHTML = `
+          <p class="catchup-empty">Catch-up calculator needs the leaderboard data.</p>
         `;
       }
     }
@@ -2031,9 +2568,10 @@
 
       try {
         const [events] = await Promise.all([
-          fetchEspnEventsForDates([getDayBefore(yesterday), yesterday, new Date()]),
+          fetchEspnEventsForDates(getChallengeFetchDates()),
           loadTodayMatches(),
         ]);
+        buildDailyGoalTargets(events);
         const matches = normalizeMatches(events, yesterdayKey);
         const finishedMatches = matches.filter((match) => match.finished);
         const matchesForTotal = finishedMatches.length ? finishedMatches : matches;
@@ -2041,6 +2579,10 @@
 
         renderGoalTotal(totalGoals);
         renderMatches(matches);
+
+        if (leaderboardData) {
+          renderLeaderboard(leaderboardData);
+        }
 
         const updatedAt = new Date().toLocaleTimeString(undefined, {
           hour: 'numeric',
@@ -2076,8 +2618,11 @@
         if (benchmarkData) {
           renderBenchmark(benchmarkData);
         }
+        renderCatchUpCalculator();
       });
     });
+
+    document.getElementById('catchup-runner').addEventListener('change', renderCatchUpCalculator);
 
     mountLogos();
     setupGalleryModal();
