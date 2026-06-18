@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-17",
+  "updated": "2026-06-18",
   "defaultUnit": "km",
   "runners": [
     {
@@ -44,6 +44,14 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/lee-watts-2026-06-16.png"
+        },
+        {
+          "date": "2026-06-18",
+          "matchDayGoals": 0,
+          "distance": 10.03,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-06-18.png"
         }
       ]
     },
