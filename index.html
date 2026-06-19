@@ -1158,6 +1158,111 @@
       margin-top: 0.25rem;
     }
 
+    /* ── Tournament progress ── */
+    .progress-band {
+      background: var(--navy-mid);
+      padding: 2.5rem 2rem;
+      color: var(--white);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .progress-band h2 {
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .progress-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-stat {
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 1rem 0.75rem;
+      text-align: center;
+    }
+
+    .progress-stat .value {
+      display: block;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1.15;
+    }
+
+    .progress-stat .label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      line-height: 1.35;
+    }
+
+    .progress-charts {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .progress-chart {
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 1rem 1.15rem;
+    }
+
+    .progress-chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.65rem;
+      font-size: 0.82rem;
+    }
+
+    .progress-chart-header .title {
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .progress-chart-header .meta {
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      height: 0.65rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(90deg, var(--royal), var(--green));
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .progress-fill.distance {
+      background: linear-gradient(90deg, var(--green), #33ff99);
+    }
+
     .runner-name-row {
       display: flex;
       align-items: center;
@@ -1273,6 +1378,7 @@
       .hero-band,
       .stats-band,
       .catchup-band,
+      .progress-band,
       .matches-band,
       .today-band,
       .leaderboard-band,
@@ -1286,6 +1392,10 @@
       }
 
       .catchup-results {
+        grid-template-columns: 1fr;
+      }
+
+      .progress-stats {
         grid-template-columns: 1fr;
       }
 
@@ -1388,6 +1498,37 @@
       <ul id="today-match-list" class="match-list">
         <li class="empty-state">Loading today's fixtures…</li>
       </ul>
+    </div>
+  </section>
+
+  <section class="progress-band" aria-live="polite">
+    <div class="inner">
+      <h2>Tournament <span class="accent">progress</span></h2>
+      <div id="progress-stats" class="progress-stats">
+        <div class="progress-stat"><span class="value">-</span><span class="label">Days played</span></div>
+        <div class="progress-stat"><span class="value">-</span><span class="label">Days remaining</span></div>
+        <div class="progress-stat"><span class="value">-</span><span class="label">Team km run</span></div>
+      </div>
+      <div class="progress-charts">
+        <div class="progress-chart">
+          <div class="progress-chart-header">
+            <span class="title">Challenge timeline</span>
+            <span id="progress-days-meta" class="meta">-</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Challenge days completed">
+            <div id="progress-days-fill" class="progress-fill"></div>
+          </div>
+        </div>
+        <div class="progress-chart">
+          <div class="progress-chart-header">
+            <span class="title">Team distance</span>
+            <span id="progress-distance-meta" class="meta">-</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Team distance progress">
+            <div id="progress-distance-fill" class="progress-fill distance"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1528,6 +1669,7 @@
     ]);
 
     const CHALLENGE_START_KEY = '2026-06-12';
+    const TOURNAMENT_END_KEY = '2026-07-19';
 
     let unit = 'km';
     let lastGoalTotal = 0;
@@ -1901,6 +2043,27 @@
 
     function getUnitLabel() {
       return unit === 'mi' ? 'miles' : 'km';
+    }
+
+    function getTotalChallengeDays() {
+      const start = new Date(`${CHALLENGE_START_KEY}T12:00:00`);
+      const end = new Date(`${TOURNAMENT_END_KEY}T12:00:00`);
+      return Math.floor((end - start) / 86400000) + 1;
+    }
+
+    function getDaysPlayed() {
+      const todayKey = getTodayKey();
+      const cappedKey = todayKey > TOURNAMENT_END_KEY ? TOURNAMENT_END_KEY : todayKey;
+
+      if (cappedKey < CHALLENGE_START_KEY) {
+        return 0;
+      }
+
+      return Math.min(getChallengeDayNumber(cappedKey), getTotalChallengeDays());
+    }
+
+    function getDaysRemaining() {
+      return Math.max(0, getTotalChallengeDays() - getDaysPlayed());
     }
 
     function getChallengeDayNumber(dateKey) {
@@ -2337,7 +2500,11 @@
           throw new Error('Could not load benchmark.');
         }
         const data = await response.json();
+        benchmarkData = data;
         renderBenchmark(data);
+        if (leaderboardData) {
+          renderTournamentProgress(computeTeamStats(buildLeaderboardRows(leaderboardData)));
+        }
       } catch (error) {
         document.getElementById('benchmark-compare').textContent = '2022 benchmark data unavailable right now.';
       }
@@ -2458,14 +2625,11 @@
 
       if (!stats) {
         container.innerHTML = '';
+        renderTournamentProgress(null);
         return;
       }
 
       container.innerHTML = `
-        <div class="team-stat">
-          <span class="value">${formatDistance(stats.totalDistance)}</span>
-          <span class="label">Team ${stats.unitLabel} run</span>
-        </div>
         <div class="team-stat">
           <span class="value">${stats.activeRunners}</span>
           <span class="label">Active runners</span>
@@ -2474,7 +2638,58 @@
           <span class="value">${formatDistance(stats.biggestDay)}</span>
           <span class="label">Best single day</span>
         </div>
+        <div class="team-stat">
+          <span class="value">${formatDistance(stats.totalDistance / stats.activeRunners)}</span>
+          <span class="label">Avg per runner</span>
+        </div>
       `;
+
+      renderTournamentProgress(stats);
+    }
+
+    function renderTournamentProgress(stats) {
+      const statsContainer = document.getElementById('progress-stats');
+      const daysFill = document.getElementById('progress-days-fill');
+      const distanceFill = document.getElementById('progress-distance-fill');
+      const daysMeta = document.getElementById('progress-days-meta');
+      const distanceMeta = document.getElementById('progress-distance-meta');
+      const daysPlayed = getDaysPlayed();
+      const daysRemaining = getDaysRemaining();
+      const totalDays = getTotalChallengeDays();
+      const daysPercent = totalDays ? Math.min(100, (daysPlayed / totalDays) * 100) : 0;
+
+      const unitLabel = stats?.unitLabel || 'km';
+      const teamDistance = stats?.totalDistance ?? 0;
+      const projectedTotal = benchmarkData?.estimate2026?.projectedTotalKm ?? 280;
+      const displayDistance = unit === 'mi' ? teamDistance * 0.621371 : teamDistance;
+      const displayProjected = unit === 'mi' ? projectedTotal * 0.621371 : projectedTotal;
+      const distancePercent = displayProjected
+        ? Math.min(100, (displayDistance / displayProjected) * 100)
+        : 0;
+
+      statsContainer.innerHTML = `
+        <div class="progress-stat">
+          <span class="value">${daysPlayed}</span>
+          <span class="label">Days played</span>
+        </div>
+        <div class="progress-stat">
+          <span class="value">${daysRemaining}</span>
+          <span class="label">Days remaining</span>
+        </div>
+        <div class="progress-stat">
+          <span class="value">${formatDistance(displayDistance)}</span>
+          <span class="label">Team ${unitLabel} run</span>
+        </div>
+      `;
+
+      daysMeta.textContent = `Day ${daysPlayed} of ${totalDays}`;
+      distanceMeta.textContent = `${formatDistance(displayDistance)} / ${formatDistance(displayProjected)} ${unitLabel}`;
+
+      daysFill.style.width = `${daysPercent}%`;
+      distanceFill.style.width = `${distancePercent}%`;
+
+      daysFill.parentElement.setAttribute('aria-valuenow', Math.round(daysPercent));
+      distanceFill.parentElement.setAttribute('aria-valuenow', Math.round(distancePercent));
     }
 
     function getRunnerScreenshots(runner) {
@@ -2694,6 +2909,9 @@
         updateDistance();
         if (benchmarkData) {
           renderBenchmark(benchmarkData);
+        }
+        if (leaderboardData) {
+          renderTournamentProgress(computeTeamStats(buildLeaderboardRows(leaderboardData)));
         }
         renderCatchUpCalculator();
       });
