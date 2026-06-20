@@ -56,6 +56,14 @@
             "screenshots/lee-watts-2026-06-18.png",
             "screenshots/lee-watts-2026-06-18-evening.png"
           ]
+        },
+        {
+          "date": "2026-06-20",
+          "matchDayGoals": 7,
+          "distance": 27.41,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-06-20.png"
         }
       ]
     },
