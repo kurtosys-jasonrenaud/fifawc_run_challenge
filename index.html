@@ -2174,19 +2174,10 @@
     }
 
     function getTodayRunDistance(runner) {
-      const completedRuns = (runner.runs || []).filter((run) => run.completed);
-      const todayKey = getTodayKey();
-      const tomorrowKey = getLocalDateKey(getTomorrow());
-
-      const todayRun = completedRuns.find((run) => run.date === todayKey);
-      if (todayRun) {
-        return todayRun.distance;
-      }
-
-      // Credit early-morning runs logged on the next calendar day when viewers
-      // are still on the previous day (e.g. Cape Town vs US timezones).
-      const tomorrowRun = completedRuns.find((run) => run.date === tomorrowKey);
-      return tomorrowRun?.distance ?? 0;
+      const todayRun = (runner.runs || []).find(
+        (run) => run.completed && run.date === getTodayKey(),
+      );
+      return todayRun?.distance ?? 0;
     }
 
     function computeCatchUp(runner) {
