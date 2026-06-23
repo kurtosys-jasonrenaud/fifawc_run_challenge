@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-22",
+  "updated": "2026-06-23",
   "defaultUnit": "km",
   "runners": [
     {
@@ -80,6 +80,14 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/lee-watts-2026-06-22.png"
+        },
+        {
+          "date": "2026-06-23",
+          "matchDayGoals": 8,
+          "distance": 10,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-06-23.png"
         }
       ]
     },
@@ -211,6 +219,14 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/grant-swart-2026-06-17.png"
+        },
+        {
+          "date": "2026-06-22",
+          "matchDayGoals": 8,
+          "distance": 6.3,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/grant-swart-2026-06-22.png"
         }
       ]
     },
