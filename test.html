@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strava API test | World Cup Run Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #001a3d;
+      --navy-mid: #002855;
+      --royal: #0047ff;
+      --surface: #e6ecf5;
+      --green: #00ff80;
+      --white: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.72);
+      --text-muted-dark: #5a6b82;
+      --warn: #ffb020;
+      --danger: #ff6b6b;
+      --radius: 0.75rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .topbar a {
+      color: var(--green);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .panel {
+      background: var(--navy-mid);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .panel h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .panel p, .panel li {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .panel ul {
+      margin: 0.5rem 0 0 1.25rem;
+    }
+
+    .warn {
+      border-color: rgba(255, 176, 32, 0.35);
+      background: rgba(255, 176, 32, 0.08);
+    }
+
+    .warn strong { color: var(--warn); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--white);
+      border-radius: 0.5rem;
+      padding: 0.65rem 0.75rem;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 5rem;
+      resize: vertical;
+      font-family: ui-monospace, monospace;
+      font-size: 0.82rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 0.65rem 1.1rem;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--navy);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-strava {
+      background: #fc4c02;
+      color: var(--white);
+    }
+
+    .status {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      background: rgba(0, 0, 0, 0.2);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .status.error { color: var(--danger); border: 1px solid rgba(255, 107, 107, 0.35); }
+    .status.ok { color: var(--green); border: 1px solid rgba(0, 255, 128, 0.25); }
+
+    .athlete-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .athlete-card img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 0.75rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.55rem 0.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .light-panel {
+      background: var(--surface);
+      color: var(--navy);
+    }
+
+    .light-panel p, .light-panel li, .light-panel th {
+      color: var(--text-muted-dark);
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: 0.85em;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.1rem 0.35rem;
+      border-radius: 0.25rem;
+    }
+
+    .light-panel code {
+      background: rgba(0, 26, 61, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <h1>Strava API sandbox</h1>
+      <a href="index.html">Back to dashboard</a>
+    </div>
+
+    <section class="panel warn">
+      <h2>Before you start</h2>
+      <p><strong>This page is for experiments only.</strong> Register an app at <a href="https://www.strava.com/settings/api" style="color: var(--warn);">strava.com/settings/api</a> and set the callback domain to match where you host this file.</p>
+      <ul>
+        <li><strong>OAuth authorize</strong> works in the browser (redirect to Strava and back with a <code>code</code>).</li>
+        <li><strong>Token exchange</strong> needs your client secret. Do that locally or via a tiny backend. Never commit the secret or ship it in production JavaScript.</li>
+        <li><strong>Activity API calls</strong> are often blocked by CORS from a static page. If fetch fails, use the pasted access token with a local proxy or serverless function.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>1. App settings</h2>
+      <div class="grid">
+        <div>
+          <label for="client-id">Client ID</label>
+          <input id="client-id" type="text" inputmode="numeric" placeholder="12345" autocomplete="off">
+        </div>
+        <div>
+          <label for="redirect-uri">Redirect URI (must match Strava app settings)</label>
+          <input id="redirect-uri" type="url" autocomplete="off">
+        </div>
+      </div>
+      <div class="grid">
+        <div>
+          <label for="client-secret">Client secret (local testing only)</label>
+          <input id="client-secret" type="password" placeholder="Paste for token exchange" autocomplete="off">
+        </div>
+        <div>
+          <label for="proxy-base">Optional API proxy base URL</label>
+          <input id="proxy-base" type="url" placeholder="http://localhost:3000/strava">
+        </div>
+      </div>
+      <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.85rem;">
+        Suggested callback for local testing: <code id="local-callback-hint"></code>
+      </p>
+      <div class="actions">
+        <button type="button" class="btn-strava" id="connect-btn">Connect with Strava</button>
+        <button type="button" class="btn-secondary" id="save-settings-btn">Save settings</button>
+        <button type="button" class="btn-secondary" id="clear-settings-btn">Clear saved data</button>
+      </div>
+      <div id="auth-status" class="status" hidden></div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Access token</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">
+        After OAuth, exchange the <code>code</code> below. Or paste a token from your own curl / Postman test.
+      </p>
+      <div class="grid">
+        <div>
+          <label for="auth-code">Authorization code (from redirect URL)</label>
+          <input id="auth-code" type="text" placeholder="Auto-filled after Strava redirect" autocomplete="off">
+        </div>
+        <div>
+          <label for="access-token">Access token</label>
+          <input id="access-token" type="password" placeholder="Bearer token" autocomplete="off">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-primary" id="exchange-btn">Exchange code for token</button>
+        <button type="button" class="btn-secondary" id="refresh-btn">Refresh token</button>
+        <button type="button" class="btn-secondary" id="save-token-btn">Save token locally</button>
+      </div>
+      <div id="token-status" class="status" hidden></div>
+    </section>
+
+    <section class="panel">
+      <h2>3. Fetch activities</h2>
+      <div class="grid">
+        <div>
+          <label for="after-date">From</label>
+          <input id="after-date" type="date" value="2026-06-12">
+        </div>
+        <div>
+          <label for="before-date">To</label>
+          <input id="before-date" type="date" value="2026-07-19">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-primary" id="fetch-athlete-btn">Fetch athlete</button>
+        <button type="button" class="btn-primary" id="fetch-activities-btn">Fetch activities</button>
+        <button type="button" class="btn-secondary" id="map-leaderboard-btn">Map to leaderboard shape</button>
+      </div>
+      <div id="fetch-status" class="status" hidden></div>
+      <div id="athlete-card" class="athlete-card" hidden></div>
+      <div id="activities-table-wrap"></div>
+    </section>
+
+    <section class="panel light-panel">
+      <h2>4. Leaderboard preview</h2>
+      <p>Runs grouped by local calendar day. Match-day goals still come from ESPN / the main dashboard logic.</p>
+      <textarea id="leaderboard-preview" readonly placeholder="Mapped JSON will appear here"></textarea>
+    </section>
+
+    <section class="panel">
+      <h2>Recommended production path</h2>
+      <ul>
+        <li><strong>Static GitHub Pages</strong> can host OAuth redirect pages, but not secret handling.</li>
+        <li><strong>Small backend</strong> (Cloudflare Worker, GitHub Action, or Node server) exchanges codes, stores refresh tokens, and proxies Strava API calls to avoid CORS.</li>
+        <li><strong>Per-runner linking</strong> each athlete authorizes once; your backend keeps their refresh token and syncs new runs into <code>leaderboard.json</code> or a database.</li>
+        <li><strong>Scopes</strong> request <code>activity:read_all</code> if runners use private activities.</li>
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    const STRAVA_AUTH_URL = 'https://www.strava.com/oauth/authorize';
+    const STRAVA_TOKEN_URL = 'https://www.strava.com/oauth/token';
+    const STRAVA_API_BASE = 'https://www.strava.com/api/v3';
+    const SCOPES = 'read,activity:read_all';
+    const STORAGE_KEY = 'wc-strava-test-settings-v1';
+
+    const CHALLENGE_START = '2026-06-12';
+    const CHALLENGE_END = '2026-07-19';
+
+    const els = {
+      clientId: document.getElementById('client-id'),
+      clientSecret: document.getElementById('client-secret'),
+      redirectUri: document.getElementById('redirect-uri'),
+      proxyBase: document.getElementById('proxy-base'),
+      authCode: document.getElementById('auth-code'),
+      accessToken: document.getElementById('access-token'),
+      afterDate: document.getElementById('after-date'),
+      beforeDate: document.getElementById('before-date'),
+      authStatus: document.getElementById('auth-status'),
+      tokenStatus: document.getElementById('token-status'),
+      fetchStatus: document.getElementById('fetch-status'),
+      athleteCard: document.getElementById('athlete-card'),
+      activitiesTableWrap: document.getElementById('activities-table-wrap'),
+      leaderboardPreview: document.getElementById('leaderboard-preview'),
+      localCallbackHint: document.getElementById('local-callback-hint'),
+    };
+
+    let latestActivities = [];
+    let refreshToken = '';
+    let tokenExpiresAt = 0;
+
+    function defaultRedirectUri() {
+      return `${window.location.origin}${window.location.pathname}`;
+    }
+
+    function loadSettings() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        els.redirectUri.value = defaultRedirectUri();
+        return;
+      }
+
+      try {
+        const saved = JSON.parse(raw);
+        els.clientId.value = saved.clientId || '';
+        els.redirectUri.value = saved.redirectUri || defaultRedirectUri();
+        els.proxyBase.value = saved.proxyBase || '';
+        els.accessToken.value = saved.accessToken || '';
+        refreshToken = saved.refreshToken || '';
+        tokenExpiresAt = saved.tokenExpiresAt || 0;
+      } catch {
+        els.redirectUri.value = defaultRedirectUri();
+      }
+    }
+
+    function saveSettings() {
+      const payload = {
+        clientId: els.clientId.value.trim(),
+        redirectUri: els.redirectUri.value.trim() || defaultRedirectUri(),
+        proxyBase: els.proxyBase.value.trim(),
+        accessToken: els.accessToken.value.trim(),
+        refreshToken,
+        tokenExpiresAt,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      showStatus(els.authStatus, 'Settings saved in localStorage.', 'ok');
+    }
+
+    function clearSettings() {
+      localStorage.removeItem(STORAGE_KEY);
+      els.clientId.value = '';
+      els.clientSecret.value = '';
+      els.redirectUri.value = defaultRedirectUri();
+      els.proxyBase.value = '';
+      els.authCode.value = '';
+      els.accessToken.value = '';
+      refreshToken = '';
+      tokenExpiresAt = 0;
+      latestActivities = [];
+      els.activitiesTableWrap.innerHTML = '';
+      els.leaderboardPreview.value = '';
+      els.athleteCard.hidden = true;
+      showStatus(els.authStatus, 'Saved Strava test data cleared.', 'ok');
+    }
+
+    function showStatus(el, message, type = '') {
+      el.hidden = false;
+      el.textContent = message;
+      el.className = `status${type ? ` ${type}` : ''}`;
+    }
+
+    function parseOAuthRedirect() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const error = params.get('error');
+      const scope = params.get('scope');
+
+      if (error) {
+        showStatus(els.authStatus, `Strava authorization failed: ${error}`, 'error');
+        return;
+      }
+
+      if (code) {
+        els.authCode.value = code;
+        showStatus(
+          els.authStatus,
+          `Authorization code received.\nScopes granted: ${scope || 'unknown'}\nExchange it for a token in step 2.`,
+          'ok',
+        );
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+
+    function buildAuthorizeUrl() {
+      const clientId = els.clientId.value.trim();
+      const redirectUri = els.redirectUri.value.trim() || defaultRedirectUri();
+
+      if (!clientId) {
+        throw new Error('Add your Strava client ID first.');
+      }
+
+      const url = new URL(STRAVA_AUTH_URL);
+      url.searchParams.set('client_id', clientId);
+      url.searchParams.set('redirect_uri', redirectUri);
+      url.searchParams.set('response_type', 'code');
+      url.searchParams.set('approval_prompt', 'auto');
+      url.searchParams.set('scope', SCOPES);
+      return url.toString();
+    }
+
+    async function exchangeCode() {
+      const clientId = els.clientId.value.trim();
+      const clientSecret = els.clientSecret.value.trim();
+      const code = els.authCode.value.trim();
+
+      if (!clientId || !clientSecret || !code) {
+        throw new Error('Client ID, client secret, and authorization code are all required.');
+      }
+
+      const response = await fetch(STRAVA_TOKEN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: clientId,
+          client_secret: clientSecret,
+          code,
+          grant_type: 'authorization_code',
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || `Token exchange failed (${response.status}).`);
+      }
+
+      applyTokenResponse(data);
+      showStatus(els.tokenStatus, `Token received for ${data.athlete?.firstname || 'athlete'} ${data.athlete?.lastname || ''}.`, 'ok');
+      saveSettings();
+    }
+
+    async function refreshAccessToken() {
+      const clientId = els.clientId.value.trim();
+      const clientSecret = els.clientSecret.value.trim();
+
+      if (!clientId || !clientSecret || !refreshToken) {
+        throw new Error('Client ID, client secret, and a saved refresh token are required.');
+      }
+
+      const response = await fetch(STRAVA_TOKEN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: clientId,
+          client_secret: clientSecret,
+          refresh_token: refreshToken,
+          grant_type: 'refresh_token',
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || `Refresh failed (${response.status}).`);
+      }
+
+      applyTokenResponse(data);
+      showStatus(els.tokenStatus, 'Access token refreshed.', 'ok');
+      saveSettings();
+    }
+
+    function applyTokenResponse(data) {
+      els.accessToken.value = data.access_token || '';
+      refreshToken = data.refresh_token || refreshToken;
+      tokenExpiresAt = data.expires_at || 0;
+    }
+
+    function apiUrl(path, query = {}) {
+      const proxy = els.proxyBase.value.trim().replace(/\/$/, '');
+      const qs = new URLSearchParams(query).toString();
+      const suffix = qs ? `${path}?${qs}` : path;
+
+      if (proxy) {
+        return `${proxy}${suffix}`;
+      }
+
+      return `${STRAVA_API_BASE}${suffix}`;
+    }
+
+    async function stravaGet(path, query = {}) {
+      const token = els.accessToken.value.trim();
+      if (!token) {
+        throw new Error('Paste or exchange for an access token first.');
+      }
+
+      const response = await fetch(apiUrl(path, query), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+
+      const text = await response.text();
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        data = { raw: text };
+      }
+
+      if (!response.ok) {
+        const message = data.message || data.raw || `Request failed (${response.status}).`;
+        throw new Error(message);
+      }
+
+      return data;
+    }
+
+    function dateToUnixStart(dateKey) {
+      return Math.floor(new Date(`${dateKey}T00:00:00`).getTime() / 1000);
+    }
+
+    function dateToUnixEnd(dateKey) {
+      return Math.floor(new Date(`${dateKey}T23:59:59`).getTime() / 1000);
+    }
+
+    function formatDistanceKm(meters) {
+      return Number((meters / 1000).toFixed(2));
+    }
+
+    function formatDuration(seconds) {
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = seconds % 60;
+      if (h > 0) {
+        return `${h}h ${String(m).padStart(2, '0')}m`;
+      }
+      return `${m}m ${String(s).padStart(2, '0')}s`;
+    }
+
+    function localDateKeyFromActivity(activity) {
+      return new Date(activity.start_date_local).toISOString().slice(0, 10);
+    }
+
+    async function fetchAllActivities() {
+      const after = dateToUnixStart(els.afterDate.value || CHALLENGE_START);
+      const before = dateToUnixEnd(els.beforeDate.value || CHALLENGE_END);
+      const collected = [];
+
+      for (let page = 1; page <= 10; page += 1) {
+        const batch = await stravaGet('/athlete/activities', {
+          after,
+          before,
+          page,
+          per_page: 50,
+        });
+
+        if (!Array.isArray(batch) || !batch.length) {
+          break;
+        }
+
+        collected.push(...batch);
+        if (batch.length < 50) {
+          break;
+        }
+      }
+
+      latestActivities = collected.sort(
+        (a, b) => new Date(b.start_date_local) - new Date(a.start_date_local),
+      );
+
+      return latestActivities;
+    }
+
+    function renderActivitiesTable(activities) {
+      if (!activities.length) {
+        els.activitiesTableWrap.innerHTML = '<p style="color: var(--text-muted); margin-top: 0.75rem;">No activities in this date range.</p>';
+        return;
+      }
+
+      const rows = activities.map((activity) => `
+        <tr>
+          <td>${localDateKeyFromActivity(activity)}</td>
+          <td>${activity.name || 'Untitled'}</td>
+          <td>${activity.type || activity.sport_type || '-'}</td>
+          <td>${formatDistanceKm(activity.distance)} km</td>
+          <td>${formatDuration(activity.moving_time || 0)}</td>
+          <td>${activity.start_date_local || ''}</td>
+          <td><a href="https://www.strava.com/activities/${activity.id}" target="_blank" rel="noopener" style="color: var(--green);">View</a></td>
+        </tr>
+      `).join('');
+
+      els.activitiesTableWrap.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Local date</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Distance</th>
+              <th>Time</th>
+              <th>Start (local)</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    }
+
+    function mapActivitiesToLeaderboardRuns(activities, athleteName) {
+      const byDate = new Map();
+
+      for (const activity of activities) {
+        const date = localDateKeyFromActivity(activity);
+        const distanceKm = formatDistanceKm(activity.distance);
+        const entry = byDate.get(date) || {
+          date,
+          matchDayGoals: 0,
+          distance: 0,
+          unit: 'km',
+          completed: true,
+          stravaActivityIds: [],
+          stravaNames: [],
+        };
+
+        entry.distance = Number((entry.distance + distanceKm).toFixed(2));
+        entry.stravaActivityIds.push(activity.id);
+        entry.stravaNames.push(activity.name || 'Untitled');
+        byDate.set(date, entry);
+      }
+
+      return {
+        preview: {
+          athlete: athleteName,
+          runs: [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date)),
+        },
+        note: 'Set matchDayGoals from ESPN / dashboard logic before committing to leaderboard.json.',
+      };
+    }
+
+    function renderAthlete(athlete) {
+      els.athleteCard.hidden = false;
+      els.athleteCard.innerHTML = `
+        <img src="${athlete.profile_medium || ''}" alt="">
+        <div>
+          <strong>${athlete.firstname || ''} ${athlete.lastname || ''}</strong><br>
+          <span style="color: var(--text-muted); font-size: 0.9rem;">
+            @${athlete.username || 'athlete'} · ID ${athlete.id}
+          </span>
+        </div>
+      `;
+    }
+
+    function corsHelp(error) {
+      if (!/failed to fetch|cors|network/i.test(String(error.message || error))) {
+        return '';
+      }
+
+      return '\n\nCORS likely blocked the browser call. Options:\n' +
+        '1. Paste an access token and set an API proxy base URL.\n' +
+        '2. Run a tiny local proxy server and point proxy base to it.\n' +
+        '3. Use curl/Postman first, then paste the token here to validate mapping logic.';
+    }
+
+    document.getElementById('connect-btn').addEventListener('click', () => {
+      try {
+        window.location.href = buildAuthorizeUrl();
+      } catch (error) {
+        showStatus(els.authStatus, error.message, 'error');
+      }
+    });
+
+    document.getElementById('save-settings-btn').addEventListener('click', saveSettings);
+    document.getElementById('clear-settings-btn').addEventListener('click', clearSettings);
+
+    document.getElementById('exchange-btn').addEventListener('click', async () => {
+      try {
+        await exchangeCode();
+      } catch (error) {
+        showStatus(els.tokenStatus, error.message + corsHelp(error), 'error');
+      }
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', async () => {
+      try {
+        await refreshAccessToken();
+      } catch (error) {
+        showStatus(els.tokenStatus, error.message + corsHelp(error), 'error');
+      }
+    });
+
+    document.getElementById('save-token-btn').addEventListener('click', saveSettings);
+
+    document.getElementById('fetch-athlete-btn').addEventListener('click', async () => {
+      try {
+        const athlete = await stravaGet('/athlete');
+        renderAthlete(athlete);
+        showStatus(els.fetchStatus, 'Athlete profile loaded.', 'ok');
+      } catch (error) {
+        showStatus(els.fetchStatus, error.message + corsHelp(error), 'error');
+      }
+    });
+
+    document.getElementById('fetch-activities-btn').addEventListener('click', async () => {
+      try {
+        const activities = await fetchAllActivities();
+        renderActivitiesTable(activities);
+        showStatus(els.fetchStatus, `Loaded ${activities.length} activities.`, 'ok');
+      } catch (error) {
+        showStatus(els.fetchStatus, error.message + corsHelp(error), 'error');
+      }
+    });
+
+    document.getElementById('map-leaderboard-btn').addEventListener('click', async () => {
+      try {
+        if (!latestActivities.length) {
+          await fetchAllActivities();
+        }
+
+        const athlete = await stravaGet('/athlete');
+        const mapped = mapActivitiesToLeaderboardRuns(
+          latestActivities,
+          `${athlete.firstname || ''} ${athlete.lastname || ''}`.trim(),
+        );
+        els.leaderboardPreview.value = JSON.stringify(mapped, null, 2);
+        showStatus(els.fetchStatus, 'Mapped activities to leaderboard preview.', 'ok');
+      } catch (error) {
+        showStatus(els.fetchStatus, error.message + corsHelp(error), 'error');
+      }
+    });
+
+    els.localCallbackHint.textContent = defaultRedirectUri();
+    loadSettings();
+    parseOAuthRedirect();
+
+    if (tokenExpiresAt) {
+      const expires = new Date(tokenExpiresAt * 1000).toLocaleString();
+      showStatus(els.tokenStatus, `Saved token expires around ${expires}.`, 'ok');
+    }
+  </script>
+</body>
+</html>
