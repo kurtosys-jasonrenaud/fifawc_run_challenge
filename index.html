@@ -1566,6 +1566,7 @@
         <li>Run, jog, or walk. Any tracker works. Share a screenshot when you're done.</li>
         <li>Miss a day? Carry the distance over to the next day.</li>
         <li>Every 7th day of the challenge is a rest and catch-up day. No new goals apply. Use it to clear anything brought forward.</li>
+        <li>Rain days are called by the team. No target applies and rain-day km do not affect catch-up, but runs still show on the leaderboard.</li>
         <li>Keep it consistent and compete for the leaderboard crown.</li>
       </ul>
     </div>
@@ -1574,7 +1575,7 @@
   <section class="catchup-band" aria-live="polite">
     <div class="inner">
       <h2>Catch-up <span class="accent">calculator</span></h2>
-      <p class="section-note">Totals use the same goal counts as the scoreboard. Every 7th day has no new target. Extra km on a day pays down earlier shortfalls first.</p>
+      <p class="section-note">Totals use the same goal counts as the scoreboard. Every 7th day has no new target. Rain-day runs appear on the board but do not change catch-up totals. Extra km on a normal day pays down earlier shortfalls first.</p>
       <div class="catchup-controls">
         <label for="catchup-runner">Runner</label>
         <select id="catchup-runner" class="catchup-runner-select">
@@ -1679,6 +1680,27 @@
     let benchmarkData = null;
     let leaderboardData = null;
     let dailyGoalTargets = {};
+    let rainDayKeys = new Set();
+
+    function loadRainDays(data) {
+      rainDayKeys = new Set(
+        (data?.rainDays || []).map((entry) => (
+          typeof entry === 'string' ? entry : entry.date
+        )),
+      );
+    }
+
+    function isRainDay(dateKey = getTodayKey()) {
+      return rainDayKeys.has(dateKey);
+    }
+
+    function isExcusedDay(dateKey = getTodayKey()) {
+      return isRestCatchUpDay(dateKey) || isRainDay(dateKey);
+    }
+
+    function getCompletedRuns(runs) {
+      return (runs || []).filter((run) => run.completed);
+    }
 
     function mountLogos() {
       const template = document.getElementById('kurtosys-logo');
@@ -2117,12 +2139,16 @@
           dailyGoalTargets[runDayKey] = 0;
         }
 
+        if (isRainDay(runDayKey)) {
+          dailyGoalTargets[runDayKey] = 0;
+        }
+
         cursor.setDate(cursor.getDate() + 1);
       }
     }
 
     function getTodayTargetKm() {
-      if (isRestCatchUpDay()) {
+      if (isRestCatchUpDay() || isRainDay()) {
         return 0;
       }
 
@@ -2134,6 +2160,7 @@
       const restBanner = document.getElementById('rest-day-banner');
       const runDistanceEl = document.getElementById('run-distance');
       const isRestDay = isRestCatchUpDay();
+      const isRain = isRainDay();
       const targetLabel = toDisplayDistance(getTodayTargetKm());
       const unitLabel = unit;
 
@@ -2142,6 +2169,11 @@
         restBanner.hidden = false;
         restBanner.textContent = `Day ${getChallengeDayNumber(getTodayKey())}: rest and catch-up`;
         runDistanceEl.innerHTML = `Today's target: <span id="distance-value">${targetLabel}</span> <span id="distance-unit">${unitLabel}</span> <span class="rest-tag">(rest day)</span>`;
+      } else if (isRain) {
+        noteEl.textContent = 'Rain day. No catch-up target today. Runs you log still appear on the leaderboard.';
+        restBanner.hidden = false;
+        restBanner.textContent = `Day ${getChallengeDayNumber(getTodayKey())}: rain day`;
+        runDistanceEl.innerHTML = `Today's target: <span id="distance-value">${targetLabel}</span> <span id="distance-unit">${unitLabel}</span> <span class="rest-tag">(rain day)</span>`;
       } else {
         noteEl.textContent = "Based on yesterday's goals (1 goal = 1 km). Missed km rolls forward.";
         restBanner.hidden = true;
@@ -2151,9 +2183,7 @@
 
     function computeRunningBalance(runner, beforeDateKey = getTodayKey()) {
       const runsByDate = new Map(
-        (runner.runs || [])
-          .filter((run) => run.completed)
-          .map((run) => [run.date, run.distance]),
+        getCompletedRuns(runner.runs).map((run) => [run.date, run.distance]),
       );
 
       let balance = 0;
@@ -2162,6 +2192,10 @@
 
       for (let cursor = new Date(start); cursor < end; cursor.setDate(cursor.getDate() + 1)) {
         const dayKey = getLocalDateKey(cursor);
+        if (isRainDay(dayKey)) {
+          continue;
+        }
+
         const target = dailyGoalTargets[dayKey] ?? 0;
         const distance = runsByDate.get(dayKey) ?? 0;
 
@@ -2174,8 +2208,12 @@
     }
 
     function getTodayRunDistance(runner) {
-      const todayRun = (runner.runs || []).find(
-        (run) => run.completed && run.date === getTodayKey(),
+      if (isRainDay()) {
+        return 0;
+      }
+
+      const todayRun = getCompletedRuns(runner.runs).find(
+        (run) => run.date === getTodayKey(),
       );
       return todayRun?.distance ?? 0;
     }
@@ -2246,17 +2284,21 @@
 
       if (stats.totalNeeded === 0 && stats.carryOver === 0) {
         highlightValue = `0 ${unitLabel}`;
-        highlightLabel = isRestCatchUpDay() ? 'Rest day. Nothing owed' : 'Nothing owed today';
+        highlightLabel = isRainDay()
+          ? 'Rain day. Nothing owed'
+          : (isRestCatchUpDay() ? 'Rest day. Nothing owed' : 'Nothing owed today');
       } else if (stats.remaining === 0) {
         highlightValue = 'Done';
-        highlightLabel = isRestCatchUpDay() ? 'Catch-up cleared' : "Today's target cleared";
+        highlightLabel = isExcusedDay() ? 'Catch-up cleared' : "Today's target cleared";
       } else {
         highlightValue = `${toDisplayDistance(stats.remaining)} ${unitLabel}`;
-        highlightLabel = isRestCatchUpDay() ? 'Catch-up still to run' : 'Still to run';
+        highlightLabel = isExcusedDay() ? 'Catch-up still to run' : 'Still to run';
       }
 
-      const todayTargetLabel = isRestCatchUpDay() ? "Today's target (rest day)" : "Today's target";
-      const totalNeededLabel = isRestCatchUpDay() ? 'Catch-up needed today' : 'Total needed today';
+      const todayTargetLabel = isRainDay()
+        ? "Today's target (rain day)"
+        : (isRestCatchUpDay() ? "Today's target (rest day)" : "Today's target");
+      const totalNeededLabel = isExcusedDay() ? 'Catch-up needed today' : 'Total needed today';
 
       results.innerHTML = `
         <div class="catchup-stat">
@@ -2512,9 +2554,7 @@
 
     function computeStreak(runs) {
       const completedDates = [...new Set(
-        runs
-          .filter((run) => run.completed)
-          .map((run) => run.date),
+        getCompletedRuns(runs).map((run) => run.date),
       )].sort().reverse();
 
       if (!completedDates.length) {
@@ -2529,9 +2569,30 @@
 
         if (dayDiff === 1) {
           streak += 1;
-        } else {
-          break;
+          continue;
         }
+
+        if (dayDiff > 1) {
+          let bridged = true;
+          const bridge = new Date(previous);
+          bridge.setDate(bridge.getDate() + 1);
+
+          while (bridge < current) {
+            const bridgeKey = getLocalDateKey(bridge);
+            if (!isRainDay(bridgeKey) && !isRestCatchUpDay(bridgeKey)) {
+              bridged = false;
+              break;
+            }
+            bridge.setDate(bridge.getDate() + 1);
+          }
+
+          if (bridged) {
+            streak += 1;
+            continue;
+          }
+        }
+
+        break;
       }
 
       return streak;
@@ -2561,7 +2622,7 @@
         return false;
       }
 
-      if (isRestCatchUpDay()) {
+      if (isRestCatchUpDay() || isRainDay()) {
         return stats.carryOver === 0 || stats.todayRun > 0;
       }
 
@@ -2573,7 +2634,7 @@
 
       return (data.runners || [])
         .map((runner) => {
-          const completedRuns = (runner.runs || []).filter((run) => run.completed);
+          const completedRuns = getCompletedRuns(runner.runs);
           const totalDistance = completedRuns.reduce((sum, run) => sum + run.distance, 0);
           const unitLabel = completedRuns.at(-1)?.unit || defaultUnit;
           const biggestRun = completedRuns.reduce((max, run) => Math.max(max, run.distance), 0);
@@ -2693,11 +2754,12 @@
     }
 
     function getRunnerScreenshots(runner) {
-      return (runner.runs || []).flatMap((run) => {
+      return getCompletedRuns(runner.runs).flatMap((run) => {
         const sources = run.screenshots?.length
           ? run.screenshots
           : (run.screenshot ? [run.screenshot] : []);
-        const caption = `${formatRunDate(run.date)} · ${formatDistance(run.distance)} ${run.unit || 'km'}`;
+        const rainTag = isRainDay(run.date) ? ' · rain day' : '';
+        const caption = `${formatRunDate(run.date)} · ${formatDistance(run.distance)} ${run.unit || 'km'}${rainTag}`;
 
         return sources.map((src) => ({ src, caption }));
       });
@@ -2814,6 +2876,7 @@
 
         const data = await response.json();
         leaderboardData = data;
+        loadRainDays(data);
         renderLeaderboard(data);
         populateCatchUpRunners();
         renderCatchUpCalculator();

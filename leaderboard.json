@@ -1,6 +1,12 @@
 {
   "updated": "2026-06-23",
   "defaultUnit": "km",
+  "rainDays": [
+    {
+      "date": "2026-06-22",
+      "reason": "Rain"
+    }
+  ],
   "runners": [
     {
       "name": "Lee Watts",
