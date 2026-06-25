@@ -1198,7 +1198,7 @@
 
     .progress-stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 0.75rem;
       margin-bottom: 1.5rem;
     }
@@ -1412,7 +1412,7 @@
       }
 
       .progress-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .benchmark-stats {
@@ -1687,6 +1687,7 @@
 
     const CHALLENGE_START_KEY = '2026-06-12';
     const TOURNAMENT_END_KEY = '2026-07-19';
+    const TEAM_DISTANCE_TARGET_KM = 400;
 
     let unit = 'km';
     let lastGoalTotal = 0;
@@ -1697,6 +1698,7 @@
     let leaderboardData = null;
     let dailyGoalTargets = {};
     let rainDayKeys = new Set();
+    let tournamentGoalsScored = 0;
 
     function loadRainDays(data) {
       rainDayKeys = new Set(
@@ -2129,6 +2131,36 @@
       }
 
       return dates;
+    }
+
+    function computeTournamentGoalsScored(events) {
+      const endKey = getTodayKey() > TOURNAMENT_END_KEY ? TOURNAMENT_END_KEY : getTodayKey();
+      const seen = new Set();
+      let total = 0;
+
+      for (const event of events || []) {
+        if (!event?.date || seen.has(event.id)) {
+          continue;
+        }
+
+        const kickoffKey = getLocalDateKey(new Date(event.date));
+        if (kickoffKey < CHALLENGE_START_KEY || kickoffKey > endKey) {
+          continue;
+        }
+
+        const competition = event.competitions?.[0] || {};
+        if (!isFinished(competition)) {
+          continue;
+        }
+
+        seen.add(event.id);
+        const competitors = competition.competitors || [];
+        const home = competitors.find((c) => c.homeAway === 'home');
+        const away = competitors.find((c) => c.homeAway === 'away');
+        total += parseScore(home?.score) + parseScore(away?.score);
+      }
+
+      return total;
     }
 
     function buildDailyGoalTargets(events) {
@@ -2737,7 +2769,7 @@
 
       const unitLabel = stats?.unitLabel || 'km';
       const teamDistance = stats?.totalDistance ?? 0;
-      const projectedTotal = benchmarkData?.estimate2026?.projectedTotalKm ?? 280;
+      const projectedTotal = TEAM_DISTANCE_TARGET_KM;
       const displayDistance = unit === 'mi' ? teamDistance * 0.621371 : teamDistance;
       const displayProjected = unit === 'mi' ? projectedTotal * 0.621371 : projectedTotal;
       const distancePercent = displayProjected
@@ -2752,6 +2784,10 @@
         <div class="progress-stat">
           <span class="value">${daysRemaining}</span>
           <span class="label">Days remaining</span>
+        </div>
+        <div class="progress-stat">
+          <span class="value">${tournamentGoalsScored}</span>
+          <span class="label">Goals scored</span>
         </div>
         <div class="progress-stat">
           <span class="value">${formatDistance(displayDistance)}</span>
@@ -2943,6 +2979,7 @@
           loadTodayMatches(),
         ]);
         buildDailyGoalTargets(events);
+        tournamentGoalsScored = computeTournamentGoalsScored(events);
         const matches = normalizeMatches(events, yesterdayKey);
         const finishedMatches = matches.filter((match) => match.finished);
         const matchesForTotal = finishedMatches.length ? finishedMatches : matches;
