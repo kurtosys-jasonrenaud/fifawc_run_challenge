@@ -1,9 +1,13 @@
 {
-  "updated": "2026-06-25",
+  "updated": "2026-06-29",
   "defaultUnit": "km",
   "rainDays": [
     {
       "date": "2026-06-22",
+      "reason": "Rain"
+    },
+    {
+      "date": "2026-06-28",
       "reason": "Rain"
     }
   ],
@@ -102,6 +106,14 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/lee-watts-2026-06-25.png"
+        },
+        {
+          "date": "2026-06-28",
+          "matchDayGoals": 14,
+          "distance": 14.75,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-06-28.png"
         }
       ]
     },
