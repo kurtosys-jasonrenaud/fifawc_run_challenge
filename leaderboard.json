@@ -202,7 +202,7 @@
         {
           "date": "2026-06-12",
           "matchDayGoals": 2,
-          "distance": 5.04,
+          "distance": 10.04,
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-12.png",
@@ -211,7 +211,7 @@
         {
           "date": "2026-06-13",
           "matchDayGoals": 5,
-          "distance": 11.13,
+          "distance": 15.13,
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-13.png",
@@ -220,7 +220,7 @@
         {
           "date": "2026-06-14",
           "matchDayGoals": 9,
-          "distance": 7.19,
+          "distance": 10.19,
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-14.png",
@@ -233,7 +233,7 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-15.png",
-          "catchUpKm": 1.81
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-16",
@@ -246,16 +246,16 @@
             "screenshots/jason-renaud-2026-06-16.png",
             "screenshots/jason-renaud-2026-06-16-evening.png"
           ],
-          "catchUpKm": 8.78
+          "catchUpKm": 6.97
         },
         {
           "date": "2026-06-17",
           "matchDayGoals": 12,
-          "distance": 2.03,
+          "distance": 8.03,
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-17.png",
-          "catchUpKm": 2.03
+          "catchUpKm": 1.83
         },
         {
           "date": "2026-06-19",
@@ -264,25 +264,25 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-19.png",
-          "catchUpKm": 10.03
+          "catchUpKm": 5.8
         },
         {
           "date": "2026-06-20",
           "matchDayGoals": 7,
-          "distance": 6.28,
+          "distance": 9.28,
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-20.png",
-          "catchUpKm": 6.28
+          "catchUpKm": 9.28
         },
         {
           "date": "2026-06-21",
           "matchDayGoals": 7,
-          "distance": 10.5,
+          "distance": 15.5,
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-21.png",
-          "catchUpKm": 10.5
+          "catchUpKm": 7.49
         },
         {
           "date": "2026-06-24",
@@ -291,7 +291,7 @@
           "unit": "km",
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-06-24.png",
-          "catchUpKm": 15.05
+          "catchUpKm": 8.0
         },
         {
           "date": "2026-06-30",
