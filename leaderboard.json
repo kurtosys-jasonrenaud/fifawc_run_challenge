@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-08",
+  "updated": "2026-07-09",
   "defaultUnit": "km",
   "rainDays": [
     {
@@ -25,7 +25,8 @@
           "distance": 5,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-12.png"
+          "screenshot": "screenshots/lee-watts-2026-06-12.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-13",
@@ -33,7 +34,8 @@
           "distance": 19.21,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-13.png"
+          "screenshot": "screenshots/lee-watts-2026-06-13.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-14",
@@ -41,7 +43,8 @@
           "distance": 9.15,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-14.png"
+          "screenshot": "screenshots/lee-watts-2026-06-14.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-15",
@@ -49,7 +52,8 @@
           "distance": 18.17,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-15.png"
+          "screenshot": "screenshots/lee-watts-2026-06-15.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-16",
@@ -57,7 +61,8 @@
           "distance": 9.23,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-16.png"
+          "screenshot": "screenshots/lee-watts-2026-06-16.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-18",
@@ -69,7 +74,8 @@
           "screenshots": [
             "screenshots/lee-watts-2026-06-18.png",
             "screenshots/lee-watts-2026-06-18-evening.png"
-          ]
+          ],
+          "catchUpKm": 12.0
         },
         {
           "date": "2026-06-20",
@@ -77,7 +83,8 @@
           "distance": 27.41,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-20.png"
+          "screenshot": "screenshots/lee-watts-2026-06-20.png",
+          "catchUpKm": 14.0
         },
         {
           "date": "2026-06-21",
@@ -85,7 +92,8 @@
           "distance": 3.17,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-21.png"
+          "screenshot": "screenshots/lee-watts-2026-06-21.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-22",
@@ -93,7 +101,8 @@
           "distance": 10.67,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-22.png"
+          "screenshot": "screenshots/lee-watts-2026-06-22.png",
+          "catchUpKm": 0
         },
         {
           "date": "2026-06-23",
@@ -101,7 +110,8 @@
           "distance": 10,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-23.png"
+          "screenshot": "screenshots/lee-watts-2026-06-23.png",
+          "catchUpKm": 3.83
         },
         {
           "date": "2026-06-25",
@@ -109,7 +119,8 @@
           "distance": 11.59,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-25.png"
+          "screenshot": "screenshots/lee-watts-2026-06-25.png",
+          "catchUpKm": 11.59
         },
         {
           "date": "2026-06-28",
@@ -117,7 +128,8 @@
           "distance": 14.75,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-28.png"
+          "screenshot": "screenshots/lee-watts-2026-06-28.png",
+          "catchUpKm": 0
         },
         {
           "date": "2026-06-29",
@@ -125,7 +137,8 @@
           "distance": 10,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-29.png"
+          "screenshot": "screenshots/lee-watts-2026-06-29.png",
+          "catchUpKm": 10
         },
         {
           "date": "2026-06-30",
@@ -133,7 +146,8 @@
           "distance": 12.01,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-30.png"
+          "screenshot": "screenshots/lee-watts-2026-06-30.png",
+          "catchUpKm": 12.01
         },
         {
           "date": "2026-07-02",
@@ -141,23 +155,26 @@
           "distance": 10.02,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-07-02.png"
+          "screenshot": "screenshots/lee-watts-2026-07-02.png",
+          "catchUpKm": 10.02
         },
         {
           "date": "2026-07-04",
           "matchDayGoals": 8,
-          "distance": 16.20,
+          "distance": 16.2,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-07-04.png"
+          "screenshot": "screenshots/lee-watts-2026-07-04.png",
+          "catchUpKm": 16.2
         },
         {
           "date": "2026-07-05",
           "matchDayGoals": 4,
-          "distance": 3.10,
+          "distance": 3.1,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-07-05.png"
+          "screenshot": "screenshots/lee-watts-2026-07-05.png",
+          "catchUpKm": 3.1
         },
         {
           "date": "2026-07-06",
@@ -165,7 +182,17 @@
           "distance": 8.01,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-07-06.png"
+          "screenshot": "screenshots/lee-watts-2026-07-06.png",
+          "catchUpKm": 8.01
+        },
+        {
+          "date": "2026-07-08",
+          "matchDayGoals": 5,
+          "distance": 6.6,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-07-08.png",
+          "catchUpKm": 6.6
         }
       ]
     },
@@ -175,26 +202,29 @@
         {
           "date": "2026-06-12",
           "matchDayGoals": 2,
-          "distance": 5.04,
+          "distance": 10.04,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-12.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-12.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-13",
           "matchDayGoals": 5,
-          "distance": 11.13,
+          "distance": 15.13,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-13.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-13.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-14",
           "matchDayGoals": 9,
-          "distance": 7.19,
+          "distance": 10.19,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-14.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-14.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-15",
@@ -202,7 +232,8 @@
           "distance": 10.03,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-15.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-15.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-16",
@@ -214,15 +245,17 @@
           "screenshots": [
             "screenshots/jason-renaud-2026-06-16.png",
             "screenshots/jason-renaud-2026-06-16-evening.png"
-          ]
+          ],
+          "catchUpKm": 6.97
         },
         {
           "date": "2026-06-17",
           "matchDayGoals": 12,
-          "distance": 2.03,
+          "distance": 8.03,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-17.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-17.png",
+          "catchUpKm": 1.83
         },
         {
           "date": "2026-06-19",
@@ -230,23 +263,26 @@
           "distance": 10.03,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-19.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-19.png",
+          "catchUpKm": 5.8
         },
         {
           "date": "2026-06-20",
           "matchDayGoals": 7,
-          "distance": 6.28,
+          "distance": 9.28,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-20.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-20.png",
+          "catchUpKm": 9.28
         },
         {
           "date": "2026-06-21",
           "matchDayGoals": 7,
-          "distance": 10.5,
+          "distance": 15.5,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-21.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-21.png",
+          "catchUpKm": 7.49
         },
         {
           "date": "2026-06-24",
@@ -254,7 +290,8 @@
           "distance": 15.05,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-24.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-24.png",
+          "catchUpKm": 8.0
         },
         {
           "date": "2026-06-30",
@@ -262,7 +299,8 @@
           "distance": 5.02,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/jason-renaud-2026-06-30.png"
+          "screenshot": "screenshots/jason-renaud-2026-06-30.png",
+          "catchUpKm": 5.02
         }
       ]
     },
@@ -275,7 +313,8 @@
           "distance": 21,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/rowena-childes-2026-06-14.png"
+          "screenshot": "screenshots/rowena-childes-2026-06-14.png",
+          "catchUpKm": 7.0
         },
         {
           "date": "2026-06-22",
@@ -283,7 +322,8 @@
           "distance": 10.79,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/rowena-childes-2026-06-22.png"
+          "screenshot": "screenshots/rowena-childes-2026-06-22.png",
+          "catchUpKm": 0
         }
       ]
     },
@@ -296,7 +336,8 @@
           "distance": 9.94,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/grant-swart-2026-06-12.png"
+          "screenshot": "screenshots/grant-swart-2026-06-12.png",
+          "catchUpKm": 0.0
         },
         {
           "date": "2026-06-16",
@@ -304,7 +345,8 @@
           "distance": 7.79,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/grant-swart-2026-06-16.png"
+          "screenshot": "screenshots/grant-swart-2026-06-16.png",
+          "catchUpKm": 7.79
         },
         {
           "date": "2026-06-17",
@@ -312,7 +354,8 @@
           "distance": 6.07,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/grant-swart-2026-06-17.png"
+          "screenshot": "screenshots/grant-swart-2026-06-17.png",
+          "catchUpKm": 6.07
         },
         {
           "date": "2026-06-22",
@@ -320,7 +363,8 @@
           "distance": 6.3,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/grant-swart-2026-06-22.png"
+          "screenshot": "screenshots/grant-swart-2026-06-22.png",
+          "catchUpKm": 0
         }
       ]
     },
@@ -333,7 +377,8 @@
           "distance": 4.53,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/kurt-hartzenberg-2026-06-16.png"
+          "screenshot": "screenshots/kurt-hartzenberg-2026-06-16.png",
+          "catchUpKm": 4.53
         }
       ]
     }
