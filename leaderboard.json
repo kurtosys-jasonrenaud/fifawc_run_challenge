@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-14",
+  "updated": "2026-07-16",
   "defaultUnit": "km",
   "rainDays": [
     {
@@ -115,7 +115,7 @@
         },
         {
           "date": "2026-06-25",
-          "matchDayGoals": 9,
+          "matchDayGoals": 0,
           "distance": 11.59,
           "unit": "km",
           "completed": true,
@@ -128,7 +128,6 @@
           "distance": 14.75,
           "unit": "km",
           "completed": true,
-          "screenshot": "screenshots/lee-watts-2026-06-28.png",
           "catchUpKm": 0
         },
         {
@@ -151,7 +150,7 @@
         },
         {
           "date": "2026-07-02",
-          "matchDayGoals": 10,
+          "matchDayGoals": 0,
           "distance": 10.02,
           "unit": "km",
           "completed": true,
@@ -211,6 +210,15 @@
           "completed": true,
           "screenshot": "screenshots/lee-watts-2026-07-14.png",
           "catchUpKm": 7.0
+        },
+        {
+          "date": "2026-07-15",
+          "matchDayGoals": 2,
+          "distance": 10.01,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/lee-watts-2026-07-15.png",
+          "catchUpKm": 0.0
         }
       ]
     },
