@@ -662,6 +662,144 @@
       line-height: 1.55;
     }
 
+    /* ── Post-final make-up countdown ── */
+    .makeup-band {
+      background: var(--navy);
+      padding: 2.25rem 2rem;
+      color: var(--white);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .makeup-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .makeup-band h2 {
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+
+    .makeup-band .section-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .makeup-countdown {
+      display: grid;
+      grid-template-columns: minmax(7rem, 9rem) 1fr;
+      gap: 1rem;
+      align-items: stretch;
+      margin-bottom: 1.25rem;
+    }
+
+    .makeup-countdown-card {
+      background: linear-gradient(145deg, var(--royal), #1a4fd4);
+      border-radius: var(--radius-card);
+      padding: 1.1rem 0.85rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .makeup-countdown-card .value {
+      display: block;
+      font-size: clamp(2.2rem, 8vw, 3rem);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .makeup-countdown-card .label {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.35;
+    }
+
+    .makeup-window-meta {
+      background: var(--navy-mid);
+      border-radius: var(--radius-card);
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .makeup-window-meta .phase {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.35;
+    }
+
+    .makeup-window-meta .dates {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .makeup-runners {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .makeup-runner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+      background: var(--navy-mid);
+      border-radius: var(--radius-card);
+      padding: 0.85rem 1rem;
+    }
+
+    .makeup-runner .name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--white);
+    }
+
+    .makeup-runner .hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .makeup-runner .remaining {
+      text-align: right;
+      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .makeup-runner .remaining.owed {
+      color: #ff9f6b;
+    }
+
+    .makeup-runner .remaining.clear {
+      color: var(--green);
+    }
+
+    .makeup-empty {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
+    }
+
     /* ── Leaderboard band (royal blue) ── */
     .leaderboard-band {
       background: var(--royal);
@@ -1394,6 +1532,7 @@
       .hero-band,
       .stats-band,
       .catchup-band,
+      .makeup-band,
       .progress-band,
       .matches-band,
       .today-band,
@@ -1408,6 +1547,10 @@
       }
 
       .catchup-results {
+        grid-template-columns: 1fr;
+      }
+
+      .makeup-countdown {
         grid-template-columns: 1fr;
       }
 
@@ -1583,6 +1726,7 @@
         <li>Miss a day? Carry the distance over to the next day.</li>
         <li>Every 7th day of the challenge is a rest and catch-up day. No new goals apply. Use it to clear anything brought forward.</li>
         <li>Rain days are called by the team. No target applies and rain-day km do not affect catch-up, but runs still show on the leaderboard.</li>
+        <li>After the final on 19 July, everyone has 7 days (20–26 July) to clear any remaining catch-up km.</li>
         <li>Keep it consistent and compete for the leaderboard crown.</li>
       </ul>
     </div>
@@ -1600,6 +1744,26 @@
       </div>
       <div id="catchup-results" class="catchup-results">
         <p class="catchup-empty">Loading leaderboard…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="makeup-band" aria-live="polite">
+    <div class="inner">
+      <h2>Make-up <span class="accent">countdown</span></h2>
+      <p class="section-note">After the World Cup final on 19 July, the team gets 7 days to clear any catch-up still owed. Focus on km remaining — not just today's target.</p>
+      <div class="makeup-countdown">
+        <div class="makeup-countdown-card">
+          <span id="makeup-days-value" class="value">-</span>
+          <span id="makeup-days-label" class="label">Days left</span>
+        </div>
+        <div class="makeup-window-meta">
+          <p id="makeup-phase" class="phase">Loading…</p>
+          <p id="makeup-dates" class="dates"></p>
+        </div>
+      </div>
+      <div id="makeup-runners" class="makeup-runners">
+        <p class="makeup-empty">Loading runners…</p>
       </div>
     </div>
   </section>
@@ -1687,6 +1851,7 @@
 
     const CHALLENGE_START_KEY = '2026-06-12';
     const TOURNAMENT_END_KEY = '2026-07-19';
+    const MAKEUP_DAYS = 7;
     const TEAM_DISTANCE_TARGET_KM = 400;
 
     let unit = 'km';
@@ -2074,6 +2239,7 @@
       updateBenchmarkCompare();
       syncShareCard();
       renderCatchUpCalculator();
+      renderMakeUpCountdown();
     }
 
     function toDisplayDistance(km) {
@@ -2280,6 +2446,118 @@
         totalNeeded,
         remaining,
       };
+    }
+
+    function getMakeupStartKey() {
+      const finalDay = new Date(`${TOURNAMENT_END_KEY}T12:00:00`);
+      finalDay.setDate(finalDay.getDate() + 1);
+      return getLocalDateKey(finalDay);
+    }
+
+    function getMakeupEndKey() {
+      const finalDay = new Date(`${TOURNAMENT_END_KEY}T12:00:00`);
+      finalDay.setDate(finalDay.getDate() + MAKEUP_DAYS);
+      return getLocalDateKey(finalDay);
+    }
+
+    function getDaysBetween(startKey, endKey) {
+      const start = new Date(`${startKey}T12:00:00`);
+      const end = new Date(`${endKey}T12:00:00`);
+      return Math.max(0, Math.round((end - start) / 86400000));
+    }
+
+    function getMakeupWindowState() {
+      const todayKey = getTodayKey();
+      const makeupStartKey = getMakeupStartKey();
+      const makeupEndKey = getMakeupEndKey();
+
+      if (todayKey < makeupStartKey) {
+        return {
+          phase: 'before',
+          daysValue: MAKEUP_DAYS,
+          daysLabel: 'Make-up days',
+          phaseText: `Final on ${formatRunDate(TOURNAMENT_END_KEY)}. Then ${MAKEUP_DAYS} days to clear any km still owed.`,
+          datesText: `Make-up window: ${formatRunDate(makeupStartKey)} – ${formatRunDate(makeupEndKey)}`,
+        };
+      }
+
+      if (todayKey <= makeupEndKey) {
+        const daysLeft = getDaysBetween(todayKey, makeupEndKey) + 1;
+        return {
+          phase: 'active',
+          daysValue: daysLeft,
+          daysLabel: daysLeft === 1 ? 'Day left' : 'Days left',
+          phaseText: 'Make-up window is open. Clear your remaining catch-up km before it closes.',
+          datesText: `Closes ${formatRunDate(makeupEndKey)} · ${MAKEUP_DAYS}-day window after the final`,
+        };
+      }
+
+      return {
+        phase: 'closed',
+        daysValue: 0,
+        daysLabel: 'Days left',
+        phaseText: 'Make-up window has closed.',
+        datesText: `Ran ${formatRunDate(makeupStartKey)} – ${formatRunDate(makeupEndKey)}`,
+      };
+    }
+
+    function renderMakeUpCountdown() {
+      const daysValueEl = document.getElementById('makeup-days-value');
+      const daysLabelEl = document.getElementById('makeup-days-label');
+      const phaseEl = document.getElementById('makeup-phase');
+      const datesEl = document.getElementById('makeup-dates');
+      const runnersEl = document.getElementById('makeup-runners');
+      const runners = leaderboardData?.runners || [];
+      const unitLabel = getUnitLabel();
+      const windowState = getMakeupWindowState();
+
+      daysValueEl.textContent = windowState.daysValue;
+      daysLabelEl.textContent = windowState.daysLabel;
+      phaseEl.textContent = windowState.phaseText;
+      datesEl.textContent = windowState.datesText;
+
+      if (!runners.length) {
+        runnersEl.innerHTML = '<p class="makeup-empty">No runners on the board yet.</p>';
+        return;
+      }
+
+      const rows = runners
+        .map((runner) => {
+          const stats = computeCatchUp(runner);
+          const remaining = stats.remaining;
+          const perDay = windowState.phase === 'active' && windowState.daysValue > 0
+            ? remaining / windowState.daysValue
+            : null;
+
+          return {
+            name: runner.name,
+            remaining,
+            perDay,
+          };
+        })
+        .sort((a, b) => b.remaining - a.remaining);
+
+      runnersEl.innerHTML = rows.map((row) => {
+        const remainingLabel = row.remaining > 0
+          ? `${toDisplayDistance(row.remaining)} ${unitLabel}`
+          : 'Clear';
+        const remainingClass = row.remaining > 0 ? 'owed' : 'clear';
+        const hint = row.remaining > 0 && row.perDay !== null
+          ? `~${toDisplayDistance(row.perDay)} ${unitLabel}/day to clear`
+          : (row.remaining > 0
+            ? 'Still to run (catch-up + today)'
+            : 'Nothing owed right now');
+
+        return `
+          <div class="makeup-runner">
+            <div>
+              <div class="name">${escapeHtml(row.name)}</div>
+              <div class="hint">${escapeHtml(hint)}</div>
+            </div>
+            <div class="remaining ${remainingClass}">${escapeHtml(remainingLabel)}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     function populateCatchUpRunners() {
@@ -2932,6 +3210,7 @@
         renderLeaderboard(data);
         populateCatchUpRunners();
         renderCatchUpCalculator();
+        renderMakeUpCountdown();
       } catch (error) {
         document.getElementById('leaderboard-updated').textContent = 'Leaderboard unavailable';
         document.getElementById('leaderboard-body').innerHTML = `
@@ -2941,6 +3220,9 @@
         `;
         document.getElementById('catchup-results').innerHTML = `
           <p class="catchup-empty">Catch-up calculator needs the leaderboard data.</p>
+        `;
+        document.getElementById('makeup-runners').innerHTML = `
+          <p class="makeup-empty">Make-up countdown needs the leaderboard data.</p>
         `;
       }
     }
@@ -3030,6 +3312,7 @@
           renderTournamentProgress(computeTeamStats(buildLeaderboardRows(leaderboardData)));
         }
         renderCatchUpCalculator();
+        renderMakeUpCountdown();
       });
     });
 
