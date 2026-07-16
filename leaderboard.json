@@ -336,6 +336,15 @@
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-07-11.png",
           "catchUpKm": 10.29
+        },
+        {
+          "date": "2026-07-15",
+          "matchDayGoals": 2,
+          "distance": 5.0,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-07-15.png",
+          "catchUpKm": 5.0
         }
       ]
     },
