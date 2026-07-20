@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-17",
+  "updated": "2026-07-20",
   "defaultUnit": "km",
   "rainDays": [
     {
@@ -363,6 +363,15 @@
           "completed": true,
           "screenshot": "screenshots/jason-renaud-2026-07-16.png",
           "catchUpKm": 4.17
+        },
+        {
+          "date": "2026-07-19",
+          "matchDayGoals": 10,
+          "distance": 21.4,
+          "unit": "km",
+          "completed": true,
+          "screenshot": "screenshots/jason-renaud-2026-07-19.png",
+          "catchUpKm": 21.4
         }
       ]
     },
