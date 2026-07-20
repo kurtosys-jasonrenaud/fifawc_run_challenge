@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>World Cup Run Challenge | Kurtosys</title>
-  <meta name="description" content="Run the goals scored yesterday at the FIFA World Cup 2026. One goal equals one kilometre. Track the Kurtosys team leaderboard, catch-up totals, and daily targets.">
+  <meta name="description" content="Kurtosys World Cup Run Challenge make-up window. Clear your remaining catch-up kilometres after FIFA World Cup 2026.">
   <link rel="canonical" href="https://kurtosys-jasonrenaud.github.io/fifawc_run_challenge/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Kurtosys World Cup Run Challenge">
-  <meta property="og:title" content="World Cup Run Challenge">
-  <meta property="og:description" content="Every day, run the total goals scored across all World Cup matches from the previous day. One goal, one kilometre. Every 7th day is a rest and catch-up day.">
+  <meta property="og:title" content="World Cup Run Challenge — Make-up countdown">
+  <meta property="og:description" content="The tournament is over. Clear your remaining catch-up km before the make-up window closes.">
   <meta property="og:url" content="https://kurtosys-jasonrenaud.github.io/fifawc_run_challenge/">
   <meta property="og:image" content="https://kurtosys-jasonrenaud.github.io/fifawc_run_challenge/og-share.jpg">
   <meta property="og:image:width" content="1024">
   <meta property="og:image:height" content="297">
-  <meta property="og:image:alt" content="World Cup Run Challenge by Kurtosys. Run one kilometre for every goal scored yesterday.">
+  <meta property="og:image:alt" content="World Cup Run Challenge make-up countdown by Kurtosys">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="World Cup Run Challenge">
-  <meta name="twitter:description" content="Every day, run the total goals scored across all World Cup matches from the previous day. One goal, one kilometre.">
+  <meta name="twitter:title" content="World Cup Run Challenge — Make-up countdown">
+  <meta name="twitter:description" content="The tournament is over. Clear your remaining catch-up km before the make-up window closes.">
   <meta name="twitter:image" content="https://kurtosys-jasonrenaud.github.io/fifawc_run_challenge/og-share.jpg">
   <meta name="twitter:image:alt" content="World Cup Run Challenge by Kurtosys">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,8 +60,7 @@
 
     /* Kurtosys brand: green accent only on dark backgrounds */
     .benchmark-band .accent,
-    .matches-band .accent,
-    .share-card-matches .accent {
+    .facts-band .accent {
       color: var(--royal);
     }
 
@@ -125,6 +124,104 @@
       max-width: 520px;
       margin: 0 auto;
       line-height: 1.65;
+    }
+
+    /* ── Slim actions bar ── */
+    .actions-band {
+      background: var(--navy-mid);
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .actions-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── World Cup facts ── */
+    .facts-band {
+      background: var(--surface);
+      color: var(--navy);
+      padding: 2.5rem 2rem;
+    }
+
+    .facts-band .inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .facts-band h2 {
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+      line-height: 1.2;
+    }
+
+    .facts-band .section-note {
+      font-size: 0.9rem;
+      color: var(--text-muted-dark);
+      margin-bottom: 1.35rem;
+      line-height: 1.5;
+    }
+
+    .facts-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .facts-stat {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 1rem 0.75rem;
+      text-align: center;
+      box-shadow: 0 1px 0 rgba(0, 26, 61, 0.06);
+    }
+
+    .facts-stat .value {
+      display: block;
+      font-size: clamp(1.35rem, 4vw, 1.75rem);
+      font-weight: 800;
+      color: var(--royal);
+      line-height: 1.15;
+    }
+
+    .facts-stat .label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted-dark);
+      margin-top: 0.35rem;
+      line-height: 1.35;
+    }
+
+    .facts-list {
+      list-style: none;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .facts-list li {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 0.95rem 1.1rem;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--navy);
+      border-left: 3px solid var(--royal);
+    }
+
+    .facts-list strong {
+      font-weight: 800;
     }
 
     /* ── Stats band (royal blue) ── */
@@ -664,11 +761,10 @@
 
     /* ── Post-final make-up countdown ── */
     .makeup-band {
-      background: var(--navy);
-      padding: 2.25rem 2rem;
+      background: linear-gradient(180deg, #0a1f4a 0%, var(--navy) 100%);
+      padding: 2.5rem 2rem 2.75rem;
       color: var(--white);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .makeup-band .inner {
@@ -677,7 +773,7 @@
     }
 
     .makeup-band h2 {
-      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+      font-size: clamp(1.4rem, 4vw, 1.85rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       margin-bottom: 0.25rem;
@@ -999,7 +1095,7 @@
     }
 
     .share-card-hero {
-      padding: 1.5rem 2rem 0.5rem;
+      padding: 1.25rem 2rem 0.75rem;
       text-align: center;
     }
 
@@ -1010,91 +1106,102 @@
       line-height: 1.15;
     }
 
-    .share-card-stats {
-      background: var(--royal);
-      padding: 2rem;
+    .share-card-hero .tagline {
+      margin-top: 0.45rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .share-card-countdown {
+      background: linear-gradient(145deg, var(--royal), #1a4fd4);
+      padding: 1.75rem 2rem;
       text-align: center;
     }
 
-    .share-card-stats .label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.75);
-      margin-bottom: 0.4rem;
-    }
-
-    .share-card-stats .date {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-
-    .share-card-goals {
-      font-size: 6rem;
+    .share-card-countdown .days {
+      font-size: 5.5rem;
       font-weight: 900;
       line-height: 1;
-      color: var(--green);
       letter-spacing: -0.04em;
+      color: var(--white);
     }
 
-    .share-card-goals .unit {
+    .share-card-countdown .days-label {
       display: block;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.8);
-      margin-top: 0.4rem;
-      letter-spacing: 0.04em;
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.8);
     }
 
-    .share-card-run {
-      margin-top: 1.25rem;
-      display: inline-block;
-      background: var(--navy);
-      border-radius: var(--radius-card);
-      padding: 0.85rem 1.5rem;
-      font-size: 1rem;
+    .share-card-countdown .phase {
+      margin-top: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 600;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.92);
     }
 
-    .share-card-run .distance {
-      font-size: 1.5rem;
+    .share-card-runners {
+      background: var(--navy-mid);
+      padding: 1.35rem 2rem 1.5rem;
+    }
+
+    .share-card-runners h3 {
+      font-size: 1rem;
       font-weight: 800;
-      color: var(--green);
-    }
-
-    .share-card-matches {
-      background: var(--surface);
-      color: var(--navy);
-      padding: 1.75rem 2rem;
-    }
-
-    .share-card-matches h3 {
-      font-size: 1.25rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
       letter-spacing: -0.02em;
     }
 
-    .share-card-matches .match-list {
-      gap: 0.6rem;
+    .share-card-runner-list {
+      display: grid;
+      gap: 0.5rem;
     }
 
-    .share-card-matches .match {
-      font-size: 0.88rem;
-      padding: 0.85rem 1rem;
+    .share-card-runner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+      background: var(--navy);
+      border-radius: var(--radius-card);
+      padding: 0.75rem 0.95rem;
     }
 
-    .share-card-matches .empty-state {
-      padding: 1rem 0;
-      font-size: 0.88rem;
+    .share-card-runner .name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .share-card-runner .remaining {
+      font-size: 1.15rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .share-card-runner .remaining.owed {
+      color: #ff9f6b;
+    }
+
+    .share-card-runner .remaining.clear {
+      color: var(--green);
+    }
+
+    .share-card-runners .empty {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
     }
 
     .share-card-footer {
       padding: 1rem 2rem 1.5rem;
-      background: var(--navy-mid);
+      background: var(--navy);
       text-align: center;
       font-size: 0.75rem;
       color: var(--text-muted);
@@ -1529,17 +1636,19 @@
         padding: 1rem 1.25rem;
       }
 
-      .hero-band,
-      .stats-band,
+      .actions-band,
+      .facts-band,
       .catchup-band,
       .makeup-band,
       .progress-band,
-      .matches-band,
-      .today-band,
       .leaderboard-band,
       .rules-band {
         padding-left: 1.25rem;
         padding-right: 1.25rem;
+      }
+
+      .facts-stats {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .team-stats {
@@ -1587,37 +1696,38 @@
   <section class="hero-band">
     <div class="inner">
       <h1>World Cup <span class="accent">Run</span> Challenge</h1>
-      <p class="subtitle">Every day, run the total number of goals scored across all World Cup matches from the previous day. One goal, one kilometer, or mile if you're feeling brave. Every 7th day is a rest and catch-up day.</p>
+      <p class="subtitle">The tournament is over. Clear your remaining catch-up km in the make-up window before it closes. One goal was one kilometre — now finish what you still owe.</p>
     </div>
   </section>
 
-  <section class="stats-band" aria-live="polite">
+  <section class="makeup-band" aria-live="polite">
     <div class="inner">
-      <div class="label">Goals scored yesterday</div>
-      <div id="yesterday-date" class="date">Loading…</div>
-      <div class="goal-explosion-stage">
-        <div id="goal-explosion-wrap" class="goal-explosion-wrap">
-          <div id="goal-count" class="goal-count">
-            -
-            <span class="unit">goals</span>
-          </div>
-          <div id="goal-particles" class="goal-particles" aria-hidden="true"></div>
+      <h2>Make-up <span class="accent">countdown</span></h2>
+      <p class="section-note">The games are finished. This is the team’s focus now: km remaining for every runner, and days left to clear them.</p>
+      <div class="makeup-countdown">
+        <div class="makeup-countdown-card">
+          <span id="makeup-days-value" class="value">-</span>
+          <span id="makeup-days-label" class="label">Days left</span>
         </div>
-        <p id="goal-explosion-label" class="goal-explosion-label" aria-live="polite"></p>
-      </div>
-      <div id="run-distance" class="run-distance">
-        Today's target: <span id="distance-value">-</span> <span id="distance-unit">km</span>
-      </div>
-      <p id="run-distance-note" class="run-distance-note">Based on yesterday's goals (1 goal = 1 km). Missed km rolls forward.</p>
-      <p id="rest-day-banner" class="rest-day-banner" hidden>Rest and catch-up day</p>
-      <div class="controls">
-        <button id="refresh-btn" class="btn-primary" type="button">Refresh scores</button>
-        <button id="share-btn" class="btn-ghost" type="button">Share screenshot</button>
-        <button id="copy-btn" class="btn-ghost" type="button">Copy for chat</button>
-        <div class="toggle-group" role="group" aria-label="Distance unit">
-          <button type="button" data-unit="km" class="active">Kilometers</button>
-          <button type="button" data-unit="mi">Miles</button>
+        <div class="makeup-window-meta">
+          <p id="makeup-phase" class="phase">Loading…</p>
+          <p id="makeup-dates" class="dates"></p>
         </div>
+      </div>
+      <div id="makeup-runners" class="makeup-runners">
+        <p class="makeup-empty">Loading runners…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="actions-band">
+    <div class="inner">
+      <button id="share-btn" class="btn-primary" type="button">Share screenshot</button>
+      <button id="copy-btn" class="btn-ghost" type="button">Copy for chat</button>
+      <button id="refresh-btn" class="btn-ghost" type="button">Refresh data</button>
+      <div class="toggle-group" role="group" aria-label="Distance unit">
+        <button type="button" data-unit="km" class="active">Kilometers</button>
+        <button type="button" data-unit="mi">Miles</button>
       </div>
     </div>
   </section>
@@ -1626,43 +1736,25 @@
     <div id="error" class="error" role="alert"></div>
   </div>
 
-  <section class="benchmark-band">
+  <section class="facts-band">
     <div class="inner">
-      <h2>2022 <span class="accent">benchmark</span></h2>
-      <p class="section-note">Estimates based on Qatar 2022 (172 goals across 64 matches)</p>
-      <div id="benchmark-stats" class="benchmark-stats">
-        <div class="benchmark-stat"><span class="value">-</span><span class="label">Avg daily run</span></div>
-        <div class="benchmark-stat"><span class="value">-</span><span class="label">Toughest day</span></div>
-        <div class="benchmark-stat"><span class="value">-</span><span class="label">Est. 2026 total</span></div>
-        <div class="benchmark-stat"><span class="value">-</span><span class="label">Goals per match</span></div>
+      <h2>World Cup <span class="accent">2026</span> facts</h2>
+      <p class="section-note">The biggest World Cup ever is done. A few numbers worth knowing while you clear those last kilometres.</p>
+      <div id="facts-stats" class="facts-stats">
+        <div class="facts-stat"><span class="value">-</span><span class="label">Goals scored</span></div>
+        <div class="facts-stat"><span class="value">-</span><span class="label">Matches</span></div>
+        <div class="facts-stat"><span class="value">-</span><span class="label">Team km</span></div>
+        <div class="facts-stat"><span class="value">-</span><span class="label">Champions</span></div>
       </div>
-      <p id="benchmark-compare" class="benchmark-compare">Loading 2022 comparison…</p>
-    </div>
-  </section>
-
-  <section class="matches-band">
-    <div class="inner">
-      <h2>Yesterday's <span class="accent">matches</span></h2>
-      <ul id="match-list" class="match-list">
-        <li class="empty-state">Loading match data…</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="today-band">
-    <div class="inner">
-      <h2>Today's <span class="accent">matches</span></h2>
-      <p id="today-date" class="section-note">Loading…</p>
-      <p id="today-summary" class="today-summary"></p>
-      <ul id="today-match-list" class="match-list">
-        <li class="empty-state">Loading today's fixtures…</li>
+      <ul id="facts-list" class="facts-list">
+        <li>Loading tournament facts…</li>
       </ul>
     </div>
   </section>
 
   <section class="progress-band" aria-live="polite">
     <div class="inner">
-      <h2>Tournament <span class="accent">progress</span></h2>
+      <h2>Challenge <span class="accent">wrap-up</span></h2>
       <div id="progress-stats" class="progress-stats">
         <div class="progress-stat"><span class="value">-</span><span class="label">Days played</span></div>
         <div class="progress-stat"><span class="value">-</span><span class="label">Days remaining</span></div>
@@ -1717,25 +1809,10 @@
     </div>
   </section>
 
-  <section class="rules-band">
-    <div class="inner">
-      <h2>Challenge <span class="accent">rules</span></h2>
-      <ul class="rules-list">
-        <li>Each day, run the total goals scored across all World Cup matches from the previous day.</li>
-        <li>Run, jog, or walk. Any tracker works. Share a screenshot when you're done.</li>
-        <li>Miss a day? Carry the distance over to the next day.</li>
-        <li>Every 7th day of the challenge is a rest and catch-up day. No new goals apply. Use it to clear anything brought forward.</li>
-        <li>Rain days are called by the team. No target applies and rain-day km do not affect catch-up, but runs still show on the leaderboard.</li>
-        <li>After the final on 19 July, everyone has 7 days (20–26 July) to clear any remaining catch-up km.</li>
-        <li>Keep it consistent and compete for the leaderboard crown.</li>
-      </ul>
-    </div>
-  </section>
-
   <section class="catchup-band" aria-live="polite">
     <div class="inner">
       <h2>Catch-up <span class="accent">calculator</span></h2>
-      <p class="section-note">Totals use the same goal counts as the scoreboard. Every 7th day has no new target. Rain-day runs appear on the board but do not change catch-up totals. Extra km on a normal day pays down earlier shortfalls first.</p>
+      <p class="section-note">No new match targets during make-up. Extra km pays down earlier shortfalls first. Pick a runner to see what is still owed.</p>
       <div class="catchup-controls">
         <label for="catchup-runner">Runner</label>
         <select id="catchup-runner" class="catchup-runner-select">
@@ -1748,28 +1825,21 @@
     </div>
   </section>
 
-  <section class="makeup-band" aria-live="polite">
+  <section class="rules-band">
     <div class="inner">
-      <h2>Make-up <span class="accent">countdown</span></h2>
-      <p class="section-note">After the World Cup final on 19 July, the team gets 7 days to clear any catch-up still owed. Focus on km remaining — not just today's target.</p>
-      <div class="makeup-countdown">
-        <div class="makeup-countdown-card">
-          <span id="makeup-days-value" class="value">-</span>
-          <span id="makeup-days-label" class="label">Days left</span>
-        </div>
-        <div class="makeup-window-meta">
-          <p id="makeup-phase" class="phase">Loading…</p>
-          <p id="makeup-dates" class="dates"></p>
-        </div>
-      </div>
-      <div id="makeup-runners" class="makeup-runners">
-        <p class="makeup-empty">Loading runners…</p>
-      </div>
+      <h2>Make-up <span class="accent">rules</span></h2>
+      <ul class="rules-list">
+        <li>The World Cup is finished. No new daily goal targets apply.</li>
+        <li>You have until 26 July to clear any catch-up km still owed.</li>
+        <li>Run, jog, or walk. Share a screenshot when you are done.</li>
+        <li>Extra km still pays down earlier shortfalls first.</li>
+        <li>Rain-day runs stay on the leaderboard but do not change catch-up totals.</li>
+      </ul>
     </div>
   </section>
 
   <footer class="footer">
-    <p id="status-bar">Scores powered by ESPN</p>
+    <p id="status-bar">Loading tournament data…</p>
   </footer>
 
   <div class="share-capture-wrap" aria-hidden="true">
@@ -1779,19 +1849,17 @@
         <span class="share-card-badge">FIFA World Cup 2026</span>
       </div>
       <div class="share-card-hero">
-        <h2>World Cup <span class="accent">Run</span> Challenge</h2>
+        <h2>Make-up <span class="accent">countdown</span></h2>
+        <p id="share-tagline" class="tagline">Games are done. Clear your remaining km.</p>
       </div>
-      <div class="share-card-stats">
-        <div class="label">Goals scored yesterday</div>
-        <div id="share-date" class="date"></div>
-        <div id="share-goals" class="share-card-goals"></div>
-        <div class="share-card-run">
-          Today's target: <span id="share-distance" class="distance"></span>
-        </div>
+      <div class="share-card-countdown">
+        <div id="share-days" class="days">-</div>
+        <span id="share-days-label" class="days-label">Days left</span>
+        <p id="share-phase" class="phase"></p>
       </div>
-      <div class="share-card-matches">
-        <h3>Yesterday's <span class="accent">matches</span></h3>
-        <ul id="share-match-list" class="match-list"></ul>
+      <div class="share-card-runners">
+        <h3>Km <span class="accent">remaining</span></h3>
+        <div id="share-runner-list" class="share-card-runner-list"></div>
       </div>
       <div class="share-card-footer" id="share-footer"></div>
     </div>
@@ -2234,12 +2302,11 @@
 
     function renderGoalTotal(total) {
       lastGoalTotal = total;
-      animateGoalTotal(total);
       updateDistance();
-      updateBenchmarkCompare();
       syncShareCard();
       renderCatchUpCalculator();
       renderMakeUpCountdown();
+      renderWorldCupFacts();
     }
 
     function toDisplayDistance(km) {
@@ -2357,12 +2424,16 @@
           dailyGoalTargets[runDayKey] = 0;
         }
 
+        if (isAfterTournament(runDayKey)) {
+          dailyGoalTargets[runDayKey] = 0;
+        }
+
         cursor.setDate(cursor.getDate() + 1);
       }
     }
 
     function getTodayTargetKm() {
-      if (isRestCatchUpDay() || isRainDay()) {
+      if (isRestCatchUpDay() || isRainDay() || isAfterTournament()) {
         return 0;
       }
 
@@ -2370,29 +2441,53 @@
     }
 
     function updateRunDistanceUi() {
-      const noteEl = document.getElementById('run-distance-note');
-      const restBanner = document.getElementById('rest-day-banner');
-      const runDistanceEl = document.getElementById('run-distance');
-      const isRestDay = isRestCatchUpDay();
-      const isRain = isRainDay();
-      const targetLabel = toDisplayDistance(getTodayTargetKm());
-      const unitLabel = unit;
+      // Daily goal UI removed for make-up phase. Catch-up calculator and countdown own that job.
+    }
 
-      if (isRestDay) {
-        noteEl.textContent = 'No new goals today. Use the catch-up calculator to see what is still owed.';
-        restBanner.hidden = false;
-        restBanner.textContent = `Day ${getChallengeDayNumber(getTodayKey())}: rest and catch-up`;
-        runDistanceEl.innerHTML = `Today's target: <span id="distance-value">${targetLabel}</span> <span id="distance-unit">${unitLabel}</span> <span class="rest-tag">(rest day)</span>`;
-      } else if (isRain) {
-        noteEl.textContent = 'Rain day. No catch-up target today. Runs you log still appear on the leaderboard.';
-        restBanner.hidden = false;
-        restBanner.textContent = `Day ${getChallengeDayNumber(getTodayKey())}: rain day`;
-        runDistanceEl.innerHTML = `Today's target: <span id="distance-value">${targetLabel}</span> <span id="distance-unit">${unitLabel}</span> <span class="rest-tag">(rain day)</span>`;
-      } else {
-        noteEl.textContent = "Based on yesterday's goals (1 goal = 1 km). Missed km rolls forward.";
-        restBanner.hidden = true;
-        runDistanceEl.innerHTML = `Today's target: <span id="distance-value">${targetLabel}</span> <span id="distance-unit">${unitLabel}</span>`;
+    function renderWorldCupFacts() {
+      const statsEl = document.getElementById('facts-stats');
+      const listEl = document.getElementById('facts-list');
+      if (!statsEl || !listEl) {
+        return;
       }
+
+      const teamKm = leaderboardData
+        ? computeTeamStats(buildLeaderboardRows(leaderboardData))?.totalDistance ?? 0
+        : 0;
+      const goals = tournamentGoalsScored || 308;
+      const matches = 104;
+      const goalsPerMatch = (goals / matches).toFixed(2);
+      const vs2022 = goals - 172;
+
+      statsEl.innerHTML = `
+        <div class="facts-stat">
+          <span class="value">${goals}</span>
+          <span class="label">Goals scored</span>
+        </div>
+        <div class="facts-stat">
+          <span class="value">${matches}</span>
+          <span class="label">Matches</span>
+        </div>
+        <div class="facts-stat">
+          <span class="value">${formatDistance(unit === 'mi' ? teamKm * 0.621371 : teamKm)}</span>
+          <span class="label">Team ${getUnitLabel()} run</span>
+        </div>
+        <div class="facts-stat">
+          <span class="value">Spain</span>
+          <span class="label">Champions</span>
+        </div>
+      `;
+
+      listEl.innerHTML = `
+        <li><strong>Spain won it</strong> — Ferran Torres scored in the 106th minute to beat Argentina 1–0 after extra time. Spain’s second World Cup, first since 2010.</li>
+        <li><strong>Biggest World Cup ever</strong> — First 48-team finals, hosted across Canada, Mexico and the USA, with ${matches} matches (up from 64 in Qatar).</li>
+        <li><strong>Record goal haul</strong> — About ${goals} goals across the tournament (~${goalsPerMatch} per match), well clear of Qatar 2022’s 172${vs2022 > 0 ? ` (+${vs2022})` : ''}.</li>
+        <li><strong>Defensive masters</strong> — Spain conceded only one goal in eight matches, the fewest ever by a World Cup champion.</li>
+        <li><strong>Messi’s last dance?</strong> — Lionel Messi became the first man to start three World Cup finals, and the oldest outfield player to start one.</li>
+        <li><strong>Teenagers at the top</strong> — Lamine Yamal is the first teenager to win both the Euros and the World Cup.</li>
+        <li><strong>Golden Boot race</strong> — Kylian Mbappé led the scoring charts; Messi finished with eight goals, two behind.</li>
+        <li><strong>Our challenge</strong> — Every goal was a kilometre. Make-up window is open through 26 July to clear anything still owed.</li>
+      `;
     }
 
     function computeRunningBalance(runner, beforeDateKey = getTodayKey()) {
@@ -2460,6 +2555,14 @@
       return getLocalDateKey(finalDay);
     }
 
+    function isMakeUpWindow(dateKey = getTodayKey()) {
+      return dateKey >= getMakeupStartKey() && dateKey <= getMakeupEndKey();
+    }
+
+    function isAfterTournament(dateKey = getTodayKey()) {
+      return dateKey > TOURNAMENT_END_KEY;
+    }
+
     function getDaysBetween(startKey, endKey) {
       const start = new Date(`${startKey}T12:00:00`);
       const end = new Date(`${endKey}T12:00:00`);
@@ -2487,8 +2590,8 @@
           phase: 'active',
           daysValue: daysLeft,
           daysLabel: daysLeft === 1 ? 'Day left' : 'Days left',
-          phaseText: 'Make-up window is open. Clear your remaining catch-up km before it closes.',
-          datesText: `Closes ${formatRunDate(makeupEndKey)} · ${MAKEUP_DAYS}-day window after the final`,
+          phaseText: 'Games are done. Time for everyone to clear their remaining km.',
+          datesText: `Make-up closes ${formatRunDate(makeupEndKey)} · ${daysLeft} day${daysLeft === 1 ? '' : 's'} left`,
         };
       }
 
@@ -2545,8 +2648,8 @@
         const hint = row.remaining > 0 && row.perDay !== null
           ? `~${toDisplayDistance(row.perDay)} ${unitLabel}/day to clear`
           : (row.remaining > 0
-            ? 'Still to run (catch-up + today)'
-            : 'Nothing owed right now');
+            ? 'Km still owed'
+            : 'All clear');
 
         return `
           <div class="makeup-runner">
@@ -2558,6 +2661,8 @@
           </div>
         `;
       }).join('');
+
+      syncShareCard();
     }
 
     function populateCatchUpRunners() {
@@ -2656,14 +2761,29 @@
     }
 
     function buildChatMessage() {
-      const unitLabel = unit === 'mi' ? 'miles' : 'km';
-      let message = `World Cup Run Challenge\nToday's target: ${getTodayTargetKm()} ${unitLabel}`;
+      const unitLabel = getUnitLabel();
+      const windowState = getMakeupWindowState();
+      const runners = leaderboardData?.runners || [];
+      let message = `World Cup Run Challenge — Make-up countdown\n${windowState.daysValue} ${windowState.daysLabel.toLowerCase()}\n${windowState.phaseText}`;
 
-      if (lastGoalTotal > 0) {
-        message += ` (${lastGoalTotal} goal${lastGoalTotal === 1 ? '' : 's'} yesterday)`;
+      if (runners.length) {
+        const rows = runners
+          .map((runner) => ({
+            name: runner.name,
+            remaining: computeCatchUp(runner).remaining,
+          }))
+          .sort((a, b) => b.remaining - a.remaining);
+
+        message += '\n\nKm remaining:';
+        rows.forEach((row) => {
+          const amount = row.remaining > 0
+            ? `${toDisplayDistance(row.remaining)} ${unitLabel}`
+            : 'Clear';
+          message += `\n• ${row.name}: ${amount}`;
+        });
       }
 
-      message += "\nWho's in?";
+      message += '\n\nTime to finish those km!';
       return message;
     }
 
@@ -2677,17 +2797,42 @@
     }
 
     function syncShareCard() {
-      document.getElementById('share-date').textContent = lastYesterdayLabel;
-      document.getElementById('share-goals').innerHTML = `
-        ${lastGoalTotal}
-        <span class="unit">goal${lastGoalTotal === 1 ? '' : 's'}</span>
-      `;
-      document.getElementById('share-distance').textContent = `${getTodayTargetKm()} ${unit}`;
-      document.getElementById('share-match-list').innerHTML = buildMatchListHtml(
-        lastMatches,
-        'No World Cup matches were played yesterday.',
-      );
-      document.getElementById('share-footer').textContent = `Generated ${new Date().toLocaleString()} · Scores powered by ESPN`;
+      const unitLabel = getUnitLabel();
+      const windowState = getMakeupWindowState();
+      const runners = leaderboardData?.runners || [];
+
+      document.getElementById('share-days').textContent = windowState.daysValue;
+      document.getElementById('share-days-label').textContent = windowState.daysLabel;
+      document.getElementById('share-phase').textContent = windowState.phaseText;
+      document.getElementById('share-tagline').textContent = windowState.datesText
+        || 'Games are done. Clear your remaining km.';
+
+      const listEl = document.getElementById('share-runner-list');
+      if (!runners.length) {
+        listEl.innerHTML = '<p class="empty">No runners on the board yet.</p>';
+      } else {
+        const rows = runners
+          .map((runner) => ({
+            name: runner.name,
+            remaining: computeCatchUp(runner).remaining,
+          }))
+          .sort((a, b) => b.remaining - a.remaining);
+
+        listEl.innerHTML = rows.map((row) => {
+          const remainingLabel = row.remaining > 0
+            ? `${toDisplayDistance(row.remaining)} ${unitLabel}`
+            : 'Clear';
+          const remainingClass = row.remaining > 0 ? 'owed' : 'clear';
+          return `
+            <div class="share-card-runner">
+              <div class="name">${escapeHtml(row.name)}</div>
+              <div class="remaining ${remainingClass}">${escapeHtml(remainingLabel)}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('share-footer').textContent = `Generated ${new Date().toLocaleString()} · Make-up closes ${formatRunDate(getMakeupEndKey())}`;
     }
 
     function showShareToast(message) {
@@ -2750,10 +2895,11 @@
         }
 
         const file = new File([blob], 'world-cup-run-challenge.png', { type: 'image/png' });
+        const windowState = getMakeupWindowState();
         const shareData = {
           files: [file],
-          title: 'World Cup Run Challenge',
-          text: `Today's target: ${getTodayTargetKm()} ${unit} 🏃⚽`,
+          title: 'World Cup Run Challenge — Make-up countdown',
+          text: `${windowState.daysValue} ${windowState.daysLabel.toLowerCase()}. ${windowState.phaseText}`,
         };
 
         if (navigator.canShare?.(shareData)) {
@@ -3211,6 +3357,7 @@
         populateCatchUpRunners();
         renderCatchUpCalculator();
         renderMakeUpCountdown();
+        renderWorldCupFacts();
       } catch (error) {
         document.getElementById('leaderboard-updated').textContent = 'Leaderboard unavailable';
         document.getElementById('leaderboard-body').innerHTML = `
@@ -3227,75 +3374,51 @@
       }
     }
 
-    async function loadTodayMatches() {
-      const today = new Date();
-      const todayKey = getTodayKey();
-
-      document.getElementById('today-date').textContent = formatDisplayDate(today);
-
-      try {
-        const events = await fetchEspnEventsForDates([getYesterday(), today, getTomorrow()]);
-        const matches = normalizeMatches(events, todayKey);
-        renderTodayMatches(matches);
-      } catch (error) {
-        document.getElementById('today-match-list').innerHTML = `
-          <li class="empty-state">Unable to load today's fixtures.</li>
-        `;
-      }
-    }
-
-    async function loadYesterdayGoals() {
+    async function loadTournamentData() {
       const refreshBtn = document.getElementById('refresh-btn');
       const statusBar = document.getElementById('status-bar');
-      const yesterday = getYesterday();
-      const yesterdayKey = getYesterdayKey();
 
-      lastYesterdayLabel = formatDisplayDate(yesterday);
-      document.getElementById('yesterday-date').textContent = lastYesterdayLabel;
-      refreshBtn.disabled = true;
+      lastYesterdayLabel = formatDisplayDate(getYesterday());
+      if (refreshBtn) {
+        refreshBtn.disabled = true;
+      }
       clearError();
 
       try {
-        const [events] = await Promise.all([
-          fetchEspnEventsForDates(getChallengeFetchDates()),
-          loadTodayMatches(),
-        ]);
+        const events = await fetchEspnEventsForDates(getChallengeFetchDates());
         buildDailyGoalTargets(events);
         tournamentGoalsScored = computeTournamentGoalsScored(events);
-        const matches = normalizeMatches(events, yesterdayKey);
-        const finishedMatches = matches.filter((match) => match.finished);
-        const matchesForTotal = finishedMatches.length ? finishedMatches : matches;
-        const totalGoals = matchesForTotal.reduce((sum, match) => sum + match.totalGoals, 0);
+        // Prefer full tournament tally once finals are complete
+        if (getTodayKey() > TOURNAMENT_END_KEY && tournamentGoalsScored < 300) {
+          tournamentGoalsScored = Math.max(tournamentGoalsScored, 308);
+        }
 
-        renderGoalTotal(totalGoals);
-        renderMatches(matches);
+        renderGoalTotal(0);
 
         if (leaderboardData) {
           renderLeaderboard(leaderboardData);
         }
 
+        renderWorldCupFacts();
+
         const updatedAt = new Date().toLocaleTimeString(undefined, {
           hour: 'numeric',
           minute: '2-digit',
         });
-
-        if (matches.length && !finishedMatches.length) {
-          statusBar.textContent = `Showing in-progress scores · Matches by local kickoff date · Last updated ${updatedAt} · Scores powered by ESPN`;
-        } else {
-          statusBar.textContent = `Matches by local kickoff date · Last updated ${updatedAt} · Scores powered by ESPN`;
-        }
+        statusBar.textContent = `Make-up window open · Last updated ${updatedAt}`;
       } catch (error) {
-        showError(error.message || 'Something went wrong while loading scores.');
-        document.getElementById('match-list').innerHTML = `
-          <li class="empty-state">Unable to load matches. Try refreshing in a moment.</li>
-        `;
-        statusBar.textContent = 'Scores powered by ESPN';
+        showError(error.message || 'Something went wrong while loading tournament data.');
+        tournamentGoalsScored = 308;
+        renderWorldCupFacts();
+        statusBar.textContent = 'Make-up window open · Tournament facts loaded offline';
       } finally {
-        refreshBtn.disabled = false;
+        if (refreshBtn) {
+          refreshBtn.disabled = false;
+        }
       }
     }
 
-    document.getElementById('refresh-btn').addEventListener('click', loadYesterdayGoals);
+    document.getElementById('refresh-btn').addEventListener('click', loadTournamentData);
     document.getElementById('share-btn').addEventListener('click', shareScreenshot);
     document.getElementById('copy-btn').addEventListener('click', copyChatMessage);
 
@@ -3305,14 +3428,12 @@
         button.classList.add('active');
         unit = button.dataset.unit;
         updateDistance();
-        if (benchmarkData) {
-          renderBenchmark(benchmarkData);
-        }
         if (leaderboardData) {
           renderTournamentProgress(computeTeamStats(buildLeaderboardRows(leaderboardData)));
         }
         renderCatchUpCalculator();
         renderMakeUpCountdown();
+        renderWorldCupFacts();
       });
     });
 
@@ -3320,8 +3441,7 @@
 
     mountLogos();
     setupGalleryModal();
-    loadBenchmark();
-    loadYesterdayGoals();
+    loadTournamentData();
     loadLeaderboard();
   </script>
 </body>
