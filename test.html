@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Strava API test | World Cup Run Challenge</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -235,7 +237,7 @@
 
     <section class="panel warn">
       <h2>Before you start</h2>
-      <p><strong>This page is for experiments only.</strong> Register an app at <a href="https://www.strava.com/settings/api" style="color: var(--warn);">strava.com/settings/api</a> and set the callback domain to match where you host this file.</p>
+      <p><strong>Local testing only.</strong> Do not commit client secrets or access tokens. This file is excluded from the public GitHub Pages deploy. Register an app at <a href="https://www.strava.com/settings/api" style="color: var(--warn);">strava.com/settings/api</a> and set the callback domain to match where you host this file locally.</p>
       <ul>
         <li><strong>OAuth authorize</strong> works in the browser (redirect to Strava and back with a <code>code</code>).</li>
         <li><strong>Token exchange</strong> needs your client secret. Do that locally or via a tiny backend. Never commit the secret or ship it in production JavaScript.</li>

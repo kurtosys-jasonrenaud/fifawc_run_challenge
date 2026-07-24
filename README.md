@@ -79,3 +79,12 @@ Then visit [http://localhost:8080](http://localhost:8080).
 ## Deployment
 
 Pushes to `main` automatically deploy the site to GitHub Pages via the `gh-pages` branch.
+
+## Security
+
+This is a public static site. See [`SECURITY.md`](SECURITY.md) for reporting issues.
+
+- No API keys are required for the live dashboard (ESPN scoreboard is public)
+- Do not commit Strava secrets or tokens; use `test.html` only on your machine
+- `test.html` is excluded from the Pages deploy
+- Secret scanning and Dependabot are enabled on the repository

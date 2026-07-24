@@ -1,0 +1,26 @@
+# Local secrets and env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials.json
+
+# Local Strava / OAuth test leftovers
+.strava-token*
+.local-token*
+token.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node (if added later)
+node_modules/
+dist/
+.cache/

@@ -20,4 +20,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
-          exclude_assets: '.github'
+          # Keep OAuth/test helpers and repo meta off the public site
+          exclude_assets: '.github,test.html,SECURITY.md,.gitignore,README.md'
